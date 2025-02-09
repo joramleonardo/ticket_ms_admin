@@ -11,31 +11,20 @@
                 <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                     <div class="header-top-menu">
                         <ul class="nav navbar-nav notika-top-nav">
-                            
+
                             <li class="nav-item nc-al">
                                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
                                     <span><i class="notika-icon notika-alarm"></i></span>
-                                    
+
                                 </a>
                                 <div role="menu" class="dropdown-menu message-dd notification-dd animated zoomIn">
                                     <div class="hd-mg-tt">
                                         <h2>New Tickets</h2>
                                     </div>
-                                    <!-- <div class="hd-message-info">
-                                        <a >
-                                            <div class="hd-message-sn">
-                                                <div class="hd-mg-ctn">
-                                                    <h3>David Belle</h3>
-                                                    <p>Cum sociis natoque penatibus et magnis dis parturient montes</p>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div> -->
                                     <div class="hd-mg-va">
                                         <router-link to="/ticket/staff/mytickets">
                                             View All
                                         </router-link>
-                                        <!-- <a href="#">View All</a> -->
                                     </div>
                                 </div>
                             </li>
@@ -45,10 +34,16 @@
                                         <i class="notika-icon notika-support"></i>
                                         <span style="font-size: 12px;">{{this.displayName}}</span>
                                     </span>
-                                    <div class="spinner4 spinner-4"></div>
-                                    <div class="ntd-ctn">
-                                        <span>{{this.totalStaff.total_Pending}}</span>
-                                    </div>
+
+                                    <span v-if="this.totalStaff.total_Pending === '0'">
+
+                                    </span>
+                                    <span v-else>
+                                        <div class="spinner4 spinner-4"></div>
+                                        <div class="ntd-ctn">
+                                            <span>{{this.totalStaff.total_Pending}}</span>
+                                        </div>
+                                    </span>
                                 </a>
                                 <div role="menu" class="dropdown-menu message-dd task-dd animated zoomIn">
                                     <div class="hd-mg-tt">
@@ -61,7 +56,7 @@
                                     </div>
                                 </div>
                             </li>
-                            
+
                         </ul>
                     </div>
                 </div>
@@ -72,9 +67,9 @@
 </template>
 
 <script>
-    import * as ticket_service from '../services/ticket_service';   
+    import * as ticket_service from '../services/ticket_service';
 
-    export default { 
+    export default {
         data(){
             return {
                 isLoggedIn: false,
@@ -111,7 +106,7 @@
                 this.displayName=response_getUserData.data.user.name;
                 try{
                     const total1 = await ticket_service.countNew_All();
-                    
+
                     const aa = await ticket_service.countStaffTickets_PerStatus(this.displayName)
 
                     this.totalStaff = aa.data;
@@ -125,7 +120,7 @@
                     }
 
                 } catch(error) {
-                    
+
                 }
             }
         }

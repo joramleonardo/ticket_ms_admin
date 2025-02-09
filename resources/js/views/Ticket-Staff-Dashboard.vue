@@ -7,24 +7,30 @@
                         <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
                             <li class="active">
                                 <router-link to="/ticket/staff/dashboard">
-                                    <i class="notika-icon notika-house"></i> 
+                                    <i class="notika-icon notika-house"></i>
                                     Dashboard
                                 </router-link>
                             </li>
                             <li>
                                 <router-link to="/ticket/staff/mytickets">
-                                    <i class="notika-icon notika-form"></i> 
+                                    <i class="notika-icon notika-form"></i>
                                     My Ticket
                                 </router-link>
                             </li>
                             <li>
                                 <router-link to="/ticket/staff/create">
-                                    <i class="notika-icon notika-edit"></i> 
+                                    <i class="notika-icon notika-edit"></i>
                                     Create Ticket
-                                    <div class="spinner4 spinner-4"></div>
-                                    <div class="ntd-ctn">
-                                        <span>{{this.totalStaff.total_Pending}}</span>
-                                    </div>
+
+                                        <span v-if="this.totalStaff.total_Pending === '0'">
+
+                                        </span>
+                                        <span v-else>
+                                            <div class="spinner4 spinner-4"></div>
+                                            <div class="ntd-ctn">
+                                                <span>{{this.totalStaff.total_Pending}}</span>
+                                            </div>
+                                        </span>
                                 </router-link>
                             </li>
                         </ul>
@@ -56,7 +62,7 @@
                 </div>
             </div>
         </div>
-  
+
         <div class="notika-status-area" style="margin-bottom: 30px">
             <div class="container">
                 <div class="row">
@@ -95,11 +101,11 @@
                 </div>
             </div>
         </div>
-  
+
     </div>
 </template>
-  
-  
+
+
 <script>
     import * as ticket_service from '../services/ticket_service';
 
@@ -142,13 +148,13 @@
 
             countData: async function() {
 
-               
+
 
                 const response_getUserData = await ticket_service.getUserData();
                 this.displayName=response_getUserData.data.user.name;
                 try{
                     const total1 = await ticket_service.countNew_All();
-                    
+
                     const aa = await ticket_service.countStaffTickets_PerStatus(this.displayName)
                     const bb = await ticket_service.countTickets_PerStatus(this.displayName)
 
@@ -170,11 +176,10 @@
                     });
                 }
             }
-            
+
         }
     }
 
 </script>
-  
-  
- 
+
+

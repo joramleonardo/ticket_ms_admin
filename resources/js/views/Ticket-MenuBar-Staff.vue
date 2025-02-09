@@ -7,19 +7,19 @@
                     <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
                         <li class="active">
                             <a data-toggle="tab" href="#Home">
-                                <i class="notika-icon notika-house"></i> 
+                                <i class="notika-icon notika-house"></i>
                                 Home
                             </a>
                         </li>
                         <li>
                             <a data-toggle="tab" href="#manageTicket">
-                                <i class="notika-icon notika-form"></i> 
+                                <i class="notika-icon notika-form"></i>
                                 Manage Ticket
                             </a>
                         </li>
                         <li>
                             <a data-toggle="tab" href="#createTicket">
-                                <i class="notika-icon notika-edit"></i> 
+                                <i class="notika-icon notika-edit"></i>
                                 Create Ticket
                             </a>
                         </li>
@@ -32,44 +32,34 @@
                                         My Dashboard
                                     </router-link>
                                 </li>
-                                <!-- <li>
-                                    <router-link to="/ticket/staff/dashboard">
-                                        Reports
-                                    </router-link>
-                                </li> -->
                             </ul>
                         </div>
                         <div id="manageTicket" class="tab-pane notika-tab-menu-bg animated flipInX">
                             <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro notika-main-menu-dropdown">
-                                
+
                                 <li class="active">
-                                    <!-- <a data-toggle="tab">
-                                        New Tickets
-                                    </a> -->
                                     <router-link to="/ticket/staff/mytickets">
                                         My Tickets
                                     </router-link>
                                 </li>
                                 <li>
                                     <a data-toggle="tab" >
-                                        <!-- <span>
-                                            My Tickets
-                                        </span> -->
-                                        <div class="spinner4 spinner-4"></div>
+                                        <!-- <div class="spinner4 spinner-4"></div>
                                         <div class="ntd-ctn">
                                             <span>{{this.total.total_Pending}}</span>
-                                        </div>
+                                        </div> -->
+
+                                        <span v-if="this.totalStaff.total_Pending === '0'">
+
+                                        </span>
+                                        <span v-else>
+                                            <div class="spinner4 spinner-4"></div>
+                                            <div class="ntd-ctn">
+                                                <span>{{this.totalStaff.total_Pending}}</span>
+                                            </div>
+                                        </span>
                                     </a>
                                 </li>
-                                <!-- <li class="nav-item">
-                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">
-                                       
-                                        <div class="spinner4 spinner-4"></div>
-                                        <div class="ntd-ctn">
-                                            <span>2</span>
-                                        </div>
-                                    </a>
-                                </li> -->
                             </ul>
                         </div>
                         <div id="createTicket" class="tab-pane notika-tab-menu-bg animated flipInX">
@@ -135,13 +125,13 @@
 
             countData: async function() {
 
-               
+
 
                 const response_getUserData = await ticket_service.getUserData();
                 this.displayName=response_getUserData.data.user.name;
                 try{
                     const total1 = await ticket_service.countNew_All();
-                    
+
                     const aa = await ticket_service.countStaffTickets_PerStatus(this.displayName)
                     console.log("HELLOOOOOO");
                     console.log(aa.data);
@@ -164,9 +154,8 @@
                     });
                 }
             }
-            
+
         }
     }
 
 </script>
-  
