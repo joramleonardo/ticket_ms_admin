@@ -3,12 +3,11 @@
   <section>
         <Header />
 
-        <!-- <MenuBar /> -->
-                    
+
         <div class="notika-status-area">
             <router-view> </router-view>
         </div>
-               
+
 
         <FlashMessage position="right bottom"> </FlashMessage>
 
@@ -16,14 +15,12 @@
 </template>
 
 <script>
-    import MenuBar from './Ticket-MenuBar-Staff.vue';
     import Header from './Header.vue';
     import Footer from './Footer.vue';
-    import * as ticket_service from '../services/ticket_service';   
+    import * as ticket_service from '../services/ticket_service';
 
-    export default { 
+    export default {
         components: {
-            MenuBar,
             Header,
             Footer
         },
