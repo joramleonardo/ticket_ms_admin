@@ -12,8 +12,8 @@
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/ticket/admin/mytickets">
-                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                <router-link to="/ticket/admin/newtickets">
+                                    <i class="fa fa-bell" aria-hidden="true"></i>
                                     New Tickets
                                 </router-link>
                             </li>
@@ -21,22 +21,28 @@
                                 <router-link to="/ticket/admin/mytickets">
                                     <i class="fa fa-list" aria-hidden="true"></i>
                                     My Ticket
+                                    <span v-if="this.totalNew != '0'">
+                                            <div class="spinner4 spinner-4"></div>
+                                            <div class="ntd-ctn">
+                                                <span>{{this.totalNew}}</span>
+                                            </div>
+                                    </span>
+                                    <span v-else>
+                                    </span>
                                 </router-link>
                             </li>
                             <li>
                                 <router-link to="/ticket/admin/create">
                                     <i class="fa fa-plus-square" aria-hidden="true"></i>
                                     Create Ticket
-
-                                        <span v-if="this.totalStaff.total_Pending === '0'">
-
-                                        </span>
-                                        <span v-else>
-                                            <div class="spinner4 spinner-4"></div>
-                                            <div class="ntd-ctn">
-                                                <span>{{this.totalStaff.total_Pending}}</span>
-                                            </div>
-                                        </span>
+                                    <span v-if="this.totalStaff.total_Pending != '0'">
+                                        <div class="spinner4 spinner-4"></div>
+                                        <div class="ntd-ctn">
+                                            <span>{{this.totalStaff.total_Pending}}</span>
+                                        </div>
+                                    </span>
+                                    <span v-else>
+                                    </span>
                                 </router-link>
                             </li>
                         </ul>
@@ -179,7 +185,7 @@
                                                         <button @click="addRemarksModal(row.item, row.index, $event.target)" class="btn btn-danger notika-btn-danger">Add Remarks</button>
                                                     </div>
                                                     <div v-if="row.item.status === 'Completed'">
-                                                        <button @click="viewRating(row.item, row.index, $event.target)" class="btn btn-info notika-btn-info">Submit Rating</button>
+                                                        <button @click="viewRating(row.item, row.index, $event.target)" class="btn btn-info notika-btn-info">View Rating</button>
                                                     </div>
 
                                                 </template>
@@ -240,17 +246,20 @@
                             <p>{{this.ratingStatus}}</p>
                             <br>
                             <h3>Link:</h3>
-                            <p>
-                                <button @click="copyRatingLink" >
-                                    Copy
-                                </button>
-                            </p>
+                            <span v-if="this.ratingStatus === 'Pending'">
+                                <p>
+                                    <button @click="copyRatingLink" class="btn btn-warning notika-btn-warning">Copy Link</button>
+                                </p>
+                            </span>
+                            <span v-else>
+                                <p>
+                                    <button class="btn btn-warning notika-btn-warning" disabled>Rating Received</button>
+                                </p>
+                            </span>
                             <br>
                             <h3>CSM Form:</h3>
                             <p>
-                                <button @click="copyCSMLink" >
-                                    Copy
-                                </button>
+                                <button @click="copyCSMLink" class="btn btn-warning notika-btn-warning">Copy Link</button>
                             </p>
                         </div>
                     </div>
@@ -512,6 +521,7 @@
                 total: '',
                 totalStaff: '',
 
+                ticketNew: [],
                 ticket: [],
                 ticketDetails: [],
                 ticketData:{
@@ -532,7 +542,7 @@
                 pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
                 totalRows: 0,
                 currentPage: 1,
-                perPage: 5,
+                perPage: 10,
                 filterOn: [],
                 filter: null,
                 sortDirection: 'asc',
@@ -632,7 +642,6 @@
                                                                             'Reformat',
                                                                             'Download',
                                                                             'Assistance'],
-
             }
         },
         mounted() {
@@ -688,6 +697,33 @@
                     else{
                         this.playAudio();
                     }
+
+                } catch(error) {
+                    this.flashMessage.error({
+                    message: 'Some error occured! Please try again.',
+                    time: 5000
+                    });
+                }
+            },
+            loadAllTicketDetails: async function() {
+
+                const response_getUserData = await ticket_service.getUserData();
+
+                this.displayName=response_getUserData.data.user.name;
+
+                let name = this.displayName;
+                const response_name = await ticket_service.setName(name);
+
+                try{
+                    const response_set_refCode = await ticket_service.setDisplayName(response_name.data);
+                    const response = await ticket_service.getAllTicketDetails_Assigned(response_name.data);
+                    this.ticket = response.data;
+                    this.totalRows = this.ticket.length;
+
+
+                    // const response_ticketNew = await ticket_service.loadTicketDetails_New();
+                    // this.ticketNew = response_ticketNew.data;
+
 
                 } catch(error) {
                     this.flashMessage.error({
@@ -886,27 +922,6 @@
                     document.getElementById("groupProblem_that_needed_support").style.display = "block";
                     document.getElementById("groupActions_taken").style.display = "block";
                     document.getElementById("groupRemarks").style.display = "block";
-                }
-            },
-            loadAllTicketDetails: async function() {
-
-                const response_getUserData = await ticket_service.getUserData();
-
-                this.displayName=response_getUserData.data.user.name;
-
-                let name = this.displayName;
-                const response_name = await ticket_service.setName(name);
-
-                try{
-                    const response_set_refCode = await ticket_service.setDisplayName(response_name.data);
-                    const response = await ticket_service.getAllTicketDetails_Assigned(response_name.data);
-                    this.ticket = response.data;
-                    this.totalRows = this.ticket.length;
-                } catch(error) {
-                    this.flashMessage.error({
-                    message: 'Some error occured! Please try again.',
-                    time: 5000
-                    });
                 }
             },
             setStatus: async function(data) {

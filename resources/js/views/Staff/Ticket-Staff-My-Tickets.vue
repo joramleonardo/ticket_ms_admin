@@ -526,7 +526,7 @@
                 pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
                 totalRows: 0,
                 currentPage: 1,
-                perPage: 5,
+                perPage: 10,
                 filterOn: [],
                 filter: null,
                 sortDirection: 'asc',

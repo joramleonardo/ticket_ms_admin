@@ -15,7 +15,7 @@
   </template>
 
   <script>
-      import Header from './Header.vue';
+      import Header from './Header-Admin.vue';
       import Footer from './Footer.vue';
       import * as ticket_service from '../services/ticket_service';
 

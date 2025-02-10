@@ -43,7 +43,7 @@ class TicketController extends Controller
 
     public function addTicket_external(Request $request){
         $data = new Ticket(); // insert into table ticket
-        
+
         $data->date1 = $request->date1;
         $data->externalName = $request->externalName;
         $data->sex = $request->sex;
@@ -54,7 +54,7 @@ class TicketController extends Controller
         $data->supportType = $request->supportType;
         $data->externalOtherType = $request->externalOtherType;
         $data->clientNote = $request->clientNote;
-        
+
         $data->reference_code = $request->reference_code;
         $data->ticket_created = $request->ticket_created;
         $data->internal_external = $request->internal_external;
@@ -137,7 +137,7 @@ class TicketController extends Controller
 
                             // join('tickets','ticket_statuses.reference_code', '=', 'tickets.reference_code')
                             // ->join('ticket_employees', 'tickets.employee_code','=', 'ticket_employees.employee_code')
-        
+
         return response()->json($data, 200);
     }
 
@@ -148,7 +148,7 @@ class TicketController extends Controller
                                     'remarks.remarks_data', 'remarks.assigned_staff', 'remarks.remarks_date')
                             ->orderBy('remarks.created_at', 'desc')
                             ->get('*');
-        
+
         return response()->json($data, 200);
     }
 
@@ -162,8 +162,8 @@ class TicketController extends Controller
         $data->internal_external = $request->internal_external;
         $data->concerned_division = $request->concerned_division;
         $data->concerned_section = $request->concerned_section;
-        $data->externalName = $request->externalName; 
-        $data->empDiv = $request->empDiv; 
+        $data->externalName = $request->externalName;
+        $data->empDiv = $request->empDiv;
         $data->empEmail = $request->empEmail;
         $data->clientType = $request->clientType;
         $data->date1 = $request->date1;
@@ -173,7 +173,7 @@ class TicketController extends Controller
 
         $data->save();
     }
-    
+
     public function technical_addTicketStatus_Pending(Request $request){
         $data = new TicketStatus(); // insert into table ticket_status
 
@@ -209,8 +209,8 @@ class TicketController extends Controller
         $data = new Ticket();
 
         $data->date1 = $request->date1;
-        $data->externalName = $request->externalName; 
-        $data->externalAgency = $request->externalAgency; 
+        $data->externalName = $request->externalName;
+        $data->externalAgency = $request->externalAgency;
         $data->sex = $request->sex;
         $data->externalStartDate = $request->externalStartDate;
         $data->externalEndDate = $request->externalEndDate;
@@ -226,7 +226,7 @@ class TicketController extends Controller
 
         $data->save();
     }
-    
+
     public function technical_addTicketStatus_Pending_external(Request $request){
         $data = new TicketStatus(); // insert into table ticket_status
 
@@ -262,7 +262,7 @@ class TicketController extends Controller
         $data->ticket_created = $request->ticket_created;
         $data->sex = $request->sex;
         $data->internal_external = $request->internal_external;
-        $data->externalName = $request->externalName; 
+        $data->externalName = $request->externalName;
         $data->empEmail = $request->empEmail;
         $data->externalAgency = $request->externalAgency;
         $data->date1 = $request->date1;
@@ -313,17 +313,17 @@ class TicketController extends Controller
         $data->approved_by = $request->approved_by;
         $data->priority = $request->priority;
         $data->status = $request->status;
-        
+
         $data->ticket_approved = $request->ticket_approved;
         $data->ticket_updated = $request->ticket_updated;
-        
+
         $data->save();
     }
 
     public function updatePending_Ticket(Request $request, $id){
         $data = Ticket::where('id', $id)->first();
         $data->supportType = $request->supportType;
-        
+
         $data->save();
     }
 
@@ -426,22 +426,22 @@ class TicketController extends Controller
     }
 
     public function setRefCode(Request $request){
-        
+
         $ref_code = \Request::get('ref_code');
-        $request->session()->put('refCode', $ref_code); 
+        $request->session()->put('refCode', $ref_code);
         return $request->session()->get('refCode');
     }
 
     public function setName(Request $request){
         $name = \Request::get('name');
-        $request->session()->put('name', $name); 
+        $request->session()->put('name', $name);
         return $request->session()->get('name');
     }
 
     public function setDisplayName(Request $request){
-        
+
         $displayName = \Request::get('ref_code');
-        $request->session()->put('displayName', $displayName); 
+        $request->session()->put('displayName', $displayName);
         return $request->session()->get('displayName');
     }
 
@@ -551,7 +551,7 @@ class TicketController extends Controller
     public function getUserAssignedTicket(){
         $name="";
         $data = DB::select("SELECT `ticket_statuses`.*
-                        FROM `ticket_statuses` 
+                        FROM `ticket_statuses`
                         WHERE `ticket_statuses`.`attended_by`='$name'
                         ");
         return response()->json($data, 200);
@@ -570,7 +570,7 @@ class TicketController extends Controller
                             ->join('ticket_employees', 'tickets.employee_code','=', 'ticket_employees.employee_code')
                             ->where('ticket_statuses.id', $id)
                             ->get('*');
-        
+
         return response()->json($data, 200);
     }
 
@@ -579,14 +579,14 @@ class TicketController extends Controller
                             // ->join('ticket_employees', 'tickets.employee_code','=', 'ticket_employees.employee_code')
                             ->where('ticket_statuses.id', $id)
                             ->get('*');
-        
+
         return response()->json($data, 200);
     }
-    
+
     public function loadTicketDetails_type(Request $request, $id){
         $data = Ticket::where('tickets.id', $id)
                             ->get('tickets.internal_external');
-        
+
         return response()->json($data, 200);
     }
 
@@ -657,10 +657,10 @@ class TicketController extends Controller
     }
 
     public function countStaffTickets_PerStatus($staff){
-        
+
         $data = TicketStatus::selectRaw('
                                     assignedStaff,
-                                    
+
                                     SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as total_Completed,
                                     SUM(CASE WHEN status = "Approved" THEN 1 ELSE 0 END) as total_Pending,
                                     SUM(CASE WHEN status = "In Progress" THEN 1 ELSE 0 END) as total_InProgress
@@ -671,15 +671,28 @@ class TicketController extends Controller
     }
 
     public function countTickets_PerStatus($staff){
-        
+
         $data = TicketStatus::selectRaw('
                                     assignedStaff,
-                                    
+
                                     SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as total_Completed,
                                     SUM(CASE WHEN status = "Approved" THEN 1 ELSE 0 END) as total_Pending,
                                     SUM(CASE WHEN status = "In Progress" THEN 1 ELSE 0 END) as total_InProgress
                                 ')
                                 ->first(); // Get single record
+        return response()->json($data, 200);
+    }
+
+    public function countTickets_Status_Staff(){
+
+        $data = TicketStatus::select(
+                                'assignedStaff',
+                                DB::raw('SUM(CASE WHEN status = "Approved" THEN 1 ELSE 0 END) as pending_count'),
+                                DB::raw('SUM(CASE WHEN status = "In Progress" THEN 1 ELSE 0 END) as in_progress_count'),
+                                DB::raw('SUM(CASE WHEN status = "Completed" THEN 1 ELSE 0 END) as completed_count')
+                            )
+                            ->groupBy('assignedStaff')
+                            ->get();
         return response()->json($data, 200);
     }
 

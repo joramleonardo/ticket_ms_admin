@@ -16,6 +16,7 @@ import Ticket_Staff_Create_Ticket from './views/Staff/Ticket-Staff-Create-Ticket
 
 import Ticket_Admin_Home from './views/Ticket-Home-Admin.vue';
 import Ticket_Admin_Dashboard from './views/Admin/Ticket-Admin-Dashboard.vue';
+import Ticket_Admin_New_Tickets from './views/Admin/Ticket-Admin-New-Tickets.vue';
 import Ticket_Admin_My_Tickets from './views/Admin/Ticket-Admin-My-Tickets.vue';
 import Ticket_Admin_Create_Ticket from './views/Admin/Ticket-Admin-Create-Ticket.vue';
 
@@ -64,6 +65,11 @@ const routes = [
                 path: '/ticket/admin/dashboard',
                 name: 'ticket-admin-dashboard',
                 component: Ticket_Admin_Dashboard,
+            },
+            {
+                path: '/ticket/admin/newtickets',
+                name: 'ticket-admin-newtickets',
+                component: Ticket_Admin_New_Tickets,
             },
             {
                 path: '/ticket/admin/mytickets',

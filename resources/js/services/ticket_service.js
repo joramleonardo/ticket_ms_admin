@@ -249,6 +249,10 @@ export function countTickets_PerStatus(staff){
     return httpFile().post(`/countTickets_PerStatus/${staff}`);
 }
 
+export function countTickets_Status_Staff(){
+    return httpFile().post('/countTickets_Status_Staff');
+}
+
 export function countStaffTickets_PerStatus(staff){
     return httpFile().post(`/countStaffTickets_PerStatus/${staff}`);
 }

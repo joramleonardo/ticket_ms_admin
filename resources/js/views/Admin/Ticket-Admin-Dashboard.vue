@@ -12,8 +12,8 @@
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/ticket/admin/mytickets">
-                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                <router-link to="/ticket/admin/newtickets">
+                                    <i class="fa fa-bell" aria-hidden="true"></i>
                                     New Tickets
                                 </router-link>
                             </li>
@@ -21,21 +21,27 @@
                                 <router-link to="/ticket/admin/mytickets">
                                     <i class="fa fa-list" aria-hidden="true"></i>
                                     My Ticket
+                                    <span v-if="this.totalNew != '0'">
+                                            <div class="spinner4 spinner-4"></div>
+                                            <div class="ntd-ctn">
+                                                <span>{{this.totalNew}}</span>
+                                            </div>
+                                    </span>
+                                    <span v-else>
+                                    </span>
                                 </router-link>
                             </li>
                             <li>
                                 <router-link to="/ticket/admin/create">
                                     <i class="fa fa-plus-square" aria-hidden="true"></i>
                                     Create Ticket
-
-                                    <span v-if="this.totalStaff.total_Pending === '0'">
-
-                                    </span>
-                                    <span v-else>
+                                    <span v-if="this.totalStaff.total_Pending != '0'">
                                         <div class="spinner4 spinner-4"></div>
                                         <div class="ntd-ctn">
                                             <span>{{this.totalStaff.total_Pending}}</span>
                                         </div>
+                                    </span>
+                                    <span v-else>
                                     </span>
                                 </router-link>
                             </li>
@@ -108,6 +114,72 @@
             </div>
         </div>
 
+        <div class="data-table-area"  style="margin-bottom: 30px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="data-table-list">
+                            <div class="basic-tb-hd">
+                                <b-container fluid>
+                                            <b-table striped hover
+                                            :items="ticketSummary"
+                                            :fields="fields_ticketSummary"
+                                            :current-page="currentPage"
+                                            :per-page="perPage"
+                                            :filter="filter"
+                                            :filter-included-fields="filterOn"
+                                            :sort-by.sync="sortBy"
+                                            :sort-desc.sync="sortDesc"
+                                            :sort-direction="sortDirection"
+                                            stacked="md"
+                                            show-empty
+                                            >
+                                                <template #cell(supportType)="row">
+                                                    <b style="color:rgb(35, 132, 179)">{{ row.value}}</b>
+                                                </template>
+                                                <template #cell(reference_code)="row">
+                                                    <b>{{ row.value}}</b>
+                                                </template>
+                                                <template #cell(externalName)="row">
+                                                    {{ row.value.toUpperCase()}}
+                                                </template>
+                                                <template #cell(status)="row">
+                                                    <div v-if="row.item.status === 'Approved'">
+                                                        <b-badge class="mr-1 badge" style="background-color: #f0ad4e;">PENDING</b-badge>
+                                                    </div>
+                                                    <div v-if="row.item.status === 'In Progress'">
+                                                        <b-badge class="mr-1 badge" style="background-color: #5cb85c;">IN PROGRESS</b-badge>
+                                                    </div>
+                                                    <div v-if="row.item.status === 'Completed'">
+                                                        <b-badge class="mr-1 badge" style="background-color: #5bc0de;">COMPLETED</b-badge>
+                                                    </div>
+                                                </template>
+                                                <template #cell(actions)="row">
+                                                    <div v-if="row.item.status === 'Approved'">
+                                                        <button @click="setStatus(row.item, row.index, $event.target)" class="btn btn-warning notika-btn-warning">Attend Ticket</button>
+
+                                                    </div>
+                                                    <div v-if="row.item.status === 'In Progress'">
+                                                        <button @click="completeTicket(row.item, row.index, $event.target)" class="btn btn-success notika-btn-success">Mark Complete</button>
+                                                        <button @click="addRemarksModal(row.item, row.index, $event.target)" class="btn btn-danger notika-btn-danger">Add Remarks</button>
+                                                    </div>
+                                                    <div v-if="row.item.status === 'Completed'">
+                                                        <button @click="viewRating(row.item, row.index, $event.target)" class="btn btn-info notika-btn-info">Submit Rating</button>
+                                                    </div>
+
+                                                </template>
+                                                <template #cell(details)="row">
+                                                    <button @click="viewTicketDetails(row.item, row.index, $event.target)" class="btn btn-primary notika-btn-primary" >View Details</button>
+                                                </template>
+                                            </b-table>
+                                </b-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -123,8 +195,24 @@
                 name: '',
                 thisAudio: '',
                 total: '',
-                totalStaff: ''
-                }
+                totalStaff: '',
+                ticketSummary:[],
+                fields_ticketSummary: [
+                    { key: 'assignedStaff', label: 'Name'},
+                    { key: 'pending_count', label: 'Total Pending Tickets' },
+                    { key: 'in_progress_count', label: 'Total In Progress Tickets' },
+                    { key: 'completed_count', label: 'Total Completed Tickets'},
+                ],
+                pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
+                totalRows: 0,
+                currentPage: 1,
+                perPage: 15,
+                filterOn: [],
+                filter: null,
+                sortDirection: 'asc',
+                sortBy: 'id',
+                sortDesc: true,
+            }
         },
         mounted() {
             this.countData();
@@ -165,8 +253,11 @@
                     this.total = bb.data;
                     this.totalNew = total1.data;
 
-                    console.log("AA");
-                    console.log(this.totalStaff.total_Pending);
+                    const dd = await ticket_service.countTickets_Status_Staff()
+                    this.ticketSummary = dd.data;
+                    console.log("hello");
+                    console.log(this.ticketSummary);
+
 
 
 

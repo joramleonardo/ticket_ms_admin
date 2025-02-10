@@ -15,7 +15,7 @@ Route::group(['prefix' => 'auth'], function() {
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::group(['middleware' => 'scope:admin,author'], function () {
-        
+
         Route::resource('users', 'UserController');
         Route::get('search-user', 'UserController@searchUser');
     });
@@ -31,7 +31,7 @@ Route::post('register','UserController@register');
 Route::post('login','UserController@login');
 Route::get('profile','UserController@getAuthenticatedUser');
 
-// USER 
+// USER
 Route::resource('admin', 'AdminController');
 
 //DASHBOARD
@@ -170,3 +170,4 @@ Route::post('/countCompleted_staff/{staff}', 'TicketController@countCompleted_st
 
 Route::post('/countTickets_PerStatus/{staff}', 'TicketController@countTickets_PerStatus');
 Route::post('/countStaffTickets_PerStatus/{staff}', 'TicketController@countStaffTickets_PerStatus');
+Route::post('/countTickets_Status_Staff', 'TicketController@countTickets_Status_Staff');

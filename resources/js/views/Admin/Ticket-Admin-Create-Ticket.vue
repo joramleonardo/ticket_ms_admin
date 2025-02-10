@@ -12,8 +12,8 @@
                                 </router-link>
                             </li>
                             <li>
-                                <router-link to="/ticket/admin/mytickets">
-                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                <router-link to="/ticket/admin/newtickets">
+                                    <i class="fa fa-bell" aria-hidden="true"></i>
                                     New Tickets
                                 </router-link>
                             </li>
@@ -21,22 +21,28 @@
                                 <router-link to="/ticket/admin/mytickets">
                                     <i class="fa fa-list" aria-hidden="true"></i>
                                     My Ticket
+                                    <span v-if="this.totalNew != '0'">
+                                            <div class="spinner4 spinner-4"></div>
+                                            <div class="ntd-ctn">
+                                                <span>{{this.totalNew}}</span>
+                                            </div>
+                                    </span>
+                                    <span v-else>
+                                    </span>
                                 </router-link>
                             </li>
                             <li class="active">
                                 <router-link to="/ticket/admin/create">
                                     <i class="fa fa-plus-square" aria-hidden="true"></i>
                                     Create Ticket
-
-                                        <span v-if="this.totalStaff.total_Pending === '0'">
-
-                                        </span>
-                                        <span v-else>
-                                            <div class="spinner4 spinner-4"></div>
-                                            <div class="ntd-ctn">
-                                                <span>{{this.totalStaff.total_Pending}}</span>
-                                            </div>
-                                        </span>
+                                    <span v-if="this.totalStaff.total_Pending != '0'">
+                                        <div class="spinner4 spinner-4"></div>
+                                        <div class="ntd-ctn">
+                                            <span>{{this.totalStaff.total_Pending}}</span>
+                                        </div>
+                                    </span>
+                                    <span v-else>
+                                    </span>
                                 </router-link>
                             </li>
                         </ul>
