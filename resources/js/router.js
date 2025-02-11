@@ -20,6 +20,11 @@ import Ticket_Admin_New_Tickets from './views/Admin/Ticket-Admin-New-Tickets.vue
 import Ticket_Admin_My_Tickets from './views/Admin/Ticket-Admin-My-Tickets.vue';
 import Ticket_Admin_Create_Ticket from './views/Admin/Ticket-Admin-Create-Ticket.vue';
 
+import Ticket_SA_Home from './views/Ticket-Home-SA.vue';
+import Ticket_SA_Dashboard from './views/SuperAdmin/Ticket-SA-Dashboard.vue';
+import Ticket_SA_New_Tickets from './views/SuperAdmin/Ticket-SA-New-Tickets.vue';
+import Ticket_SA_My_Tickets from './views/SuperAdmin/Ticket-SA-My-Tickets.vue';
+
 
 
 Vue.use(Router);
@@ -80,6 +85,30 @@ const routes = [
                 path: '/ticket/admin/create',
                 name: 'ticket-admin-create',
                 component: Ticket_Admin_Create_Ticket,
+            },
+
+        ],
+    },
+    //SUPER ADMIN ROUTES
+    {
+        path: '/ticket/sa/',
+        name: 'ticket-sa',
+        component: Ticket_SA_Home,
+        children: [
+            {
+                path: '/ticket/sa/dashboard',
+                name: 'ticket-sa-dashboard',
+                component: Ticket_SA_Dashboard,
+            },
+            {
+                path: '/ticket/sa/newtickets',
+                name: 'ticket-sa-newtickets',
+                component: Ticket_SA_New_Tickets,
+            },
+            {
+                path: '/ticket/sa/mytickets',
+                name: 'ticket-sa-mytickets',
+                component: Ticket_SA_My_Tickets,
             },
 
         ],

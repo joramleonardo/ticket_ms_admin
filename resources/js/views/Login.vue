@@ -20,20 +20,20 @@
                   <b-button id="submit" type="submit" class="block button" style="background-color: rgba(48, 110, 148, 0.9) !important;">Login</b-button>
                 </form>
                 </div>
-  
+
           </div>
-  
-          
-  
+
+
+
       </div>
-  
+
   </template>
-  
+
   <script>
       import * as authServices from '../services/auth_service';
       import * as ticket_service from '../services/ticket_service';
-  
-      export default { 
+
+      export default {
           data() {
               return {
                   user: {
@@ -71,34 +71,34 @@
                   getHours = getHours ? getHours : 12;
                   getMinutes = getMinutes < 10 ? '0' + getMinutes : getMinutes;
                   let activityDate = monthName + " " + currentDay + " " + currentYear + " " + getHours + ":" + getMinutes + " " + newformat;
-              
+
                   try {
                       const response = await authServices.login(this.user);
-  
+
                       if(response.token_scope == 'superadmin'){
-                          this.$router.push('/ticket/superadmin/status');
-                      } 
+                          this.$router.push('/ticket/sa/dashboard');
+                      }
                       else if(response.token_scope == 'admin'){
                           this.$router.push('/ticket/admin/dashboard');
-                      } 
+                      }
                       else if(response.token_scope == 'staff'){
                           this.$router.push('/ticket/staff/dashboard');
-                      } 
+                      }
                       else if(response.token_scope == 'author_lib'){
                           this.$router.push('/ticket/public/completed');
-                      } 
-  
+                      }
+
                       let a_username = this.user.username;
                       let activity_id = 1;
                       let activity_date = activityDate;
-  
+
                       let formData_activityLog = new FormData();
                       formData_activityLog.append('username', a_username);
                       formData_activityLog.append('activity_id', activity_id);
                       formData_activityLog.append('activity_date', activity_date);
                       const response_activityLog = await ticket_service.addActivityLog(formData_activityLog);
-                      
-  
+
+
                   } catch(error) {
                           this.flashMessage.error({
                           message: 'Some error occured! Please try again.',

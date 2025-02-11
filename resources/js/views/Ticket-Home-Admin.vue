@@ -41,7 +41,6 @@
                   try{
                       const response = await ticket_service.getUserData();
                       this.displayName=response.data.user.name;
-                      // console.log(response.data.user.name)
                   } catch(error) {
                       this.flashMessage.error({
                       message: 'Some error occured! Please try again.',

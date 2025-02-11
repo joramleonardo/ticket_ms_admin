@@ -732,7 +732,7 @@
 
                 // Listen for messages
                 socket.addEventListener("message", (event) => {
-                console.log("Message from server ", event.data);
+                    console.log("Message from server ", event.data);
                 });
             },
             countData: async function() {
@@ -842,10 +842,8 @@
 
                         if (this.empEmail === ""){
                             this.empEmail = "-"
-                            console.log("No Email");
                         } else if (this.empEmail != ""){
                             this.empEmail = this.empEmail
-                            console.log(this.empEmail);
                         }
 
                         let formData_ticketData = new FormData();
@@ -937,7 +935,6 @@
                     this.flashMessage.warning({
                         message: 'Employee ID does not exist! Please enter a valid Employee ID'
                     });
-                    console.log("Employee ID does not exist! Please enter a valid Employee ID");
 
                     this.$refs.showErrorModal.show()
 
@@ -1077,13 +1074,11 @@
                     this.flashMessage.warning({
                         message: 'Please fill out the form!'
                     });
-                    console.log("Please fill out the form!");
                 }
 
                 this.flashMessage.success({
                         message: 'Ticket Submitted Successfully!'
                 });
-                console.log("Ticket Submitted Successfully!");
 
                 $('#modalCreate_agency').modal('hide');
                 $('#showReferenceCode').modal('show');
@@ -1202,14 +1197,12 @@
                         this.flashMessage.warning({
                             message: 'Please fill out the form!'
                         });
-                        console.log("Please fill out the form!");
                     }
 
 
                     this.flashMessage.success({
                         message: 'Ticket Submitted Successfully!'
                     });
-                    console.log("Ticket Submitted Successfully!");
 
                     $('#modalCreate_starbooks').modal('hide');
                     $('#showReferenceCode').modal('show');

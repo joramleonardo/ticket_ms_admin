@@ -236,7 +236,7 @@
 
                 // Listen for messages
                 socket.addEventListener("message", (event) => {
-                console.log("Message from server ", event.data);
+                    console.log("Message from server ", event.data);
                 });
             },
 
@@ -255,8 +255,6 @@
 
                     const dd = await ticket_service.countTickets_Status_Staff()
                     this.ticketSummary = dd.data;
-                    console.log("hello");
-                    console.log(this.ticketSummary);
 
 
 

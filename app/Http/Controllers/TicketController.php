@@ -452,6 +452,7 @@ class TicketController extends Controller
                             ON `tickets`.`employee_code`=`ticket_employees`.`employee_code`
                             LEFT JOIN `ticket_statuses`
                             ON `ticket_statuses`.`reference_code`=`tickets`.`reference_code`
+                            WHERE `ticket_statuses`.`status` IN ('Pending', 'In Progress', 'Completed')
                             ORDER BY `tickets`.`created_at`
                         ");
         return response()->json($data, 200);

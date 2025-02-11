@@ -119,10 +119,8 @@
             loadEmployees: async function(){
                 try{
                     const response = await ticket_service.getUserData();
-                    console.log("HELLO");
                     this.userRole = response.data.user.role;
                     this.displayName=response.data.user.name;
-                    // console.log(response.data.user.name)
                 } catch(error) {
                     this.flashMessage.error({
                     message: 'Some error occured! Please try again.',

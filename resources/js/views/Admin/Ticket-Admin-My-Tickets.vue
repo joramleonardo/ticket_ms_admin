@@ -165,7 +165,7 @@
                                                     {{ row.value.toUpperCase()}}
                                                 </template>
                                                 <template #cell(status)="row">
-                                                    <div v-if="row.item.status === 'Approved'">
+                                                    <div v-if="row.item.status === 'Pending'">
                                                         <b-badge class="mr-1 badge" style="background-color: #f0ad4e;">PENDING</b-badge>
                                                     </div>
                                                     <div v-if="row.item.status === 'In Progress'">
@@ -176,7 +176,7 @@
                                                     </div>
                                                 </template>
                                                 <template #cell(actions)="row">
-                                                    <div v-if="row.item.status === 'Approved'">
+                                                    <div v-if="row.item.status === 'Pending'">
                                                         <button @click="setStatus(row.item, row.index, $event.target)" class="btn btn-warning notika-btn-warning">Attend Ticket</button>
 
                                                     </div>
@@ -205,36 +205,308 @@
         </div>
 
         <div class="modal fade" id="modalDetails_Internal" role="dialog">
-            <div class="modal-dialog modal-sm">
+            <div class="modal-dialog modal-large">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <h1>TICKET DETAILS</h1>
-                        <br>
-                        <div class="past-statistic-ctn">
-                            <h3>Reference Code:</h3>
-                            <p>{{ticketDetails.reference_code}}</p>
-                            <h3>Client Name:</h3>
-                            <p>{{ticketDetails.externalName}}</p>
-                            <h3>Date Requested:</h3>
-                            <p>{{ticketDetails.ticket_created}}</p>
-                            <h3>Support Type:</h3>
-                            <p>{{ticketDetails.supportType}}</p>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <span v-if="ticketDetails.status === 'Pending'">
+                                <div class="inbox-left-sd" >
+                                    <div class="compose-ml">
+                                        <h4>Date Tracking</h4>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Requested: </b>
+                                            {{ticketDetails.ticket_created}}
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Assigned: </b>
+                                            {{ticketDetails.ticket_approved}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </span>
+                            <span v-if="ticketDetails.status === 'In Progress'">
+                                <div class="inbox-left-sd" >
+                                    <div class="compose-ml">
+                                        <h4>Date Tracking</h4>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Requested: </b>
+                                            {{ticketDetails.ticket_created}}
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Assigned: </b>
+                                            {{ticketDetails.ticket_approved}}
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Attended: </b>
+                                            {{ticketDetails.ticket_attended}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </span>
+                            <span v-if="ticketDetails.status === 'Completed'">
+                                <div class="inbox-left-sd" >
+                                    <div class="compose-ml">
+                                        <h4>Date Tracking</h4>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Requested: </b>
+                                            {{ticketDetails.ticket_created}}
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Assigned: </b>
+                                            {{ticketDetails.ticket_approved}}
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Attended: </b>
+                                            {{ticketDetails.ticket_attended}}
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Completed: </b>
+                                            {{ticketDetails.ticket_completed}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </span>
                         </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                            <div class="inbox-text-list sm-res-mg-t-30">
+                                <div class="view-mail-hd">
+                                    <div class="view-mail-hrd">
+                                        <h2>Ticket Details</h2>
+                                    </div>
+                                    <div class="view-ml-rl">
+                                        <span v-if="ticketDetails.status === 'Pending'">
+                                            <button class="btn btn-warning notika-btn-warning" disabled="disabled">
+                                                Pending
+                                            </button>
+                                        </span>
+                                        <span v-if="ticketDetails.status === 'In Progress'">
+                                            <button class="btn btn-success notika-btn-success" disabled="disabled">
+                                                In Progress
+                                            </button>
+                                        </span>
+                                        <span v-if="ticketDetails.status === 'Completed'">
+                                            <button class="btn btn-info notika-btn-info" disabled="disabled">
+                                                Completed
+                                            </button>
+                                        </span>
 
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="inbox-status">
+                                    <p class="first-ph" style="font-style: italic; font-size: 12px;">
+                                        <b>Reference No: </b>
+                                        {{ticketDetails.reference_code}}
+                                    </p>
+                                    <hr>
+                                    <p class="first-ph">
+                                        <b>Support Type: </b>
+                                        {{ticketDetails.supportType}}
+                                    </p>
+                                    <p class="first-ph">
+                                        <b>Problem that needed support: </b>
+                                        <span style="font-size: 18px; font-weight: 600; color: #021346;">
+                                            {{ticketDetails.clientNote}}
+                                        </span>
+                                    </p>
+                                    <hr>
 
-
-
+                                </div>
+                                <div class="inbox-status">
+                                    <p class="first-ph">
+                                        <b>Client Name: </b>
+                                        {{ticketDetails.externalName}}
+                                    </p>
+                                    <p class="first-ph">
+                                        <b>Client Division: </b>
+                                        {{ticketDetails.empDiv}}
+                                    </p>
+                                </div>
+                                <hr>
+                                <div class="inbox-status">
+                                    <p class="first-ph">
+                                        <b>Assigned By: </b>
+                                        {{ticketDetails.approved_by}}
+                                    </p>
+                                    <p class="first-ph">
+                                        <b>Assigned To: </b>
+                                        {{ticketDetails.assignedStaff}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
 
         <div class="modal fade" id="modalDetails_rating" role="dialog">
-            <div class="modal-dialog modal-sm">
+            <div class="modal-dialog modal-large">
                 <div class="modal-content">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <span v-if="ratingDetails.rating_status === 'Pending'">
+                                <div class="inbox-left-sd" >
+                                    <div class="compose-ml">
+                                        <h4>Date Tracking</h4>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph" style="font-style: italic;">
+                                            <b>=== Pending === </b>
+                                        </p>
+                                    </div>
+                                </div>
+                            </span>
+                            <span v-if="ratingDetails.rating_status === 'Received'">
+                                <div class="inbox-left-sd" >
+                                    <div class="compose-ml">
+                                        <h4>Date Tracking</h4>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Rating Received: </b>
+                                            {{ratingDetails.rating_received}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                            <div class="inbox-text-list sm-res-mg-t-30">
+                                <div class="view-mail-hd">
+                                    <div class="view-mail-hrd">
+                                        <h2>Rating Details</h2>
+                                    </div>
+                                    <div class="view-ml-rl">
+                                        <span v-if="ratingDetails.rating_status === 'Pending'">
+                                            <button class="btn btn-warning notika-btn-warning" disabled="disabled">
+                                                Pending
+                                            </button>
+                                        </span>
+                                        <span v-if="ratingDetails.rating_status === 'Received'">
+                                            <button class="btn btn-info notika-btn-info" disabled="disabled">
+                                                Received
+                                            </button>
+                                        </span>
+
+                                    </div>
+                                </div>
+                                <hr>
+                                <span v-if="ratingDetails.rating_status === 'Pending'">
+                                    <div class="inbox-status">
+                                        <p class="first-ph" style="font-style: italic;">
+                                            <b>Reference No: </b>
+                                            {{ratingDetails.reference_code}}
+                                        </p>
+                                    </div>
+                                    <br>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Client Name: </b>
+                                            {{ratingDetails.externalName}}
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>Client Division: </b>
+                                            {{ratingDetails.empDiv}}
+                                        </p>
+                                        <br>
+                                        <p class="first-ph">
+                                            <b>Rating: </b>
+                                                <span style="color: red; font-weight: 700; font-style: italic;">
+                                                    === PENDING ===
+                                                </span>
+                                                <button @click="copyRatingLink" class="btn btn-warning notika-btn-warning">Copy Rating Link</button>
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>CSM Form: </b>
+                                            <button @click="copyCSMLink" class="btn btn-warning notika-btn-warning">Copy CSM Link</button>
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>CSM Monitoring Link: </b>
+                                            <button class="btn btn-success notika-btn-success">
+                                                <a style="text-decoration: none; color: white" target="_blank"
+                                                    href="https://docs.google.com/spreadsheets/d/1JTtVD-3g5v_CXW_LQKx4QN723VDUaDF4q7uK97ApKdE/edit?usp=sharing">
+                                                    Open Spreadsheet
+                                                </a>
+                                            </button>
+                                        </p>
+                                    </div>
+                                </span>
+                                <span v-if="ratingDetails.rating_status === 'Received'">
+                                    <div class="inbox-status">
+                                        <p class="first-ph" style="font-style: italic;">
+                                            <b>Reference No: </b>
+                                            {{ratingDetails.reference_code}}
+                                        </p>
+                                    </div>
+                                    <br>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Client Name: </b>
+                                            {{ratingDetails.externalName}}
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>Client Division: </b>
+                                            {{ratingDetails.empDiv}}
+                                        </p>
+                                        <br>
+                                        <p class="first-ph">
+                                            <b>Rating: </b>
+                                            <span v-if="ratingDetails.rating === 'Excellent'">
+                                                <span style="color: green; font-weight: 700;">EXCELLENT</span>
+
+                                            </span>
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>CSM Form: </b>
+                                            <button @click="copyCSMLink" class="btn btn-warning notika-btn-warning">Copy CSM Link</button>
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>CSM Monitoring Link: </b>
+                                            <button class="btn btn-success notika-btn-success">
+                                                <a style="text-decoration: none; color: white" target="_blank"
+                                                    href="https://docs.google.com/spreadsheets/d/1JTtVD-3g5v_CXW_LQKx4QN723VDUaDF4q7uK97ApKdE/edit?usp=sharing">
+                                                    Open Spreadsheet
+                                                </a>
+                                            </button>
+                                        </p>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
@@ -263,7 +535,7 @@
                             </p>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -483,14 +755,13 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <h2>Leave a message/remark for client here.</h2>
+                        <h2>Leave a message/remark for client.</h2>
                         <br>
                         <form class="loginForm" id="loginForm" v-on:submit.prevent="addRemarks">
                             <div class="">
                                 <div class="">
                                     <b-form-group class="group" id="groupRemarks">
-                                        <label for="remarks" class="label" style="color:black; font-weight: bold">Leave a note here</label>
-                                        <b-form-textarea id="tech_remarks"  v-model="completedTicketDataTechRemarks.tech_remarks" placeholder="Enter remarks here..." rows="3" max-rows="3" style="background: #fff !important; color: black"></b-form-textarea>
+                                        <b-form-textarea id="tech_remarks"  v-model="completedTicketDataTechRemarks.tech_remarks" placeholder="Enter here..." rows="3" max-rows="3" style="background: #fff !important; color: black"></b-form-textarea>
                                     </b-form-group>
                                 </div>
                             </div>
@@ -524,6 +795,7 @@
                 ticketNew: [],
                 ticket: [],
                 ticketDetails: [],
+                ratingDetails: [],
                 ticketData:{
                     status:'',
                     reference_code:''
@@ -676,7 +948,7 @@
 
                 // Listen for messages
                 socket.addEventListener("message", (event) => {
-                console.log("Message from server ", event.data);
+                    console.log("Message from server ", event.data);
                 });
             },
             countData: async function() {
@@ -689,7 +961,6 @@
 
                     this.totalStaff = aa.data;
                     this.totalNew = total1.data;
-                    console.log(this.totalNew);
 
                     if (this.totalNew === 0){
                         console.log("No New Ticket");
@@ -741,8 +1012,6 @@
                     try{
                         const response = await ticket_service.loadTicketDetails(this.assignedTicketData.id);
                         this.ticketDetails = response.data[0];
-                        console.log("AAAA");
-                        console.log(this.ticketDetails);
                     }
                     catch (error){
 
@@ -763,12 +1032,14 @@
             },
             viewRating: async function(data) {
                 this.assignedTicketData = {...data}
+                const response = await ticket_service.loadTicketDetails(this.assignedTicketData.id);
+                this.ratingDetails = response.data[0];
 
                 this.ratingStatus = this.assignedTicketData.rating_status;
                 this.ratingLink = "http://127.0.0.1:8000/#/" + "rating/" + this.assignedTicketData.id;
 
 
-            this.internal_external = this.assignedTicketData.internal_external;
+                this.internal_external = this.assignedTicketData.internal_external;
 
             if (this.internal_external === "Internal"){
 
@@ -830,7 +1101,6 @@
                 let currentYear2 = date2.getFullYear();
                 let currentDateTime2 = currentYear2 + "-" + currentMonth2 + "-" + currentDay2;
 
-                console.log("this is external");
                 let a1 = "Government (Employee or another agency)".replaceAll(" ", "+");
                 let a2 = "National Capital Region (NCR)".replaceAll(" ", "+");
                 let a3 = "Technical Support Services".replaceAll(" ", "+");
@@ -857,8 +1127,6 @@
 
             }
 
-            console.log(this.ratingLink);
-            console.log(this.ratingCSMLink);
 
                 $('#modalDetails_rating').modal('show');
 
@@ -1003,8 +1271,6 @@
                 this.completedTicketData = {...data}
                 this.completedTicketData_update = {...data}
                 let govTypeId = this.completedTicketData_update.supportType;
-                console.log("AAAA");
-                console.log(govTypeId);
                 if (govTypeId == "Livestream" || govTypeId == "IS" || govTypeId == "TWG"|| govTypeId == "Other"){
                     $('#assignModalForm_1').modal('show');
                 } else if (govTypeId == "Technical Support" ){
@@ -1283,25 +1549,27 @@
                         message: 'Please fill out the form!'
                     });
                 }
-
-
-
-                // let formData_remarksLog = new FormData();
-                // formData_remarksLog.append('ticket_id', this.completedTicketData.reference_code);
-                // formData_remarksLog.append('remarks_data', this.completedTicketDataTechRemarks_update.tech_remarks);
-                // formData_remarksLog.append('assigned_staff', this.completedTicketData.assignedStaff);
-                // formData_remarksLog.append('remarks_date', date_ticketCreated);
-                // const response_remarksLog = await ticket_service.addRemarksLog(formData_remarksLog);
-                // this.loadAllTicketDetails();
             },
             async copyRatingLink() {
                 try {
-                    await navigator.clipboard.writeText(this.ratingLink);
+
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(this.ratingLink);
+                    } else {
+                        // Fallback for HTTP and older browsers
+                        const textArea = document.createElement("textarea");
+                        textArea.value = this.ratingLink;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(textArea);
+                    }
+
+
                     this.flashMessage.success({
                         message: "Rating Link Copied!"
                     });
                 } catch (err) {
-                    console.error("Failed to copy: ", err);
                     this.flashMessage.warning({
                         message: "Failed to copy Rating Link."
                     });
@@ -1309,7 +1577,17 @@
             },
             async copyCSMLink() {
                 try {
-                    await navigator.clipboard.writeText(this.ratingCSMLink);
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        await navigator.clipboard.writeText(this.ratingCSMLink);
+                    } else {
+                        // Fallback for HTTP and older browsers
+                        const textArea = document.createElement("textarea");
+                        textArea.value = this.ratingCSMLink;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand("copy");
+                        document.body.removeChild(textArea);
+                    }
                     this.flashMessage.success({
                         message: "CSM Link Copied!"
                     });

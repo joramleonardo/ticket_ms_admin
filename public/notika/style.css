@@ -180,6 +180,15 @@ body {}
 	padding:20px;
 	background:#fff;
 }
+
+.inbox-left-sd{
+    background-color: #021346;
+    color: #fff;
+}
+
+.inbox-left-sd .compose-ml h4{
+    color: #fff;
+}
 /*----------------------------------------*/
 /*  2.  Header Top CSS
 /*----------------------------------------*/
@@ -1682,7 +1691,7 @@ ul.wizard-nav-ac li .disabled{
 }
 .modal-dialog.modals-default .modal-content, .modal-dialog.modal-sm .modal-content, .modal-dialog.modal-large .modal-content{
     border-radius: 0px;
-    padding: 40px 100px;
+    padding: 40px;
 }
 .modals-default .modal-header, .modals-default .modal-footer, .modals-default .modal-body, .modal-sm .modal-body, .modal-sm .modal-header, .modal-sm .modal-footer, .modal-large .modal-body, .modal-large .modal-header, .modal-large .modal-footer {
     padding: 0px;
@@ -2499,6 +2508,12 @@ hr {
 	border:none;
 	box-shadow:none;
 }
+
+.view-mail-hd .view-mail-hrd h2,
+.view-mail-hd .view-ml-rl p{
+    color: black;
+}
+
 .dw-atc-sn i{
 	margin-left:5px;
 	position:relative;

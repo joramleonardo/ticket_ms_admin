@@ -105,7 +105,7 @@
                                         </b-row>
                                             <b-table striped hover
                                             :items="ticket"
-                                            :fields="fields_APPROVED"
+                                            :fields="fields_table"
                                             :current-page="currentPage"
                                             :per-page="perPage"
                                             :filter="filter"
@@ -155,111 +155,91 @@
         <div class="modal fade" id="assignModalForm_internal" role="dialog">
             <div class="modal-dialog modal-large">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <h2>ASSIGN THIS TICKET</h2>
-                        <br>
-                        <form class="login-form" id="login-form" v-on:submit.prevent="assignStaff">
-                                        <!-- <div class="sign-in-htm"> -->
-                                <div class="">
-                                    <div class="">
-                                        <span style="font-weight: bold"> DETAILS </span>
-                                        <b-table
-                                            :items="ticket2"
-                                            :fields="fields_internal"
-                                            :sort-by.sync="sortBy"
-                                            :sort-desc.sync="sortDesc"
-                                            sort-icon-left
-                                            responsive="sm"
-                                            :filter="filterOn"
-                                            :current-page="currentPage"
-                                            :per-page="perPage"
-                                            :filter-included-fields="filterOn">
-                                            <template #cell(reference_code)="row">
-                                                <b>{{ row.value}}</b>
-                                            </template>
-                                            <template #cell(externalName)="row">
-                                                {{ row.value.toUpperCase()}}
-                                            </template>
-                                            <template #cell(internal_external)="row">
-                                                <div v-if="row.item.internal_external === 'Internal'">
-                                                    <b-badge class="mr-1 badge" variant="success">Internal</b-badge>
-                                                </div>
-                                                <div v-if="row.item.internal_external === 'External'">
-                                                    <b-badge class="mr-1 badge" variant="primary">External</b-badge>
-                                                </div>
-                                            </template>
-                                            <template #cell(supportType)="row">
-                                                <b style="color:rgb(35, 132, 179)">{{ row.value}}</b>
-                                            </template>
-                                                <template #cell(division_id)="row">
-                                                    <div v-if="row.item.division_id === '1'">
-                                                        FAD
-                                                    </div>
-                                                    <div v-if="row.item.division_id === '2'">
-                                                        IRAD
-                                                    </div>
-                                                    <div v-if="row.item.division_id === '3'">
-                                                        CRPD
-                                                    </div>
-                                                    <div v-if="row.item.division_id === '4'">
-                                                        OD-MISPS
-                                                    </div>
-                                                </template>
-                                        </b-table>
-
-                                        <span style="font-weight: bold"> PROBLEM THAT NEEDED SUPPORT </span>
-                                        <b-table
-                                            :items="ticket2"
-                                            :fields="fields_moreInfo"
-                                            :sort-by.sync="sortBy"
-                                            :sort-desc.sync="sortDesc"
-                                            sort-icon-left
-                                            responsive="sm"
-                                            :filter="filterOn"
-                                            :current-page="currentPage"
-                                            :per-page="perPage"
-                                            :filter-included-fields="filterOn">
-                                                <template #cell(clientNote)="row">
-                                                    <div v-if="row.item.clientNote === ''">
-                                                        No remarks.
-                                                    </div>
-                                                    <div v-else>
-                                                        <div style="font-style: italic">{{ row.value}}</div>
-                                                    </div>
-                                                </template>
-                                        </b-table>
-                                        <div class="row">
-                                            <div class="col-md-4 col-lg-4 mb-0">
-                                                <span style="font-weight: bold"> REQUEST TYPE </span>
-                                                <b-form-group class="group">
-                                                    <label for="type" class="label"><span style="font-style: italic; font-size: 10px; text-transform: none">  Please select below... </span></label>
-                                                    <b-form-select  size="sm" id="supportType" v-model="assignedTicketData.supportType" :options="options_supportType" required></b-form-select>
-                                                </b-form-group>
-                                            </div>
-                                            <div class="col-md-4 col-lg-4 mb-0">
-                                                <span style="font-weight: bold"> ASSIGN A STAFF </span>
-                                                <b-form-group class="group">
-                                                    <label for="type" class="label"><span style="font-style: italic; font-size: 10px; text-transform: none">  Please select below... </span></label>
-                                                    <b-form-select  size="sm" id="assignedStaff" v-model="selected_staff" :options="options_staff" required></b-form-select>
-                                                </b-form-group>
-                                            </div>
-                                            <div class="col-md-4 col-lg-4 mb-0">
-                                                <span style="font-weight: bold"> SET PRIORITY LEVEL</span>
-                                                <b-form-group class="group">
-                                                    <label for="priority" class="label"><span style="font-style: italic; font-size: 10px; text-transform: none">  Please select below... </span></label>
-                                                    <b-form-select  size="sm" :options="options_priority" id="priority"  v-model="selected_priority"  required></b-form-select>
-                                                </b-form-group>
-                                            </div>
-                                        </div>
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                            <span v-if="ticketDetails.status === 'New'">
+                                <div class="inbox-left-sd" >
+                                    <div class="compose-ml">
+                                        <h4>Date Tracking</h4>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Requested: </b>
+                                            {{ticketDetails.ticket_created}}
+                                        </p>
                                     </div>
                                 </div>
-                                <b-form-group class="group" style="margin-top: 50px">
-                                    <b-button type="submit" class="tab button" style="background-color: #1161ee !important;" variant="outline-success">Submit</b-button>
-                                </b-form-group>
-                        </form>
+                            </span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                            <div class="inbox-text-list sm-res-mg-t-30">
+                                <div class="view-mail-hd">
+                                    <div class="view-mail-hrd">
+                                        <h2>Ticket Details</h2>
+                                    </div>
+                                    <div class="view-ml-rl">
+                                        <span v-if="ticketDetails.status === 'New'">
+                                            <button class="btn btn-warning notika-btn-warning" disabled="disabled">
+                                                New
+                                            </button>
+                                        </span>
+
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="inbox-status">
+                                    <p class="first-ph" style="font-style: italic; font-size: 12px;">
+                                        <b>Reference No: </b>
+                                        {{ticketDetails.reference_code}}
+                                    </p>
+                                    <hr>
+                                    <p class="first-ph">
+                                        <b>Support Type: </b>
+                                        {{ticketDetails.supportType}}
+                                    </p>
+                                    <p class="first-ph">
+                                        <b>Problem that needed support: </b>
+                                        <span style="font-size: 18px; font-weight: 600; color: #021346;">
+                                            {{ticketDetails.clientNote}}
+                                        </span>
+                                    </p>
+                                    <hr>
+
+                                </div>
+                                <div class="inbox-status">
+                                    <p class="first-ph">
+                                        <b>Client Name: </b>
+                                        {{ticketDetails.externalName}}
+                                    </p>
+                                    <p class="first-ph">
+                                        <b>Client Division: </b>
+                                        {{ticketDetails.empDiv}}
+                                    </p>
+                                </div>
+                                <hr>
+                                <form class="login-form" id="login-form" v-on:submit.prevent="assignStaff">
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Request Type: </b>
+                                            <b-form-select  size="sm" id="supportType" v-model="assignedTicketData.supportType" :options="options_supportType" required></b-form-select>
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>Assign a Staff: </b>
+                                            <b-form-select  size="sm" id="assignedStaff" v-model="selected_staff" :options="options_staff" required></b-form-select>
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>Set Priority Level: </b>
+                                            <b-form-select  size="sm" :options="options_priority" id="priority"  v-model="selected_priority"  required></b-form-select>
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <b-form-group class="group">
+                                        <b-button type="submit" class="tab button" style="background-color: #1161ee !important;" variant="outline-success">Submit</b-button>
+                                    </b-form-group>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -318,88 +298,13 @@
                 ratingCSMLink:'',
                 internal_external:'',
 
-                fields: [
-                    { key: 'id', label: 'ID'},
-                    { key: 'type', label: 'Request Type'},
-                    // { key: 'priority', label: 'Priority'},
-                    { key: 'ifGov', label: 'Client Type'},
-                    // { key: 'name', label: 'Client Name'},
-                    { key: 'ticket_created', label: 'Date Submitted'},
-                    { key: 'status', label: 'Status'},
-                    { key: 'actions', label: 'Action' }
-                ],
-                fields_APPROVED: [
+                fields_table: [
                     { key: 'reference_code', label: 'Reference Code'},
                     { key: 'externalName', label: 'Client Name'},
                     { key: 'ticket_created', label: 'Date Requested'},
                     { key: 'status', label: 'Status'},
                     { key: 'actions', label: 'Action' }
                 ],
-                fields_internal: [
-                    { key: 'reference_code', label: 'Reference Code'},
-                    { key: 'ticket_created', label: 'Date Requested'},
-                    { key: 'externalName', label: 'Client Name'},
-                    { key: 'division_id', label: 'Division'},
-                    { key: 'supportType', label: 'Support Type'},
-                ],
-                fields_external: [
-                    { key: 'reference_code', label: 'Reference Code'},
-                    { key: 'ticket_created', label: 'Date Submitted'},
-                    { key: 'externalName', label: 'Client Name'},
-                    { key: 'externalAgency', label: 'Agency'},
-                    { key: 'internal_external', label: 'Client Type'},
-                    { key: 'supportType', label: 'Support Type'},
-                    { key: 'externalOtherType', label: 'Specific Support Type'},
-                ],
-                fields_external_event: [
-                    { key: 'externalEventTitle', label: 'Event Title'},
-                    { key: 'externalStartDate', label: 'Start Date'},
-                    { key: 'externalEndDate', label: 'End Date'},
-                ],
-                fields_moreInfo: [
-                    { key: 'clientNote', label: ''},
-                ],
-                fields2: [
-                    { key: 'status', label: 'Status'},
-                    { key: 'reference_code', label: 'Reference Code'},
-                    { key: 'externalName', label: 'Requested By'},
-                    { key: 'type', label: 'Request Type'},
-                    { key: 'concerned_division', label: 'Concerned Division'},
-                    { key: 'concerned_section', label: 'Concerned Section'},
-                    { key: 'note', label: 'Concern'},
-                ],
-                fields3: [
-                        { key: 'ticket_created', label: 'Date Submitted'},
-                        { key: 'ticket_approved', label: 'Date Approved'},
-                ],
-                drop_assistedBy: [
-                    { value: 'None', text: 'None' },
-                    { value: 'Etienne Wayne Amparado', text: 'Amparado, Etienne Wayne ' },
-                    { value: 'Mc Gyver Basaya', text: 'Basaya, Mc Gyver' },
-                    { value: 'Michael Binondo', text: 'Binondo, Michael' },
-                    { value: 'John Michael Cagadas', text: 'Cagadas, John Michael' },
-                    { value: 'Chester Francisco', text: 'Francisco, Chester' },
-                    { value: 'Jefferson Jalandoon', text: 'Jalandoon, Jefferson' },
-                    { value: 'Joram Kate Leonardo', text: 'Leonardo, Joram Kate' },
-                    { value: 'Lloyd Mandapat', text: 'Mandapat, Lloyd' },
-                    { value: 'Jomar Rabanera', text: 'Rabanera, Jomar' },
-                    { value: 'Mark Jayson Sison', text: 'Sison, Mark Jayson' },
-                ],
-                drop_type: [{ text: '(SELECT HERE)', value: null, disabled: true}, 	'Hardware',
-                                                                            'Software'],
-                drop_hardware: [{ text: '(SELECT HERE)', value: null, disabled: true }, 	'Troubleshooting',
-                                                                            'Evaluation',
-                                                                            'Network',
-                                                                            'Testing',
-                                                                            'Consultation',
-                                                                            'Assistance'],
-                drop_software: [{ text: '(SELECT HERE)', value: null, disabled: true }, 	'Installation',
-                                                                            'Data Retrieval',
-                                                                            'Virus/Malwares',
-                                                                            'Data Conversion/Uploading/Processing',
-                                                                            'Reformat',
-                                                                            'Download',
-                                                                            'Assistance'],
                 options_supportType: [
                     { value: null, text: 'Please select an option', disabled: true },
                     { value: 'Technical Support', text: 'Technical Support' },
@@ -464,7 +369,7 @@
 
                 // Listen for messages
                 socket.addEventListener("message", (event) => {
-                console.log("Message from server ", event.data);
+                    console.log("Message from server ", event.data);
                 });
             },
             viewTicketDetails: async function(data) {
@@ -476,8 +381,6 @@
                     try{
                         const response = await ticket_service.loadTicketDetails(this.assignedTicketData.id);
                         this.ticketDetails = response.data[0];
-                        console.log("AAAA");
-                        console.log(this.ticketDetails);
                     }
                     catch (error){
 
@@ -506,7 +409,6 @@
 
                     this.totalStaff = aa.data;
                     this.totalNew = total1.data;
-                    console.log(this.totalNew);
 
                     if (this.totalNew === 0){
                         console.log("No New Ticket");
@@ -550,7 +452,7 @@
                 if (govTypeId == "Internal"){
                     try{
                         const response = await ticket_service.loadTicketDetails(this.assignedTicketData.id);
-                        this.ticket2 = response.data;
+                        this.ticketDetails = response.data[0];
                     }
                     catch (error){
 
@@ -561,7 +463,7 @@
                 } else if (govTypeId == "External"){
                     try{
                         const response = await ticket_service.loadTicketDetails_external(this.assignedTicketData.id);
-                        this.ticket2 = response.data;
+                        this.ticketDetails = response.data[0];
                     }
                     catch (error){
 
@@ -614,7 +516,7 @@
                     formData.append('priority', this.selected_priority);
                     formData.append('ticket_approved', date_ticketCreatedComplete);
                     formData.append('ticket_updated', date_ticketCreatedComplete);
-                    formData.append('status', 'Approved');
+                    formData.append('status', 'Pending');
 
                     const response = await ticket_service.updatePending(this.assignedTicketData.id, formData);
 
