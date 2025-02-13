@@ -96,7 +96,7 @@
                                             :current-page="currentPage"
                                             :per-page="perPage"
                                             :filter="filter"
-                                            :filter-included-fields="filterOn"
+                                            :filter-included-fields="['status', 'externalName']"
                                             :sort-by.sync="sortBy"
                                             :sort-desc.sync="sortDesc"
                                             :sort-direction="sortDirection"

@@ -148,7 +148,7 @@
                                             :current-page="currentPage"
                                             :per-page="perPage"
                                             :filter="filter"
-                                            :filter-included-fields="filterOn"
+                                            :filter-included-fields="['status', 'externalName']"
                                             :sort-by.sync="sortBy"
                                             :sort-desc.sync="sortDesc"
                                             :sort-direction="sortDirection"
@@ -295,72 +295,151 @@
                             </span>
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
-                            <div class="inbox-text-list sm-res-mg-t-30">
-                                <div class="view-mail-hd">
-                                    <div class="view-mail-hrd">
-                                        <h2>Ticket Details</h2>
+                            <span v-if="ticketDetails.status === 'Completed'">
+                                <div class="inbox-text-list sm-res-mg-t-30">
+                                    <div class="view-mail-hd">
+                                        <div class="view-mail-hrd">
+                                            <h2>Ticket Details</h2>
+                                        </div>
+                                        <div class="view-ml-rl">
+                                            <span v-if="ticketDetails.status === 'Pending'">
+                                                <button class="btn btn-warning notika-btn-warning" disabled="disabled">
+                                                    Pending
+                                                </button>
+                                            </span>
+                                            <span v-if="ticketDetails.status === 'In Progress'">
+                                                <button class="btn btn-success notika-btn-success" disabled="disabled">
+                                                    In Progress
+                                                </button>
+                                            </span>
+                                            <span v-if="ticketDetails.status === 'Completed'">
+                                                <button class="btn btn-info notika-btn-info" disabled="disabled">
+                                                    Completed
+                                                </button>
+                                            </span>
+
+                                        </div>
                                     </div>
-                                    <div class="view-ml-rl">
-                                        <span v-if="ticketDetails.status === 'Pending'">
-                                            <button class="btn btn-warning notika-btn-warning" disabled="disabled">
-                                                Pending
-                                            </button>
-                                        </span>
-                                        <span v-if="ticketDetails.status === 'In Progress'">
-                                            <button class="btn btn-success notika-btn-success" disabled="disabled">
-                                                In Progress
-                                            </button>
-                                        </span>
-                                        <span v-if="ticketDetails.status === 'Completed'">
-                                            <button class="btn btn-info notika-btn-info" disabled="disabled">
-                                                Completed
-                                            </button>
-                                        </span>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph" style="font-style: italic; font-size: 12px;">
+                                            <b>Reference No: </b>
+                                            {{ticketDetails.reference_code}}
+                                        </p>
+                                        <hr>
+                                        <p class="first-ph">
+                                            <b>Support Type: </b>
+                                            {{ticketDetails.supportType}}
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>Problem that needed support: </b>
+                                            <span style="font-size: 18px; font-weight: 600; color: #021346;">
+                                                {{ticketDetails.clientNote}}
+                                            </span>
+                                        </p>
+                                        <hr>
+
+                                    </div>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Client Name: </b>
+                                            {{ticketDetails.externalName}}
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>Client Division: </b>
+                                            {{ticketDetails.empDiv}}
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Assigned By: </b>
+                                            {{ticketDetails.approved_by}}
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>Assigned To: </b>
+                                            {{ticketDetails.assignedStaff}}
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Remarks: </b>
+                                                {{ticketDetails.remarks}}
+                                        </p>
+                                        <hr>
 
                                     </div>
                                 </div>
-                                <hr>
-                                <div class="inbox-status">
-                                    <p class="first-ph" style="font-style: italic; font-size: 12px;">
-                                        <b>Reference No: </b>
-                                        {{ticketDetails.reference_code}}
-                                    </p>
-                                    <hr>
-                                    <p class="first-ph">
-                                        <b>Support Type: </b>
-                                        {{ticketDetails.supportType}}
-                                    </p>
-                                    <p class="first-ph">
-                                        <b>Problem that needed support: </b>
-                                        <span style="font-size: 18px; font-weight: 600; color: #021346;">
-                                            {{ticketDetails.clientNote}}
-                                        </span>
-                                    </p>
-                                    <hr>
+                            </span>
+                            <span v-else>
+                                <div class="inbox-text-list sm-res-mg-t-30">
+                                    <div class="view-mail-hd">
+                                        <div class="view-mail-hrd">
+                                            <h2>Ticket Details</h2>
+                                        </div>
+                                        <div class="view-ml-rl">
+                                            <span v-if="ticketDetails.status === 'Pending'">
+                                                <button class="btn btn-warning notika-btn-warning" disabled="disabled">
+                                                    Pending
+                                                </button>
+                                            </span>
+                                            <span v-if="ticketDetails.status === 'In Progress'">
+                                                <button class="btn btn-success notika-btn-success" disabled="disabled">
+                                                    In Progress
+                                                </button>
+                                            </span>
+                                            <span v-if="ticketDetails.status === 'Completed'">
+                                                <button class="btn btn-info notika-btn-info" disabled="disabled">
+                                                    Completed
+                                                </button>
+                                            </span>
 
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph" style="font-style: italic; font-size: 12px;">
+                                            <b>Reference No: </b>
+                                            {{ticketDetails.reference_code}}
+                                        </p>
+                                        <hr>
+                                        <p class="first-ph">
+                                            <b>Support Type: </b>
+                                            {{ticketDetails.supportType}}
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>Problem that needed support: </b>
+                                            <span style="font-size: 18px; font-weight: 600; color: #021346;">
+                                                {{ticketDetails.clientNote}}
+                                            </span>
+                                        </p>
+                                        <hr>
+
+                                    </div>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Client Name: </b>
+                                            {{ticketDetails.externalName}}
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>Client Division: </b>
+                                            {{ticketDetails.empDiv}}
+                                        </p>
+                                    </div>
+                                    <hr>
+                                    <div class="inbox-status">
+                                        <p class="first-ph">
+                                            <b>Assigned By: </b>
+                                            {{ticketDetails.approved_by}}
+                                        </p>
+                                        <p class="first-ph">
+                                            <b>Assigned To: </b>
+                                            {{ticketDetails.assignedStaff}}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="inbox-status">
-                                    <p class="first-ph">
-                                        <b>Client Name: </b>
-                                        {{ticketDetails.externalName}}
-                                    </p>
-                                    <p class="first-ph">
-                                        <b>Client Division: </b>
-                                        {{ticketDetails.empDiv}}
-                                    </p>
-                                </div>
-                                <hr>
-                                <div class="inbox-status">
-                                    <p class="first-ph">
-                                        <b>Assigned By: </b>
-                                        {{ticketDetails.approved_by}}
-                                    </p>
-                                    <p class="first-ph">
-                                        <b>Assigned To: </b>
-                                        {{ticketDetails.assignedStaff}}
-                                    </p>
-                                </div>
-                            </div>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -841,8 +920,6 @@
                     { key: 'reference_code', label: 'Reference Code'},
                     { key: 'externalName', label: 'Client Name'},
                     { key: 'ticket_created', label: 'Date Requested'},
-
-                    // { key: 'supportType', label: 'Support Type'},
                     { key: 'status', label: 'Status'},
 
                     { key: 'details', label: 'Details'},
