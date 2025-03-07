@@ -1,4 +1,5 @@
 import { http, httpFile } from './http_service';
+import axios from 'axios';
 
 export function createTicket(data){
     return httpFile().post('/ticket', data);
@@ -275,4 +276,32 @@ export function validateRefCode(refCode){
 
 export function validateRefCodeDetails(refCode){
     return httpFile().post(`/validateRefCodeDetails/${refCode}`);
+}
+
+// export function getMonthlyReportData(year = new Date().getFullYear(), month = new Date().getMonth() + 1) {
+//     return http().get(`/getMonthlyReportData?year=${year}&month=${month}`);
+// }
+
+export function getMonthlyReportData(year = new Date().getFullYear(), month = new Date().getMonth() + 1, page = 1, perPage = 10) {
+    console.log(`Fetching tickets for Year: ${year}, Month: ${month}, Page: ${page}, PerPage: ${perPage}`);
+    return http().get(`/getMonthlyReportData?year=${year}&month=${month}&page=${page}&per_page=${perPage}`);
+}
+
+
+export function fetchEmployeeDivisionCounts(month = '', year = '') {
+    return httpFile().get('/employee-division-counts', {
+        params: { month: month, year: year }
+    });
+}
+
+export function fetchHardwareSoftwareCounts(month = '', year = '') {
+    return httpFile().get('/hardware-software-counts', {
+        params: { month: month, year: year }
+    });
+}
+
+export function fetchTicketTypeCounts(month = '', year = '') {
+    return httpFile().get('/ticket-type-counts', {
+        params: { month: month, year: year }
+    });
 }

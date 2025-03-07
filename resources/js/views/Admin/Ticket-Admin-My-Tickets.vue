@@ -11,6 +11,12 @@
                                     Dashboard
                                 </router-link>
                             </li>
+                            <li class="">
+                                <router-link to="/ticket/admin/reports">
+                                    <i class="fa fa-area-chart" aria-hidden="true"></i>
+                                    Reports
+                                </router-link>
+                            </li>
                             <li>
                                 <router-link to="/ticket/admin/newtickets">
                                     <i class="fa fa-bell" aria-hidden="true"></i>
@@ -1113,7 +1119,7 @@
                 this.ratingDetails = response.data[0];
 
                 this.ratingStatus = this.assignedTicketData.rating_status;
-                this.ratingLink = "http://127.0.0.1:8000/#/" + "rating/" + this.assignedTicketData.id;
+                this.ratingLink = "http://ticketing-admin.stii.local/#/" + "rating/" + this.assignedTicketData.id;
 
 
                 this.internal_external = this.assignedTicketData.internal_external;

@@ -745,4 +745,156 @@ class TicketController extends Controller
         return response()->json($data, 200);
     }
 
+    public function getMonthlyReportData(Request $request){
+        $year = $request->input('year', date('Y'));
+        $month = $request->input('month', date('m'));
+        $perPage = $request->input('per_page', 10); // Default to 10 rows per page
+        $page = $request->input('page', 1); // Get the current page from request
+
+        // Construct start and end dates
+        $startDate = "{$year}-{$month}-01";
+        $endDate = date("Y-m-t", strtotime($startDate)); // Last day of the month
+
+        // Debugging SQL Query
+        $ticketsQuery = DB::table('tickets as a')
+            ->join('ticket_statuses as b', 'b.id', '=', 'a.id')
+            ->select([
+                'a.reference_code as Reference_Code',
+                'a.ticket_created as Requested_Date',
+                'b.ticket_approved as Approved_Date',
+                'b.ticket_completed as Accomplished_Date',
+                'a.externalName as Client_Name',
+                'a.empDiv as Division',
+                'a.externalAgency as Agency',
+                'a.sex as Sex',
+                'a.internal_external as Client_Type',
+                'a.supportType as Support_Type',
+                'a.mode as Mode',
+                'b.hardware as Hardware',
+                'b.software as Software',
+                'b.attended_by as Attended_By',
+                'b.assisted_by_1 as Assisted_By',
+                'b.assisted_by_2 as Assisted_By_2',
+                'b.rating as Rating',
+                'a.clientNote as Problem_that_needed_support',
+                'b.actions_taken as Actions_Taken',
+                'b.remarks as Remarks',
+                'b.type as Type',
+            ])
+            ->whereBetween(DB::raw("STR_TO_DATE(b.ticket_completed, '%M %d %Y %h:%i %p')"), [$startDate, $endDate])
+            ->orderBy('a.reference_code', 'asc');
+
+        // Debug the query
+        \Log::info("Generated SQL: " . $ticketsQuery->toSql());
+
+        $tickets = $ticketsQuery->paginate($perPage, ['*'], 'page', $page);
+
+        return response()->json($tickets, 200);
+    }
+
+
+    // ✅ Fetch Employee Division Counts for Chart
+    public function getEmployeeDivisionCounts(Request $request)
+    {
+        $month = $request->query('month');
+        $year = $request->query('year');
+
+        $query = TicketStatus::join('tickets', 'ticket_statuses.reference_code', '=', 'tickets.reference_code')
+            ->selectRaw("
+                DATE_FORMAT(STR_TO_DATE(ticket_statuses.ticket_completed, '%M %d %Y %h:%i %p'), '%M') AS month,
+                DATE_FORMAT(STR_TO_DATE(ticket_statuses.ticket_completed, '%M %d %Y %h:%i %p'), '%Y') AS year,
+                SUM(CASE WHEN tickets.empDiv = 'CRPD' THEN 1 ELSE 0 END) AS CRPD,
+                SUM(CASE WHEN tickets.empDiv = 'IRAD' THEN 1 ELSE 0 END) AS IRAD,
+                SUM(CASE WHEN tickets.empDiv = 'FAD' THEN 1 ELSE 0 END) AS FAD,
+                SUM(CASE WHEN tickets.empDiv = 'OD-MISPS' THEN 1 ELSE 0 END) AS OD_MISPS
+            ")
+            ->where('ticket_statuses.status', 'completed')
+            ->groupBy('month', 'year')
+            ->orderByRaw("STR_TO_DATE(month, '%M')");
+
+        if (!empty($month)) {
+            $query->having('month', '=', $month);
+        }
+        if (!empty($year)) {
+            $query->having('year', '=', $year);
+        }
+
+        return response()->json($query->get(), 200);
+    }
+
+    // ✅ Fetch Hardware, Software, Both, and Livestream Counts
+    public function getHardwareSoftwareCounts(Request $request)
+    {
+        $month = $request->query('month');
+        $year = $request->query('year');
+
+        $query = TicketStatus::selectRaw("
+                DATE_FORMAT(STR_TO_DATE(ticket_completed, '%M %d %Y %h:%i %p'), '%M') AS month,
+                DATE_FORMAT(STR_TO_DATE(ticket_completed, '%M %d %Y %h:%i %p'), '%Y') AS year,
+                SUM(CASE
+                    WHEN hardware IS NOT NULL AND hardware != '' AND hardware != 'undefined'
+                    AND (software IS NULL OR software = '' OR software = 'undefined')
+                    THEN 1 ELSE 0
+                END) AS hardware_count,
+                SUM(CASE
+                    WHEN software IS NOT NULL AND software != '' AND software != 'undefined'
+                    AND (hardware IS NULL OR hardware = '' OR hardware = 'undefined')
+                    THEN 1 ELSE 0
+                END) AS software_count,
+                SUM(CASE
+                    WHEN hardware IS NOT NULL AND hardware != '' AND hardware != 'undefined'
+                    AND software IS NOT NULL AND software != '' AND software != 'undefined'
+                    THEN 1 ELSE 0
+                END) AS both_count,
+                SUM(CASE WHEN supportType_ = 'Livestream' THEN 1 ELSE 0 END) AS count_livestream
+            ")
+            ->where('status', 'completed')
+            ->groupBy('month', 'year')
+            ->orderByRaw("STR_TO_DATE(month, '%M')");
+
+        if (!empty($month)) {
+            $query->having('month', '=', $month);
+        }
+        if (!empty($year)) {
+            $query->having('year', '=', $year);
+        }
+
+        return response()->json($query->get(), 200);
+    }
+
+    // ✅ Fetch Ticket Type Counts (PC Setup, Network, Printer, etc.)
+    public function getTicketTypeCounts(Request $request)
+    {
+        $month = $request->query('month');
+        $year = $request->query('year');
+
+        $query = TicketStatus::selectRaw("
+                DATE_FORMAT(STR_TO_DATE(ticket_completed, '%M %d %Y %h:%i %p'), '%M') AS month,
+                DATE_FORMAT(STR_TO_DATE(ticket_completed, '%M %d %Y %h:%i %p'), '%Y') AS year,
+                SUM(CASE WHEN type = 'PC Setup & Troubleshooting' THEN 1 ELSE 0 END) AS pc_setup_troubleshooting,
+                SUM(CASE WHEN type = 'Network related' THEN 1 ELSE 0 END) AS network_related,
+                SUM(CASE WHEN type = 'Printer related' THEN 1 ELSE 0 END) AS printer_related,
+                SUM(CASE WHEN type = 'Zoom related' THEN 1 ELSE 0 END) AS zoom_related,
+                SUM(CASE WHEN type = 'Website related' THEN 1 ELSE 0 END) AS website_related,
+                SUM(CASE WHEN type = 'STARBOOKS related' THEN 1 ELSE 0 END) AS starbooks_related,
+                SUM(CASE WHEN type = 'Installation related' THEN 1 ELSE 0 END) AS installation_related,
+                SUM(CASE WHEN type IS NULL OR type = '' THEN 1 ELSE 0 END) AS others_type
+            ")
+            ->where('status', 'completed')
+            ->groupBy('month', 'year')
+            ->orderByRaw("STR_TO_DATE(month, '%M')");
+
+        if (!empty($month)) {
+            $query->having('month', '=', $month);
+        }
+        if (!empty($year)) {
+            $query->having('year', '=', $year);
+        }
+
+        return response()->json($query->get(), 200);
+    }
+
+
+
+
 }

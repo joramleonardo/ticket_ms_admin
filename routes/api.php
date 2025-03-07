@@ -171,3 +171,10 @@ Route::post('/countCompleted_staff/{staff}', 'TicketController@countCompleted_st
 Route::post('/countTickets_PerStatus/{staff}', 'TicketController@countTickets_PerStatus');
 Route::post('/countStaffTickets_PerStatus/{staff}', 'TicketController@countStaffTickets_PerStatus');
 Route::post('/countTickets_Status_Staff', 'TicketController@countTickets_Status_Staff');
+
+Route::get('/getMonthlyReportData', 'TicketController@getMonthlyReportData');
+
+
+Route::get('/employee-division-counts', 'TicketController@getEmployeeDivisionCounts');
+Route::get('/hardware-software-counts', 'TicketController@getHardwareSoftwareCounts');
+Route::get('/ticket-type-counts', 'TicketController@getTicketTypeCounts');

@@ -11,6 +11,12 @@
                                     Dashboard
                                 </router-link>
                             </li>
+                            <li class="">
+                                <router-link to="/ticket/sa/reports">
+                                    <i class="fa fa-area-chart" aria-hidden="true"></i>
+                                    Reports
+                                </router-link>
+                            </li>
                             <li>
                                 <router-link to="/ticket/sa/newtickets">
                                     <i class="fa fa-bell" aria-hidden="true"></i>

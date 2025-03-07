@@ -11,6 +11,12 @@
                                     Dashboard
                                 </router-link>
                             </li>
+                            <li class="">
+                                <router-link to="/ticket/sa/reports">
+                                    <i class="fa fa-area-chart" aria-hidden="true"></i>
+                                    Reports
+                                </router-link>
+                            </li>
                             <li>
                                 <router-link to="/ticket/sa/newtickets">
                                     <i class="fa fa-bell" aria-hidden="true"></i>
@@ -188,6 +194,16 @@
                     { key: 'pending_count', label: 'Total Pending Tickets' },
                     { key: 'in_progress_count', label: 'Total In Progress Tickets' },
                     { key: 'completed_count', label: 'Total Completed Tickets'},
+                ],
+                ticketCompletedPerMonth:[],
+                fields_ticketCopletedPerMonth: [
+                    { key: 'month', label: 'Month'},
+                    { key: 'total_completed', label: 'Total Completed Tickets'},
+                    { key: 'CRPD', label: 'CRPD'},
+                    { key: 'FAD', label: 'FAD'},
+                    { key: 'IRAD', label: 'IRAD'},
+                    { key: 'OD_MISPS', label: 'OD-MISPS'},
+                    { key: 'OTHERS', label: 'Extrernal'},
                 ],
                 pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
                 totalRows: 0,

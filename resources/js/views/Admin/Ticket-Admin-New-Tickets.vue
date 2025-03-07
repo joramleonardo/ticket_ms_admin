@@ -5,10 +5,16 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
-                            <li>
+                            <li class="">
                                 <router-link to="/ticket/admin/dashboard">
                                     <i class="fa fa-home" aria-hidden="true"></i>
                                     Dashboard
+                                </router-link>
+                            </li>
+                            <li class="">
+                                <router-link to="/ticket/admin/reports">
+                                    <i class="fa fa-area-chart" aria-hidden="true"></i>
+                                    Reports
                                 </router-link>
                             </li>
                             <li class="active">
