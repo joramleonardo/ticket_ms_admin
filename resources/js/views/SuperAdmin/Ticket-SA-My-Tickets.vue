@@ -5,16 +5,16 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
-                            <li>
+                            <!-- <li>
                                 <router-link to="/ticket/sa/dashboard">
                                     <i class="fa fa-home" aria-hidden="true"></i>
                                     Dashboard
                                 </router-link>
-                            </li>
+                            </li> -->
                             <li class="">
                                 <router-link to="/ticket/sa/reports">
-                                    <i class="fa fa-area-chart" aria-hidden="true"></i>
-                                    Reports
+                                    <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                                    Dashboard
                                 </router-link>
                             </li>
                             <li>
@@ -70,39 +70,51 @@
 
         <div class="data-table-area"  style="margin-bottom: 30px">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="data-table-list">
-                            <div class="basic-tb-hd">
-                                <b-container fluid>
-                                        <b-row class="mb-3">
-                                            <b-col lg="5" class="my-1">
-                                                <b-form-group label="Filter" label-for="filter-input" label-cols-sm="2" label-align-sm="right" label-size="sm" class="mb-0" >
-                                                    <b-input-group size="sm">
-                                                        <b-form-input id="filter-input" v-model="filter" type="search" placeholder="Type to Search" ></b-form-input>
-                                                        <button :disabled="!filter" @click="filter = ''">Clear</button>
-                                                    </b-input-group>
-                                                </b-form-group>
-                                            </b-col>
-                                            <b-col lg="5" class="my-1">
-                                                <b-form-group label="Sort" label-for="sort-by-select" label-cols-sm="3" label-align-sm="right" label-size="sm" class="mb-0" v-slot="{ ariaDescribedby }">
-                                                    <b-input-group size="sm">
-
-                                                        <b-form-select v-model="sortDesc" :disabled="!sortBy" :aria-describedby="ariaDescribedby" size="sm" class="w-25">
-                                                            <option :value="false">Asc</option>
-                                                            <option :value="true">Desc</option>
-                                                        </b-form-select>
-                                                    </b-input-group>
-                                                </b-form-group>
-                                            </b-col>
-                                        </b-row>
+                            <b-row class="my-1" style="margin-bottom: 15px;">
+                                <b-col sm="1">
+                                    <label for="input-small">Search: </label>
+                                </b-col>
+                                <b-col sm="9">
+                                    <b-form-input  v-model="filter" id="input-small" size="sm" placeholder="Enter Reference Code, Client Name, or Status to search"></b-form-input>
+                                    <!-- <b-form-input id="filter-input" size="sm" v-model="filter" type="search" placeholder="Type Reference Code, Client Name, or Status to search" ></b-form-input> -->
+                                </b-col>
+                                <b-col sm="2">
+                                    <!-- <button :disabled="!filter" @click="filter = ''">Clear</button> -->
+                                    <b-button block variant="primary"  @click="filter = ''">Clear</b-button>
+                                </b-col>
+                            </b-row>
+                            <b-row class="my-1">
+                                <b-col sm="1">
+                                    <label for="input-small">Sort: </label>
+                                </b-col>
+                                <b-col sm="5">
+                                    <b-input-group size="sm">
+                                        <b-form-select v-model="sortDesc" :disabled="!sortBy" :aria-describedby="ariaDescribedby" size="sm" class="w-25">
+                                            <option :value="false">Asc</option>
+                                            <option :value="true">Desc</option>
+                                        </b-form-select>
+                                    </b-input-group>
+                                </b-col>
+                                <b-col sm="1">
+                                    <label for="input-small">Per page: </label>
+                                </b-col>
+                                <b-col sm="5">
+                                    <b-form-select id="per-page-select"
+                                        v-model="perPage"
+                                        :options="pageOptions"
+                                        size="sm">
+                                    </b-form-select>
+                                </b-col>
+                            </b-row>
+                                <b-container fluid style="margin-top: 10px;">
                                             <b-table striped hover
                                             :items="ticket"
                                             :fields="fields_APPROVED"
                                             :current-page="currentPage"
                                             :per-page="perPage"
                                             :filter="filter"
-                                            :filter-included-fields="['status', 'externalName']"
+                                            :filter-included-fields="['status', 'externalName', 'reference_code']"
                                             :sort-by.sync="sortBy"
                                             :sort-desc.sync="sortDesc"
                                             :sort-direction="sortDirection"
@@ -151,10 +163,7 @@
                                                 <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="center" ></b-pagination>
                                         </b-row>
                                 </b-container>
-                            </div>
                         </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -728,8 +737,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </template>
 

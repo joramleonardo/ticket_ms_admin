@@ -793,33 +793,49 @@ class TicketController extends Controller
     }
 
 
-    // ✅ Fetch Employee Division Counts for Chart
-    public function getEmployeeDivisionCounts(Request $request)
+
+
+
+    public function getTicketStatusCounts(Request $request)
     {
         $month = $request->query('month');
         $year = $request->query('year');
 
-        $query = TicketStatus::join('tickets', 'ticket_statuses.reference_code', '=', 'tickets.reference_code')
-            ->selectRaw("
-                DATE_FORMAT(STR_TO_DATE(ticket_statuses.ticket_completed, '%M %d %Y %h:%i %p'), '%M') AS month,
-                DATE_FORMAT(STR_TO_DATE(ticket_statuses.ticket_completed, '%M %d %Y %h:%i %p'), '%Y') AS year,
-                SUM(CASE WHEN tickets.empDiv = 'CRPD' THEN 1 ELSE 0 END) AS CRPD,
-                SUM(CASE WHEN tickets.empDiv = 'IRAD' THEN 1 ELSE 0 END) AS IRAD,
-                SUM(CASE WHEN tickets.empDiv = 'FAD' THEN 1 ELSE 0 END) AS FAD,
-                SUM(CASE WHEN tickets.empDiv = 'OD-MISPS' THEN 1 ELSE 0 END) AS OD_MISPS
-            ")
-            ->where('ticket_statuses.status', 'completed')
-            ->groupBy('month', 'year')
-            ->orderByRaw("STR_TO_DATE(month, '%M')");
+        $query = DB::table('ticket_statuses')
+        ->join('tickets', 'ticket_statuses.reference_code', '=', 'tickets.reference_code') // ✅ Join with tickets table
+        ->selectRaw("
 
-        if (!empty($month)) {
-            $query->having('month', '=', $month);
-        }
-        if (!empty($year)) {
-            $query->having('year', '=', $year);
-        }
+            DATE_FORMAT(STR_TO_DATE(tickets.ticket_created, '%M %d %Y %h:%i %p'), '%M') AS month,
+            DATE_FORMAT(STR_TO_DATE(tickets.ticket_created, '%M %d %Y %h:%i %p'), '%Y') AS year,
 
-        return response()->json($query->get(), 200);
+            -- ✅ Count statuses only for 'internal' tickets
+            SUM(CASE WHEN ticket_statuses.status = 'New' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) AS new_count,
+            SUM(CASE WHEN ticket_statuses.status = 'Pending' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) AS pending_count,
+            SUM(CASE WHEN ticket_statuses.status = 'In Progress' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) AS in_progress_count,
+            SUM(CASE WHEN ticket_statuses.status = 'Completed' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) AS completed_count,
+
+            -- ✅ Total count of Pending, In Progress, and Completed statuses (Only Internal)
+            (
+                SUM(CASE WHEN ticket_statuses.status = 'New' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) +
+                SUM(CASE WHEN ticket_statuses.status = 'Pending' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) +
+                SUM(CASE WHEN ticket_statuses.status = 'In Progress' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) +
+                SUM(CASE WHEN ticket_statuses.status = 'Completed' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END)
+            ) AS total_status_count
+
+            ");
+
+            // ✅ Apply Month Filter Correctly
+    if (!empty($month)) {
+        $query->whereRaw("DATE_FORMAT(STR_TO_DATE(tickets.ticket_created, '%M %d %Y %h:%i %p'), '%M') = ?", [$month]);
+    }
+
+    // ✅ Apply Year Filter Correctly
+    if (!empty($year)) {
+        $query->whereRaw("DATE_FORMAT(STR_TO_DATE(tickets.ticket_created, '%M %d %Y %h:%i %p'), '%Y') = ?", [$year]);
+    }
+        $data = $query->first();
+
+        return response()->json($data, 200);
     }
 
     // ✅ Fetch Hardware, Software, Both, and Livestream Counts
@@ -828,27 +844,87 @@ class TicketController extends Controller
         $month = $request->query('month');
         $year = $request->query('year');
 
-        $query = TicketStatus::selectRaw("
-                DATE_FORMAT(STR_TO_DATE(ticket_completed, '%M %d %Y %h:%i %p'), '%M') AS month,
-                DATE_FORMAT(STR_TO_DATE(ticket_completed, '%M %d %Y %h:%i %p'), '%Y') AS year,
+        $query = TicketStatus::join('tickets', 'ticket_statuses.reference_code', '=', 'tickets.reference_code')
+        ->selectRaw("
+                DATE_FORMAT(STR_TO_DATE(tickets.ticket_created, '%M %d %Y %h:%i %p'), '%M') AS month,
+                DATE_FORMAT(STR_TO_DATE(tickets.ticket_created, '%M %d %Y %h:%i %p'), '%Y') AS year,
+
+                -- Count only Technical Support cases
                 SUM(CASE
-                    WHEN hardware IS NOT NULL AND hardware != '' AND hardware != 'undefined'
-                    AND (software IS NULL OR software = '' OR software = 'undefined')
+                    WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                    AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                    AND (ticket_statuses.software IS NULL OR ticket_statuses.software = '' OR ticket_statuses.software = 'undefined')
                     THEN 1 ELSE 0
-                END) AS hardware_count,
+                END) AS total_hardware,
+
                 SUM(CASE
-                    WHEN software IS NOT NULL AND software != '' AND software != 'undefined'
-                    AND (hardware IS NULL OR hardware = '' OR hardware = 'undefined')
+                    WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                    AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                    AND (ticket_statuses.hardware IS NULL OR ticket_statuses.hardware = '' OR ticket_statuses.hardware = 'undefined')
                     THEN 1 ELSE 0
-                END) AS software_count,
+                END) AS total_software,
+
                 SUM(CASE
-                    WHEN hardware IS NOT NULL AND hardware != '' AND hardware != 'undefined'
-                    AND software IS NOT NULL AND software != '' AND software != 'undefined'
+                    WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                    AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                    AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
                     THEN 1 ELSE 0
-                END) AS both_count,
-                SUM(CASE WHEN supportType_ = 'Livestream' THEN 1 ELSE 0 END) AS count_livestream
+                END) AS total_both,
+
+                -- Total Tech Support (Hardware + Software + Both)
+                (
+                    SUM(CASE
+                        WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND (ticket_statuses.software IS NULL OR ticket_statuses.software = '' OR ticket_statuses.software = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+
+                    SUM(CASE
+                        WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        AND (ticket_statuses.hardware IS NULL OR ticket_statuses.hardware = '' OR ticket_statuses.hardware = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+
+                    SUM(CASE
+                        WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        THEN 1 ELSE 0
+                    END)
+                ) AS total_tech_support,
+
+                -- Other Support Types
+                SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'Livestream' THEN 1 ELSE 0 END) AS total_livestream,
+                SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'TWG' THEN 1 ELSE 0 END) AS total_twg,
+                SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'IS' THEN 1 ELSE 0 END) AS total_infoSystem,
+
+                -- Total Support Types
+                (
+                    SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'Livestream' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'IS' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'Technical Support' THEN 1 ELSE 0 END)+
+                    SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'TWG' THEN 1 ELSE 0 END)
+                ) AS total_supportType,
+
+                -- Total Support Types
+                (
+                    SUM(CASE WHEN tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tickets.internal_external = 'External' THEN 1 ELSE 0 END)
+                ) AS total_internal_external,
+
+                 -- Count Internal & External Tickets
+                SUM(CASE WHEN tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) AS total_internal,
+                SUM(CASE WHEN tickets.internal_external = 'External' THEN 1 ELSE 0 END) AS total_external
+
             ")
-            ->where('status', 'completed')
             ->groupBy('month', 'year')
             ->orderByRaw("STR_TO_DATE(month, '%M')");
 
@@ -895,6 +971,62 @@ class TicketController extends Controller
     }
 
 
+    public function getInternalExternalCounts(Request $request)
+    {
+        $month = $request->query('month');
+        $year = $request->query('year');
+
+        $query = DB::table('tickets')
+            ->selectRaw("
+                SUM(CASE WHEN internal_external = 'Internal' THEN 1 ELSE 0 END) AS internal_count,
+                SUM(CASE WHEN internal_external = 'External' THEN 1 ELSE 0 END) AS external_count
+            ");
+
+        if (!empty($month)) {
+            $query->whereMonth('created_at', date('m', strtotime($month)));
+        }
+        if (!empty($year)) {
+            $query->whereYear('created_at', $year);
+        }
+
+        $data = $query->first();
+
+        return response()->json($data, 200);
+    }
+
+
+
+
+    // ✅ Fetch Employee Division Counts for Chart
+    public function getEmployeeDivisionCounts(Request $request)
+    {
+        $month = $request->query('month');
+        $year = $request->query('year');
+
+        $query = TicketStatus::join('tickets', 'ticket_statuses.reference_code', '=', 'tickets.reference_code')
+            ->selectRaw("
+                DATE_FORMAT(STR_TO_DATE(ticket_statuses.ticket_completed, '%M %d %Y %h:%i %p'), '%M') AS month,
+                DATE_FORMAT(STR_TO_DATE(ticket_statuses.ticket_completed, '%M %d %Y %h:%i %p'), '%Y') AS year,
+                SUM(CASE WHEN tickets.empDiv = 'CRPD' THEN 1 ELSE 0 END) AS CRPD,
+                SUM(CASE WHEN tickets.empDiv = 'IRAD' THEN 1 ELSE 0 END) AS IRAD,
+                SUM(CASE WHEN tickets.empDiv = 'FAD' THEN 1 ELSE 0 END) AS FAD,
+                SUM(CASE WHEN tickets.empDiv = 'OD-MISPS' THEN 1 ELSE 0 END) AS OD_MISPS,
+                SUM(CASE WHEN tickets.empDiv IS NULL OR tickets.empDiv = '' THEN 1 ELSE 0 END) AS others_total,
+                COUNT(*) AS total
+            ")
+            ->where('ticket_statuses.status', 'completed')
+            ->groupBy('month', 'year')
+            ->orderByRaw("STR_TO_DATE(month, '%M')");
+
+        if (!empty($month)) {
+            $query->having('month', '=', $month);
+        }
+        if (!empty($year)) {
+            $query->having('year', '=', $year);
+        }
+
+        return response()->json($query->get(), 200);
+    }
 
 
 }

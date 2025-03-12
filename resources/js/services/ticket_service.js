@@ -305,3 +305,15 @@ export function fetchTicketTypeCounts(month = '', year = '') {
         params: { month: month, year: year }
     });
 }
+
+export function fetchTicketStatusCounts(month = '', year = '') {
+    return httpFile().get('/ticket-status-counts', {
+        params: { month: month, year: year }
+    });
+}
+
+export function fetchInternalExternalCounts(month = '', year = '') {
+    return httpFile().get('/internal-external-counts', {
+        params: { month: month, year: year }
+    });
+}

@@ -55,7 +55,7 @@
 /*  1.  Theme default CSS
 /*----------------------------------------*/
 html, body {font-family: 'Roboto', sans-serif;font-weight:400;}
-body {background:#F6F8FA;}
+body {background:#efeff6;}
 .floatleft {float:left}
 .floatright {float:right}
 .alignleft {float:left;margin-right:15px;margin-bottom: 15px}
@@ -179,6 +179,7 @@ body {}
 .sale-statistic-inner, .statistic-right-area, .email-statis-inner, .recent-post-wrapper, .blog-inner-list, .realtime-wrap, .add-todo-list, .notika-chat-list, .recent-signup-inner, .ongoing-task-inner, .contact-inner, .contact-form, .widget-tabs-int, .visitor-sv-tm-int, .search-engine-int, .alert-inner, .color-wrap, .wizard-wrap-int, .dropdown-list, .modals-list, .accordion-wn-wp, .tooltips-inner, .popovers-list, .typography-list, .typography-heading, .typography-inline-pro, .tpgp-helper, .contact-list, .inbox-left-sd, .inbox-text-list, .view-mail-list, .normal-table-list, .data-table-list, .form-element-list, .range-slider-wrap, .datepicker-int, .colorpicker-int, .summernote-wrap, .dropdone-nk, .form-example-wrap, .invoice-wrap, .google-map-single, .data-map-single, .image-cropper-wp, .nk-cd-ed-wp, .bar-chart-wp, .line-chart-wp, .area-chart-wp, .flot-chart-wp, .wb-traffic-inner, .notika-icon-int{
 	padding:20px;
 	background:#fff;
+    box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
 }
 
 .inbox-left-sd{
@@ -4597,6 +4598,10 @@ body.box-layout {
 .breadcomb-list{
 	padding:20px 20px;
 	background:#fff;
+    box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
+}
+.breadcomb-list-noBG{
+    box-shadow: 0px 1px 2px 1px rgba(154, 154, 204, 0.22);
 }
 .breadcomb-ctn {
     margin-left: 20px;

@@ -22,7 +22,7 @@ import Ticket_Admin_My_Tickets from './views/Admin/Ticket-Admin-My-Tickets.vue';
 import Ticket_Admin_Create_Ticket from './views/Admin/Ticket-Admin-Create-Ticket.vue';
 
 import Ticket_SA_Home from './views/Ticket-Home-SA.vue';
-import Ticket_SA_Dashboard from './views/SuperAdmin/Ticket-SA-Dashboard.vue';
+import Ticket_SA_Dashboard from './views/SuperAdmin/Ticket-SA-Reports.vue';
 import Ticket_SA_Reports from './views/SuperAdmin/Ticket-SA-Reports.vue';
 import Ticket_SA_New_Tickets from './views/SuperAdmin/Ticket-SA-New-Tickets.vue';
 import Ticket_SA_My_Tickets from './views/SuperAdmin/Ticket-SA-My-Tickets.vue';

@@ -5,16 +5,16 @@
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <ul class="nav nav-tabs notika-menu-wrap menu-it-icon-pro">
-                            <li class="">
+                            <!-- <li class="">
                                 <router-link to="/ticket/sa/dashboard">
                                     <i class="fa fa-home" aria-hidden="true"></i>
                                     Dashboard
                                 </router-link>
-                            </li>
+                            </li> -->
                             <li class="active">
                                 <router-link to="/ticket/sa/reports">
-                                    <i class="fa fa-area-chart" aria-hidden="true"></i>
-                                    Reports
+                                    <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                                    Dashboard
                                 </router-link>
                             </li>
                             <li>
@@ -43,7 +43,7 @@
             </div>
         </div>
 
-        <div class="breadcomb-area">
+        <!-- <div class="breadcomb-area">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
          <!-- Filters -->
          <div class="container">
@@ -102,18 +102,92 @@
             </div>
         </div>
 
+         <!-- 4 box -->
         <div class="container" >
             <div class="row" >
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"  style="margin: 30px 0">
-                    <div class="breadcomb-list">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12"  style="margin: 10px 0">
+                    <div class="breadcomb-list-noBG">
+                        <div class="wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30">
+                        <div class="website-traffic-ctn">
+                            <h2><span class="counter">{{ticketStatusCounts.total_status_count}}</span></h2>
+                            <p>Total Requested Tickets</p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12"  style="margin: 10px 0">
+                    <div class="breadcomb-list-noBG">
+                        <div class="wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30">
+                        <div class="website-traffic-ctn">
+                            <h2><span class="counter">{{ticketStatusCounts.pending_count}}</span></h2>
+                            <p>Total Pending Tickets</p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12" style="margin: 10px 0">
+                    <div class="breadcomb-list-noBG">
+                        <div class="wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30">
+                        <div class="website-traffic-ctn">
+                            <h2><span class="counter">{{ticketStatusCounts.in_progress_count}}</span></h2>
+                            <p>Total In Progress Tickets</p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12" style="margin: 10px 0">
+                    <div class="breadcomb-list-noBG">
+                        <div class="wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30">
+                        <div class="website-traffic-ctn">
+                            <h2><span class="counter">{{ticketStatusCounts.completed_count}}</span></h2>
+                            <p>Total Completed Tickets</p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+         <!-- INTERNAL/EXTERNAL TICKETS | TICKET SUMMARY -->
+        <div class="container" >
+            <div class="row" >
+                <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+                    <div class="breadcomb-list"  style="margin: 20px 0">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <h5>Employee Division Count</h5>
-                                <canvas ref="divisionChart"></canvas>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h5>Internal / External Tickets</h5>
+                                <canvas ref="internalExternalChart"></canvas>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <h5>Hardware, Software, Both & Livestream</h5>
-                                <canvas ref="hardwareSoftwareChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-6 col-sm-12 col-xs-12">
+                    <div class="breadcomb-list" style="margin: 20px 0">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h5 style="text-align: center;">
+                                    {{ this.selectedMonth }} {{ this.selectedYear }} TICKET SUMMARY
+                                </h5>
+                                <b-container fluid>
+                                    <b-table striped hover
+                                    :items="ticketDetails_hardware"
+                                    :fields="fields_ticket_summary"
+                                    :current-page="currentPage"
+                                    :per-page="perPage_ticketSummary"
+                                    :filter="filter"
+                                    :filter-included-fields="filterOn"
+                                    :sort-by.sync="sortBy"
+                                    :sort-desc.sync="sortDesc"
+                                    :sort-direction="sortDirection"
+                                    stacked="md"
+                                    show-empty
+                                    >
+                                    </b-table>
+                                    <b-row>
+                                            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage_ticketSummary" align="center" ></b-pagination>
+                                    </b-row>
+                                </b-container>
                             </div>
                         </div>
                     </div>
@@ -123,14 +197,17 @@
 
         <div class="container" >
             <div class="row" >
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"  style="margin: 30px 0">
-                    <div class="breadcomb-list">
+                <div class="col-lg-7 col-md-6 col-sm-12 col-xs-12">
+                    <div class="breadcomb-list" style="margin: 20px 0">
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h5 style="text-align: center;">
+                                    Internal Client Ticket
+                                </h5>
                                 <b-container fluid>
                                     <b-table striped hover
-                                    :items="ticketDetails_type"
-                                    :fields="fields_ticketDetails_type"
+                                    :items="ticketDetails_hardware"
+                                    :fields="fields_ticketDetails_hardware"
                                     :current-page="currentPage"
                                     :per-page="perPage"
                                     :filter="filter"
@@ -142,9 +219,41 @@
                                     show-empty
                                     >
                                     </b-table>
+                                    <b-row>
+                                            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="center" ></b-pagination>
+                                    </b-row>
                                 </b-container>
                             </div>
-
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+                    <div class="breadcomb-list" style="margin: 20px 0">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h5 style="text-align: center;">
+                                    Internal Client Ticket - Technical Support Type
+                                </h5>
+                                <b-container fluid>
+                                    <b-table striped hover
+                                    :items="ticketDetails_hardware"
+                                    :fields="fields_technicalSupport"
+                                    :current-page="currentPage"
+                                    :per-page="perPage"
+                                    :filter="filter"
+                                    :filter-included-fields="filterOn"
+                                    :sort-by.sync="sortBy"
+                                    :sort-desc.sync="sortDesc"
+                                    :sort-direction="sortDirection"
+                                    stacked="md"
+                                    show-empty
+                                    >
+                                    </b-table>
+                                    <b-row>
+                                            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="center" ></b-pagination>
+                                    </b-row>
+                                </b-container>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -152,88 +261,65 @@
         </div>
 
 
-
-        <!-- <div class="notika-status-area" style="margin: 30px 0">
-            <div class="container mt-4">
-                <div class="row" style="margin: 30px 0">
-                    <div class="col-lg-6">
-                        <h5>Employee Division Count</h5>
-                        <canvas ref="divisionChart"></canvas>
+        <div class="container" >
+            <div class="row" >
+                <div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+                    <div class="breadcomb-list"  style="margin: 20px 0">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h5>Agency / Division Tickets</h5>
+                                <!-- <canvas ref="divisionChart"></canvas> -->
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-6">
-                        <h5>Hardware, Software, Both & Livestream</h5>
-                        <canvas ref="hardwareSoftwareChart"></canvas>
-                    </div>
-                    <div class="col-lg-6">
-                        <b-container fluid>
-                            <b-table striped hover
-                            :items="ticketDetails_division"
-                            :fields="fields_ticketDetails_division"
-                            :current-page="currentPage"
-                            :per-page="perPage"
-                            :filter="filter"
-                            :filter-included-fields="filterOn"
-                            :sort-by.sync="sortBy"
-                            :sort-desc.sync="sortDesc"
-                            :sort-direction="sortDirection"
-                            stacked="md"
-                            show-empty
-                            >
-                            </b-table>
-                        </b-container>
+                    <div class="breadcomb-list"  style="margin: 20px 0">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"  style="width: 300px; height: 250px;">
+                                <h5>Internal vs External Ticket Counts</h5>
+                                <!-- <canvas ref="internalExternalChart"></canvas> -->
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="row" style="margin: 30px 0">
-                    <div class="col-lg-6">
-                        <h5>Hardware, Software, Both & Livestream</h5>
-                        <canvas ref="hardwareSoftwareChart"></canvas>
+                <div class="col-lg-7 col-md-6 col-sm-12 col-xs-12">
+                    <div class="breadcomb-list" style="margin: 20px 0">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <b-container fluid>
+                                    <b-table striped hover
+                                    :items="ticketDetails_division"
+                                    :fields="fields_ticketDetails_division"
+                                    :current-page="currentPage"
+                                    :per-page="perPage"
+                                    :filter="filter"
+                                    :filter-included-fields="filterOn"
+                                    :sort-by.sync="sortBy"
+                                    :sort-desc.sync="sortDesc"
+                                    :sort-direction="sortDirection"
+                                    stacked="md"
+                                    show-empty
+                                    >
+                                    </b-table>
+                                    <b-row>
+                                            <b-pagination v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="center" ></b-pagination>
+                                    </b-row>
+                                </b-container>
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="col-lg-6">
-                        <b-container fluid>
-                            <b-table striped hover
-                            :items="ticketDetails_hardware"
-                            :fields="fields_ticketDetails_hardware"
-                            :current-page="currentPage"
-                            :per-page="perPage"
-                            :filter="filter"
-                            :filter-included-fields="filterOn"
-                            :sort-by.sync="sortBy"
-                            :sort-desc.sync="sortDesc"
-                            :sort-direction="sortDirection"
-                            stacked="md"
-                            show-empty
-                            >
-                            </b-table>
-                        </b-container>
+                    <div class="breadcomb-list"  style="margin: 20px 0">
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <h5>Internal vs External Ticket Counts</h5>
+                            </div>
+                        </div>
                     </div>
-                 </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <h5>Ticket Type Count</h5>
-                        <canvas ref="ticketTypeChart"></canvas>
-                    </div>
-                    <div class="col-lg-12">
-                        <b-container fluid>
-                            <b-table striped hover
-                            :items="ticketDetails_type"
-                            :fields="fields_ticketDetails_type"
-                            :current-page="currentPage"
-                            :per-page="perPage"
-                            :filter="filter"
-                            :filter-included-fields="filterOn"
-                            :sort-by.sync="sortBy"
-                            :sort-desc.sync="sortDesc"
-                            :sort-direction="sortDirection"
-                            stacked="md"
-                            show-empty
-                            >
-                            </b-table>
-                        </b-container>
-                    </div>
-                 </div>
+                </div>
 
             </div>
-        </div> -->
+        </div>
+
 
     </div>
 </template>
@@ -255,7 +341,8 @@
                 pageOptions: [5, 10, 15, { value: 100, text: "Show a lot" }],
                 totalRows: 0,
                 currentPage: 1,
-                perPage: 15,
+                perPage: 5,
+                perPage_ticketSummary: 2,
                 filterOn: [],
                 filter: null,
                 sortDirection: 'asc',
@@ -291,7 +378,6 @@
                     { key: 'others_type', label: 'Others'},
                     { key: 'website_related', label: 'Website'},
                 ],
-                chartInstances: {},
 
                 ticketDetails_division:[],
                 fields_ticketDetails_division: [
@@ -300,16 +386,39 @@
                     { key: 'CRPD', label: 'CRPD'},
                     { key: 'FAD', label: 'FAD'},
                     { key: 'IRAD', label: 'IRAD'},
-                    { key: 'OD_MISPS', label: 'OD-MISPS'}
+                    { key: 'OD_MISPS', label: 'OD-MISPS'},
+                    { key: 'others_total', label: 'Others/External'},
+                    { key: 'total', label: 'TOTAL'}
+
                 ],
                 ticketDetails_hardware:[],
+                fields_technicalSupport: [
+                    { key: 'total_hardware', label: 'Hardware'},
+                    { key: 'total_software', label: 'Software'},
+                    { key: 'total_both', label: 'Both'},
+                    { key: 'total_tech_support', label: 'Total'},
+                ],
+                fields_ticket_summary: [
+                    { key: 'month', label: 'Month'},
+                    { key: 'year', label: 'Year'},
+                    // { key: 'total_tech_support', label: 'Technical Support'},
+                    // { key: 'total_livestream', label: 'Livestream'},
+                    // { key: 'total_infoSystem', label: 'IS'},
+                    // { key: 'total_twg', label: 'TWG'},
+                    { key: 'total_external', label: 'External'},
+                    { key: 'total_internal', label: 'Internal'},
+                    { key: 'total_internal_external', label: 'TOTAL'},
+                ],
                 fields_ticketDetails_hardware: [
                     { key: 'month', label: 'Month'},
                     { key: 'year', label: 'Year'},
-                    { key: 'hardware_count', label: 'Hardware'},
-                    { key: 'software_count', label: 'Software'},
-                    { key: 'both_count', label: 'Both'},
-                    { key: 'count_livestream', label: 'Livestream'},
+                    { key: 'total_tech_support', label: 'Technical Support'},
+                    { key: 'total_livestream', label: 'Livestream'},
+                    { key: 'total_infoSystem', label: 'IS'},
+                    { key: 'total_external', label: 'External'},
+                    { key: 'total_internal', label: 'Internal'},
+                    // { key: 'total_twg', label: 'TWG'},
+                    { key: 'total_supportType', label: 'TOTAL'},
                 ],
                 ticketDetails_type:[],
                 fields_ticketDetails_type: [
@@ -324,6 +433,18 @@
                     { key: 'others_type', label: 'Others'},
                     { key: 'website_related', label: 'Website'},
                 ],
+                internalExternalCounts:{
+                    internal_count: 0,
+                    external_count: 0
+                },
+                ticketStatusCounts: {
+                    new_count: 0,
+                    pending_count: 0,
+                    in_progress_count: 0,
+                    completed_count: 0
+                },
+                chartInstances: {},
+
             }
         },
         computed: {
@@ -345,16 +466,17 @@
         },
         mounted() {
             this.updateCharts();
+            this.countData();
 
         },
         methods: {
-
-
             async updateCharts() {
                 await this.$nextTick(); // Wait for DOM update
+                await this.loadInternalExternalChart();
                 await this.loadDivisionChart();
                 await this.loadHardwareSoftwareChart();
                 await this.loadTicketTypeChart();
+                await this.fetchTicketStatusCounts();
 
             },
             async countData() {
@@ -374,11 +496,52 @@
                     });
                 }
             },
+            async fetchTicketStatusCounts() {
+                try {
+                    const response = await ticket_service.fetchTicketStatusCounts(this.selectedMonth, this.selectedYear);
+                    this.ticketStatusCounts = response.data;
+                    console.log("HELLO");
+                    console.log(this.ticketStatusCounts);
+                } catch (error) {
+                    console.error("Error fetching ticket status counts:", error);
+                }
+            },
+            async loadInternalExternalChart() {
+            await this.$nextTick();
+            // Fetch Internal vs External Ticket Counts
+            const response = await ticket_service.fetchInternalExternalCounts(this.selectedMonth, this.selectedYear);
 
+            if (!response || !response.data) {
+                console.error("No response data received for Internal vs External chart.");
+                return;
+            }
+
+            // Extract values (Set default to 0 if missing)
+            const internalData = Number(response.data.internal_count) || 0;
+            const externalData = Number(response.data.external_count) || 0;
+
+            console.log("AAAA");
+            console.log(internalData);
+
+            this.createChart(
+                "internalExternalChart",
+                ["Internal", "Enternal"],
+                [internalData, externalData],
+                "Internal External",
+                [
+                    "#eaf2f8",
+                    "#7fb3d5"
+                ], // Pie Chart Colors
+                "pie" // ✅ Change Chart Type to Pie
+
+                );
+
+        },
             async loadDivisionChart() {
                 await this.$nextTick();
                 const response = await ticket_service.fetchEmployeeDivisionCounts(this.selectedMonth, this.selectedYear);
                 this.ticketDetails_division = response.data;
+                this.totalRows = this.ticketDetails_division.length;
                 const data = response.data[0];
 
                 if (!this.$refs.divisionChart) {
@@ -391,13 +554,21 @@
                 const FAD = Number(data.FAD) || 0;
                 const OD_MISPS = Number(data.OD_MISPS) || 0;
 
+                // ✅ Compute total number of tickets
+                const totalTickets = CRPD + IRAD + FAD + OD_MISPS;
+
 
                 this.createChart(
                     "divisionChart",
                     ["CRPD", "IRAD", "FAD", "OD-MISPS"],
                     [CRPD, IRAD, FAD, OD_MISPS],
                     "Tickets per Division",
-                    ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50"], // Pie Chart Colors
+                    [
+                        "#eaf2f8",
+                        "#7fb3d5",
+                        "#2980b9",
+                        "#154360"
+                    ], // Pie Chart Colors
                     "pie" // ✅ Change Chart Type to Pie
 
                     );
@@ -418,7 +589,7 @@
                 this.createChart(
                     "hardwareSoftwareChart",
                     ["Hardware", "Software", "Both", "Livestream"],
-                    [data.hardware_count, data.software_count, data.both_count, data.count_livestream],
+                    [data.hardware_count, data.software_count, data.both_count, data.total_livestream],
                     "Support Type Counts",
                     ["#FF5733", "#33B5E5", "#FFC300", "#8E44AD"], // Pie Chart Colors
                     "pie" // ✅ Change Chart Type to Pie
@@ -429,6 +600,10 @@
                 await this.$nextTick();
                 const response = await ticket_service.fetchTicketTypeCounts(this.selectedMonth, this.selectedYear);
                 this.ticketDetails_type = response.data;
+                console.log("aa");
+                console.log(response.data);
+
+
                 const data = response.data[0];
 
                 if (!this.$refs.ticketTypeChart) {

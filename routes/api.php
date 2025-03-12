@@ -3,19 +3,37 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'auth'], function() {
+// Route::group(['prefix' => 'auth'], function() {
+//     Route::post('register', 'AuthController@register');
+//     Route::post('login', 'AuthController@login');
+
+//     Route::group(['middleware' => 'auth:api'], function(){
+//         Route::get('logout', 'AuthController@logout');
+//         Route::get('user_profile', 'AuthController@userProfile');
+//     });
+// });
+
+// ✅ Authentication Routes (Lower Limit - Prevent Brute Force Attacks)
+Route::group(['prefix' => 'auth', 'middleware' => 'throttle:30,1'], function() {
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
-
-    Route::group(['middleware' => 'auth:api'], function(){
+    Route::group(['middleware' => 'auth:api'], function() {
         Route::get('logout', 'AuthController@logout');
         Route::get('user_profile', 'AuthController@userProfile');
     });
 });
 
-Route::group(['middleware' => 'auth:api'], function () {
-    Route::group(['middleware' => 'scope:admin,author'], function () {
+// Route::group(['middleware' => 'auth:api'], function () {
+//     Route::group(['middleware' => 'scope:admin,author'], function () {
 
+//         Route::resource('users', 'UserController');
+//         Route::get('search-user', 'UserController@searchUser');
+//     });
+// });
+
+// ✅ User Management Routes (Medium Limit)
+Route::group(['middleware' => ['auth:api', 'throttle:100,1']], function () {
+    Route::group(['middleware' => 'scope:admin,author'], function () {
         Route::resource('users', 'UserController');
         Route::get('search-user', 'UserController@searchUser');
     });
@@ -88,17 +106,29 @@ Route::resource('participants', 'ParticipantsController');
 
 // TICKET
 Route::resource('ticket', 'TicketController');
-
 Route::post('addTicket', 'TicketController@addTicket');
 Route::post('addTicket_internal', 'TicketController@addTicket_internal');
 Route::post('addTicket_external', 'TicketController@addTicket_external');
 Route::post('addTicketStatus_Pending', 'TicketController@addTicketStatus_Pending');
 Route::post('addTicketStatus_Pending_STARBOOKS', 'TicketController@addTicketStatus_Pending_STARBOOKS');
-
 Route::post('addActivityLog', 'TicketController@addActivityLog');
 Route::post('addRemarksLog', 'TicketController@addRemarksLog');
 Route::post('/loadActivityLog/{id}', 'TicketController@loadActivityLog');
 Route::post('/loadRemarksLog/{id}', 'TicketController@loadRemarksLog');
+
+// ✅ Ticket Management Routes (Higher Limit)
+// Route::group(['middleware' => ['auth:api', 'throttle:500,1']], function () {
+//     Route::resource('ticket', 'TicketController');
+//     Route::post('addTicket', 'TicketController@addTicket');
+//     Route::post('addTicket_internal', 'TicketController@addTicket_internal');
+//     Route::post('addTicket_external', 'TicketController@addTicket_external');
+//     Route::post('addTicketStatus_Pending', 'TicketController@addTicketStatus_Pending');
+//     Route::post('addTicketStatus_Pending_STARBOOKS', 'TicketController@addTicketStatus_Pending_STARBOOKS');
+//     Route::post('addActivityLog', 'TicketController@addActivityLog');
+//     Route::post('addRemarksLog', 'TicketController@addRemarksLog');
+//     Route::post('/loadActivityLog/{id}', 'TicketController@loadActivityLog');
+//     Route::post('/loadRemarksLog/{id}', 'TicketController@loadRemarksLog');
+// });
 
 Route::post('technical_addTicket_internal', 'TicketController@technical_addTicket_internal');
 Route::post('technical_addTicketStatus_Pending', 'TicketController@technical_addTicketStatus_Pending');
@@ -172,9 +202,15 @@ Route::post('/countTickets_PerStatus/{staff}', 'TicketController@countTickets_Pe
 Route::post('/countStaffTickets_PerStatus/{staff}', 'TicketController@countStaffTickets_PerStatus');
 Route::post('/countTickets_Status_Staff', 'TicketController@countTickets_Status_Staff');
 
-Route::get('/getMonthlyReportData', 'TicketController@getMonthlyReportData');
 
 
-Route::get('/employee-division-counts', 'TicketController@getEmployeeDivisionCounts');
-Route::get('/hardware-software-counts', 'TicketController@getHardwareSoftwareCounts');
-Route::get('/ticket-type-counts', 'TicketController@getTicketTypeCounts');
+// ✅ High-Traffic Reporting Routes (Very High Limit)
+Route::group(['middleware' => 'throttle:3000,1'], function () {
+    Route::get('/employee-division-counts', 'TicketController@getEmployeeDivisionCounts');
+    Route::get('/hardware-software-counts', 'TicketController@getHardwareSoftwareCounts');
+    Route::get('/ticket-type-counts', 'TicketController@getTicketTypeCounts');
+    Route::get('/ticket-status-counts', 'TicketController@getTicketStatusCounts');
+    Route::get('/internal-external-counts', 'TicketController@getInternalExternalCounts');
+    Route::get('/getMonthlyReportData', 'TicketController@getMonthlyReportData');
+});
+

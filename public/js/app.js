@@ -18365,353 +18365,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=script&lang=js&":
-/*!************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=script&lang=js& ***!
-  \************************************************************************************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../services/ticket_service */ "./resources/js/services/ticket_service.js");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  name: 'employee',
-  data: function data() {
-    return {
-      totalNew: 0,
-      name: '',
-      thisAudio: '',
-      total: '',
-      totalStaff: '',
-      ticketSummary: [],
-      fields_ticketSummary: [{
-        key: 'assignedStaff',
-        label: 'Name'
-      }, {
-        key: 'pending_count',
-        label: 'Total Pending Tickets'
-      }, {
-        key: 'in_progress_count',
-        label: 'Total In Progress Tickets'
-      }, {
-        key: 'completed_count',
-        label: 'Total Completed Tickets'
-      }],
-      ticketCompletedPerMonth: [],
-      fields_ticketCopletedPerMonth: [{
-        key: 'month',
-        label: 'Month'
-      }, {
-        key: 'total_completed',
-        label: 'Total Completed Tickets'
-      }, {
-        key: 'CRPD',
-        label: 'CRPD'
-      }, {
-        key: 'FAD',
-        label: 'FAD'
-      }, {
-        key: 'IRAD',
-        label: 'IRAD'
-      }, {
-        key: 'OD_MISPS',
-        label: 'OD-MISPS'
-      }, {
-        key: 'OTHERS',
-        label: 'Extrernal'
-      }],
-      pageOptions: [5, 10, 15, {
-        value: 100,
-        text: "Show a lot"
-      }],
-      totalRows: 0,
-      currentPage: 1,
-      perPage: 15,
-      filterOn: [],
-      filter: null,
-      sortDirection: 'asc',
-      sortBy: 'id',
-      sortDesc: true
-    };
-  },
-  mounted: function mounted() {
-    this.countData();
-  },
-  methods: {
-    // playAudio() {
-    //     const audio = new Audio('../sound/notif_sound.mp3');
-    //     audio.play().catch(error => {
-    //         console.error('Audio playback failed:', error);
-    //     });
-    // },
-    initWebSocket: function initWebSocket() {
-      // Create WebSocket connection.
-      var socket = new WebSocket("ws://10.10.140.36:6000"); // Connection opened
-
-      socket.addEventListener("open", function (event) {
-        socket.send("Hello Server!");
-      }); // Listen for messages
-
-      socket.addEventListener("message", function (event) {
-        console.log("Message from server ", event.data);
-      });
-    },
-    countData: function () {
-      var _countData = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var response_getUserData, total1, aa, bb, dd;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.next = 2;
-                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["getUserData"]();
-
-              case 2:
-                response_getUserData = _context.sent;
-                this.displayName = response_getUserData.data.user.name;
-                _context.prev = 4;
-                _context.next = 7;
-                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["countNew_All"]();
-
-              case 7:
-                total1 = _context.sent;
-                _context.next = 10;
-                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["countStaffTickets_PerStatus"](this.displayName);
-
-              case 10:
-                aa = _context.sent;
-                _context.next = 13;
-                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["countTickets_PerStatus"](this.displayName);
-
-              case 13:
-                bb = _context.sent;
-                this.totalStaff = aa.data;
-                this.total = bb.data;
-                this.totalNew = total1.data;
-                _context.next = 19;
-                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["countTickets_Status_Staff"]();
-
-              case 19:
-                dd = _context.sent;
-                this.ticketSummary = dd.data;
-                _context.next = 26;
-                break;
-
-              case 23:
-                _context.prev = 23;
-                _context.t0 = _context["catch"](4);
-                this.flashMessage.error({
-                  message: 'Some error occured! Please try again.',
-                  time: 5000
-                });
-
-              case 26:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this, [[4, 23]]);
-      }));
-
-      function countData() {
-        return _countData.apply(this, arguments);
-      }
-
-      return countData;
-    }()
-  }
-});
-
-/***/ }),
-
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-My-Tickets.vue?vue&type=script&lang=js&":
 /*!*************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/SuperAdmin/Ticket-SA-My-Tickets.vue?vue&type=script&lang=js& ***!
@@ -18736,6 +18389,13 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -21828,6 +21488,92 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -21844,7 +21590,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }],
       totalRows: 0,
       currentPage: 1,
-      perPage: 15,
+      perPage: 5,
+      perPage_ticketSummary: 2,
       filterOn: [],
       filter: null,
       sortDirection: 'asc',
@@ -21919,7 +21666,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         key: 'website_related',
         label: 'Website'
       }],
-      chartInstances: {},
       ticketDetails_division: [],
       fields_ticketDetails_division: [{
         key: 'month',
@@ -21939,8 +21685,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }, {
         key: 'OD_MISPS',
         label: 'OD-MISPS'
+      }, {
+        key: 'others_total',
+        label: 'Others/External'
+      }, {
+        key: 'total',
+        label: 'TOTAL'
       }],
       ticketDetails_hardware: [],
+      fields_technicalSupport: [{
+        key: 'total_hardware',
+        label: 'Hardware'
+      }, {
+        key: 'total_software',
+        label: 'Software'
+      }, {
+        key: 'total_both',
+        label: 'Both'
+      }, {
+        key: 'total_tech_support',
+        label: 'Total'
+      }],
+      fields_ticket_summary: [{
+        key: 'month',
+        label: 'Month'
+      }, {
+        key: 'year',
+        label: 'Year'
+      }, // { key: 'total_tech_support', label: 'Technical Support'},
+      // { key: 'total_livestream', label: 'Livestream'},
+      // { key: 'total_infoSystem', label: 'IS'},
+      // { key: 'total_twg', label: 'TWG'},
+      {
+        key: 'total_external',
+        label: 'External'
+      }, {
+        key: 'total_internal',
+        label: 'Internal'
+      }, {
+        key: 'total_internal_external',
+        label: 'TOTAL'
+      }],
       fields_ticketDetails_hardware: [{
         key: 'month',
         label: 'Month'
@@ -21948,17 +21733,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         key: 'year',
         label: 'Year'
       }, {
-        key: 'hardware_count',
-        label: 'Hardware'
+        key: 'total_tech_support',
+        label: 'Technical Support'
       }, {
-        key: 'software_count',
-        label: 'Software'
-      }, {
-        key: 'both_count',
-        label: 'Both'
-      }, {
-        key: 'count_livestream',
+        key: 'total_livestream',
         label: 'Livestream'
+      }, {
+        key: 'total_infoSystem',
+        label: 'IS'
+      }, {
+        key: 'total_external',
+        label: 'External'
+      }, {
+        key: 'total_internal',
+        label: 'Internal'
+      }, // { key: 'total_twg', label: 'TWG'},
+      {
+        key: 'total_supportType',
+        label: 'TOTAL'
       }],
       ticketDetails_type: [],
       fields_ticketDetails_type: [{
@@ -21991,7 +21783,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }, {
         key: 'website_related',
         label: 'Website'
-      }]
+      }],
+      internalExternalCounts: {
+        internal_count: 0,
+        external_count: 0
+      },
+      ticketStatusCounts: {
+        new_count: 0,
+        pending_count: 0,
+        in_progress_count: 0,
+        completed_count: 0
+      },
+      chartInstances: {}
     };
   },
   computed: {
@@ -22015,6 +21818,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   mounted: function mounted() {
     this.updateCharts();
+    this.countData();
   },
   methods: {
     updateCharts: function updateCharts() {
@@ -22030,17 +21834,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 _context.next = 4;
-                return _this2.loadDivisionChart();
+                return _this2.loadInternalExternalChart();
 
               case 4:
                 _context.next = 6;
-                return _this2.loadHardwareSoftwareChart();
+                return _this2.loadDivisionChart();
 
               case 6:
                 _context.next = 8;
-                return _this2.loadTicketTypeChart();
+                return _this2.loadHardwareSoftwareChart();
 
               case 8:
+                _context.next = 10;
+                return _this2.loadTicketTypeChart();
+
+              case 10:
+                _context.next = 12;
+                return _this2.fetchTicketStatusCounts();
+
+              case 12:
               case "end":
                 return _context.stop();
             }
@@ -22097,58 +21909,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2, null, [[4, 15]]);
       }))();
     },
-    loadDivisionChart: function loadDivisionChart() {
+    fetchTicketStatusCounts: function fetchTicketStatusCounts() {
       var _this4 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-        var response, data, CRPD, IRAD, FAD, OD_MISPS;
+        var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                _context3.next = 2;
-                return _this4.$nextTick();
+                _context3.prev = 0;
+                _context3.next = 3;
+                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["fetchTicketStatusCounts"](_this4.selectedMonth, _this4.selectedYear);
 
-              case 2:
-                _context3.next = 4;
-                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["fetchEmployeeDivisionCounts"](_this4.selectedMonth, _this4.selectedYear);
-
-              case 4:
+              case 3:
                 response = _context3.sent;
-                _this4.ticketDetails_division = response.data;
-                data = response.data[0];
+                _this4.ticketStatusCounts = response.data;
+                console.log("HELLO");
+                console.log(_this4.ticketStatusCounts);
+                _context3.next = 12;
+                break;
 
-                if (_this4.$refs.divisionChart) {
-                  _context3.next = 10;
-                  break;
-                }
+              case 9:
+                _context3.prev = 9;
+                _context3.t0 = _context3["catch"](0);
+                console.error("Error fetching ticket status counts:", _context3.t0);
 
-                console.error("divisionChart not found in the DOM.");
-                return _context3.abrupt("return");
-
-              case 10:
-                CRPD = Number(data.CRPD) || 0;
-                IRAD = Number(data.IRAD) || 0;
-                FAD = Number(data.FAD) || 0;
-                OD_MISPS = Number(data.OD_MISPS) || 0;
-
-                _this4.createChart("divisionChart", ["CRPD", "IRAD", "FAD", "OD-MISPS"], [CRPD, IRAD, FAD, OD_MISPS], "Tickets per Division", ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50"], // Pie Chart Colors
-                "pie" // ✅ Change Chart Type to Pie
-                );
-
-              case 15:
+              case 12:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3);
+        }, _callee3, null, [[0, 9]]);
       }))();
     },
-    loadHardwareSoftwareChart: function loadHardwareSoftwareChart() {
+    loadInternalExternalChart: function loadInternalExternalChart() {
       var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
-        var response, data;
+        var response, internalData, externalData;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -22158,27 +21957,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 _context4.next = 4;
-                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["fetchHardwareSoftwareCounts"](_this5.selectedMonth, _this5.selectedYear);
+                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["fetchInternalExternalCounts"](_this5.selectedMonth, _this5.selectedYear);
 
               case 4:
                 response = _context4.sent;
-                _this5.ticketDetails_hardware = response.data;
-                data = response.data[0];
 
-                if (_this5.$refs.hardwareSoftwareChart) {
-                  _context4.next = 10;
+                if (!(!response || !response.data)) {
+                  _context4.next = 8;
                   break;
                 }
 
-                console.error("hardwareSoftwareChart not found in the DOM.");
+                console.error("No response data received for Internal vs External chart.");
                 return _context4.abrupt("return");
 
-              case 10:
-                _this5.createChart("hardwareSoftwareChart", ["Hardware", "Software", "Both", "Livestream"], [data.hardware_count, data.software_count, data.both_count, data.count_livestream], "Support Type Counts", ["#FF5733", "#33B5E5", "#FFC300", "#8E44AD"], // Pie Chart Colors
+              case 8:
+                // Extract values (Set default to 0 if missing)
+                internalData = Number(response.data.internal_count) || 0;
+                externalData = Number(response.data.external_count) || 0;
+                console.log("AAAA");
+                console.log(internalData);
+
+                _this5.createChart("internalExternalChart", ["Internal", "Enternal"], [internalData, externalData], "Internal External", ["#eaf2f8", "#7fb3d5"], // Pie Chart Colors
                 "pie" // ✅ Change Chart Type to Pie
                 );
 
-              case 11:
+              case 13:
               case "end":
                 return _context4.stop();
             }
@@ -22186,11 +21989,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee4);
       }))();
     },
-    loadTicketTypeChart: function loadTicketTypeChart() {
+    loadDivisionChart: function loadDivisionChart() {
       var _this6 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
-        var response, data;
+        var response, data, CRPD, IRAD, FAD, OD_MISPS, totalTickets;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
@@ -22200,31 +22003,125 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 2:
                 _context5.next = 4;
-                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["fetchTicketTypeCounts"](_this6.selectedMonth, _this6.selectedYear);
+                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["fetchEmployeeDivisionCounts"](_this6.selectedMonth, _this6.selectedYear);
 
               case 4:
                 response = _context5.sent;
-                _this6.ticketDetails_type = response.data;
+                _this6.ticketDetails_division = response.data;
+                _this6.totalRows = _this6.ticketDetails_division.length;
                 data = response.data[0];
 
-                if (_this6.$refs.ticketTypeChart) {
-                  _context5.next = 10;
+                if (_this6.$refs.divisionChart) {
+                  _context5.next = 11;
                   break;
                 }
 
-                console.error("ticketTypeChart not found in the DOM.");
+                console.error("divisionChart not found in the DOM.");
                 return _context5.abrupt("return");
 
-              case 10:
-                _this6.createChart("ticketTypeChart", ["PC Setup", "Network", "Printer", "Zoom", "Website", "STARBOOKS", "Installation", "Others"], [data.pc_setup_troubleshooting, data.network_related, data.printer_related, data.zoom_related, data.website_related, data.starbooks_related, data.installation_related, data.others_type], "Ticket Types", ["#3498db", "#2ecc71", "#f39c12", "#e74c3c", "#9b59b6", "#34495e", "#1abc9c", "#95a5a6"], // Pie Chart Colors
-                "doughnut");
-
               case 11:
+                CRPD = Number(data.CRPD) || 0;
+                IRAD = Number(data.IRAD) || 0;
+                FAD = Number(data.FAD) || 0;
+                OD_MISPS = Number(data.OD_MISPS) || 0; // ✅ Compute total number of tickets
+
+                totalTickets = CRPD + IRAD + FAD + OD_MISPS;
+
+                _this6.createChart("divisionChart", ["CRPD", "IRAD", "FAD", "OD-MISPS"], [CRPD, IRAD, FAD, OD_MISPS], "Tickets per Division", ["#eaf2f8", "#7fb3d5", "#2980b9", "#154360"], // Pie Chart Colors
+                "pie" // ✅ Change Chart Type to Pie
+                );
+
+              case 17:
               case "end":
                 return _context5.stop();
             }
           }
         }, _callee5);
+      }))();
+    },
+    loadHardwareSoftwareChart: function loadHardwareSoftwareChart() {
+      var _this7 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+        var response, data;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return _this7.$nextTick();
+
+              case 2:
+                _context6.next = 4;
+                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["fetchHardwareSoftwareCounts"](_this7.selectedMonth, _this7.selectedYear);
+
+              case 4:
+                response = _context6.sent;
+                _this7.ticketDetails_hardware = response.data;
+                data = response.data[0];
+
+                if (_this7.$refs.hardwareSoftwareChart) {
+                  _context6.next = 10;
+                  break;
+                }
+
+                console.error("hardwareSoftwareChart not found in the DOM.");
+                return _context6.abrupt("return");
+
+              case 10:
+                _this7.createChart("hardwareSoftwareChart", ["Hardware", "Software", "Both", "Livestream"], [data.hardware_count, data.software_count, data.both_count, data.total_livestream], "Support Type Counts", ["#FF5733", "#33B5E5", "#FFC300", "#8E44AD"], // Pie Chart Colors
+                "pie" // ✅ Change Chart Type to Pie
+                );
+
+              case 11:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }))();
+    },
+    loadTicketTypeChart: function loadTicketTypeChart() {
+      var _this8 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7() {
+        var response, data;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _context7.next = 2;
+                return _this8.$nextTick();
+
+              case 2:
+                _context7.next = 4;
+                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["fetchTicketTypeCounts"](_this8.selectedMonth, _this8.selectedYear);
+
+              case 4:
+                response = _context7.sent;
+                _this8.ticketDetails_type = response.data;
+                console.log("aa");
+                console.log(response.data);
+                data = response.data[0];
+
+                if (_this8.$refs.ticketTypeChart) {
+                  _context7.next = 12;
+                  break;
+                }
+
+                console.error("ticketTypeChart not found in the DOM.");
+                return _context7.abrupt("return");
+
+              case 12:
+                _this8.createChart("ticketTypeChart", ["PC Setup", "Network", "Printer", "Zoom", "Website", "STARBOOKS", "Installation", "Others"], [data.pc_setup_troubleshooting, data.network_related, data.printer_related, data.zoom_related, data.website_related, data.starbooks_related, data.installation_related, data.others_type], "Ticket Types", ["#3498db", "#2ecc71", "#f39c12", "#e74c3c", "#9b59b6", "#34495e", "#1abc9c", "#95a5a6"], // Pie Chart Colors
+                "doughnut");
+
+              case 13:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7);
       }))();
     },
     // createChart(chartRef, labels, data, label, colors) {
@@ -198457,569 +198354,6 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=template&id=db4337cc&":
-/*!****************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=template&id=db4337cc& ***!
-  \****************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", { staticClass: "main-menu-area mg-tb-40" }, [
-      _c("div", { staticClass: "container" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
-            [
-              _c(
-                "ul",
-                {
-                  staticClass: "nav nav-tabs notika-menu-wrap menu-it-icon-pro"
-                },
-                [
-                  _c(
-                    "li",
-                    { staticClass: "active" },
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/sa/dashboard" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-home",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                Dashboard\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    {},
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/sa/reports" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-area-chart",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                Reports\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/sa/newtickets" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-bell",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                New Tickets\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/sa/mytickets" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-list",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                Tickets\n                                "
-                          ),
-                          this.totalNew != "0"
-                            ? _c("span", [
-                                _c("div", {
-                                  staticClass: "spinner4 spinner-4"
-                                }),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "ntd-ctn" }, [
-                                  _c("span", [_vm._v(_vm._s(this.totalNew))])
-                                ])
-                              ])
-                            : _c("span")
-                        ]
-                      )
-                    ],
-                    1
-                  )
-                ]
-              )
-            ]
-          )
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _vm._m(0),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "notika-status-area",
-        staticStyle: { "margin-bottom": "30px" }
-      },
-      [
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col-lg-3 col-md-6 col-sm-6 col-xs-12" }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30"
-                },
-                [
-                  _c("div", { staticClass: "website-traffic-ctn" }, [
-                    _c("h2", [
-                      _c("span", { staticClass: "counter" }, [
-                        _vm._v(_vm._s(this.totalNew))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("p", [_vm._v("Total New Tickets")])
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-3 col-md-6 col-sm-6 col-xs-12" }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30"
-                },
-                [
-                  _c("div", { staticClass: "website-traffic-ctn" }, [
-                    _c("h2", [
-                      _c("span", { staticClass: "counter" }, [
-                        _vm._v(_vm._s(this.total.total_Pending))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("p", [_vm._v("Total Assigned Tickets")])
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-3 col-md-6 col-sm-6 col-xs-12" }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30"
-                },
-                [
-                  _c("div", { staticClass: "website-traffic-ctn" }, [
-                    _c("h2", [
-                      _c("span", { staticClass: "counter" }, [
-                        _vm._v(_vm._s(this.total.total_InProgress))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("p", [_vm._v("Total In Progress Tickets")])
-                  ])
-                ]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "col-lg-3 col-md-6 col-sm-6 col-xs-12" }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30 dk-res-mg-t-30"
-                },
-                [
-                  _c("div", { staticClass: "website-traffic-ctn" }, [
-                    _c("h2", [
-                      _c("span", { staticClass: "counter" }, [
-                        _vm._v(_vm._s(this.total.total_Completed))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("p", [_vm._v("Total Completed Tickets")])
-                  ])
-                ]
-              )
-            ])
-          ])
-        ])
-      ]
-    ),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "data-table-area",
-        staticStyle: { "margin-bottom": "30px" }
-      },
-      [
-        _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row" }, [
-            _c(
-              "div",
-              { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
-              [
-                _c("div", { staticClass: "data-table-list" }, [
-                  _c(
-                    "div",
-                    { staticClass: "basic-tb-hd" },
-                    [
-                      _c(
-                        "b-container",
-                        { attrs: { fluid: "" } },
-                        [
-                          _c("b-table", {
-                            attrs: {
-                              striped: "",
-                              hover: "",
-                              items: _vm.ticketSummary,
-                              fields: _vm.fields_ticketSummary,
-                              "current-page": _vm.currentPage,
-                              "per-page": _vm.perPage,
-                              filter: _vm.filter,
-                              "filter-included-fields": _vm.filterOn,
-                              "sort-by": _vm.sortBy,
-                              "sort-desc": _vm.sortDesc,
-                              "sort-direction": _vm.sortDirection,
-                              stacked: "md",
-                              "show-empty": ""
-                            },
-                            on: {
-                              "update:sortBy": function($event) {
-                                _vm.sortBy = $event
-                              },
-                              "update:sort-by": function($event) {
-                                _vm.sortBy = $event
-                              },
-                              "update:sortDesc": function($event) {
-                                _vm.sortDesc = $event
-                              },
-                              "update:sort-desc": function($event) {
-                                _vm.sortDesc = $event
-                              }
-                            },
-                            scopedSlots: _vm._u([
-                              {
-                                key: "cell(supportType)",
-                                fn: function(row) {
-                                  return [
-                                    _c(
-                                      "b",
-                                      {
-                                        staticStyle: {
-                                          color: "rgb(35, 132, 179)"
-                                        }
-                                      },
-                                      [_vm._v(_vm._s(row.value))]
-                                    )
-                                  ]
-                                }
-                              },
-                              {
-                                key: "cell(reference_code)",
-                                fn: function(row) {
-                                  return [_c("b", [_vm._v(_vm._s(row.value))])]
-                                }
-                              },
-                              {
-                                key: "cell(externalName)",
-                                fn: function(row) {
-                                  return [
-                                    _vm._v(
-                                      "\n                                                " +
-                                        _vm._s(row.value.toUpperCase()) +
-                                        "\n                                            "
-                                    )
-                                  ]
-                                }
-                              },
-                              {
-                                key: "cell(status)",
-                                fn: function(row) {
-                                  return [
-                                    row.item.status === "Approved"
-                                      ? _c(
-                                          "div",
-                                          [
-                                            _c(
-                                              "b-badge",
-                                              {
-                                                staticClass: "mr-1 badge",
-                                                staticStyle: {
-                                                  "background-color": "#f0ad4e"
-                                                }
-                                              },
-                                              [_vm._v("PENDING")]
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    row.item.status === "In Progress"
-                                      ? _c(
-                                          "div",
-                                          [
-                                            _c(
-                                              "b-badge",
-                                              {
-                                                staticClass: "mr-1 badge",
-                                                staticStyle: {
-                                                  "background-color": "#5cb85c"
-                                                }
-                                              },
-                                              [_vm._v("IN PROGRESS")]
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    row.item.status === "Completed"
-                                      ? _c(
-                                          "div",
-                                          [
-                                            _c(
-                                              "b-badge",
-                                              {
-                                                staticClass: "mr-1 badge",
-                                                staticStyle: {
-                                                  "background-color": "#5bc0de"
-                                                }
-                                              },
-                                              [_vm._v("COMPLETED")]
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      : _vm._e()
-                                  ]
-                                }
-                              },
-                              {
-                                key: "cell(actions)",
-                                fn: function(row) {
-                                  return [
-                                    row.item.status === "Approved"
-                                      ? _c("div", [
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-warning notika-btn-warning",
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.setStatus(
-                                                    row.item,
-                                                    row.index,
-                                                    $event.target
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Attend Ticket")]
-                                          )
-                                        ])
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    row.item.status === "In Progress"
-                                      ? _c("div", [
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-success notika-btn-success",
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.completeTicket(
-                                                    row.item,
-                                                    row.index,
-                                                    $event.target
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Mark Complete")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-danger notika-btn-danger",
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.addRemarksModal(
-                                                    row.item,
-                                                    row.index,
-                                                    $event.target
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Add Remarks")]
-                                          )
-                                        ])
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    row.item.status === "Completed"
-                                      ? _c("div", [
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-info notika-btn-info",
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.viewRating(
-                                                    row.item,
-                                                    row.index,
-                                                    $event.target
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Submit Rating")]
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                }
-                              },
-                              {
-                                key: "cell(details)",
-                                fn: function(row) {
-                                  return [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass:
-                                          "btn btn-primary notika-btn-primary",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.viewTicketDetails(
-                                              row.item,
-                                              row.index,
-                                              $event.target
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("View Details")]
-                                    )
-                                  ]
-                                }
-                              }
-                            ])
-                          })
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ])
-              ]
-            )
-          ])
-        ])
-      ]
-    )
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "breadcomb-area" }, [
-      _c("div", { staticClass: "container" }, [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
-            [
-              _c("div", { staticClass: "breadcomb-list" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c(
-                    "div",
-                    { staticClass: "col-lg-6 col-md-6 col-sm-6 col-xs-12" },
-                    [
-                      _c("div", { staticClass: "breadcomb-wp" }, [
-                        _c("div", { staticClass: "breadcomb-icon" }, [
-                          _c("i", {
-                            staticClass: "fa fa-home",
-                            attrs: { "aria-hidden": "true" }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "breadcomb-ctn" }, [
-                          _c("h2", [_vm._v("Dashboard")]),
-                          _vm._v(" "),
-                          _c("p", { staticStyle: { "font-size": "12px" } }, [
-                            _vm._v("Home> "),
-                            _c("span", { staticClass: "bread-ntd" }, [
-                              _vm._v("Dashboard")
-                            ])
-                          ])
-                        ])
-                      ])
-                    ]
-                  )
-                ])
-              ])
-            ]
-          )
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-
-
-
-/***/ }),
-
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-My-Tickets.vue?vue&type=template&id=fa1b1fe0&":
 /*!*****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/SuperAdmin/Ticket-SA-My-Tickets.vue?vue&type=template&id=fa1b1fe0& ***!
@@ -199051,26 +198385,6 @@ var render = function() {
                 [
                   _c(
                     "li",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/sa/dashboard" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-home",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                Dashboard\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
                     {},
                     [
                       _c(
@@ -199078,11 +198392,11 @@ var render = function() {
                         { attrs: { to: "/ticket/sa/reports" } },
                         [
                           _c("i", {
-                            staticClass: "fa fa-area-chart",
+                            staticClass: "fa fa-pie-chart",
                             attrs: { "aria-hidden": "true" }
                           }),
                           _vm._v(
-                            "\n                                Reports\n                            "
+                            "\n                                Dashboard\n                            "
                           )
                         ]
                       )
@@ -199159,438 +198473,427 @@ var render = function() {
       },
       [
         _c("div", { staticClass: "container" }, [
-          _c("div", { staticClass: "row" }, [
-            _c(
-              "div",
-              { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
-              [
-                _c("div", { staticClass: "data-table-list" }, [
+          _c(
+            "div",
+            { staticClass: "data-table-list" },
+            [
+              _c(
+                "b-row",
+                {
+                  staticClass: "my-1",
+                  staticStyle: { "margin-bottom": "15px" }
+                },
+                [
+                  _c("b-col", { attrs: { sm: "1" } }, [
+                    _c("label", { attrs: { for: "input-small" } }, [
+                      _vm._v("Search: ")
+                    ])
+                  ]),
+                  _vm._v(" "),
                   _c(
-                    "div",
-                    { staticClass: "basic-tb-hd" },
+                    "b-col",
+                    { attrs: { sm: "9" } },
+                    [
+                      _c("b-form-input", {
+                        attrs: {
+                          id: "input-small",
+                          size: "sm",
+                          placeholder:
+                            "Enter Reference Code, Client Name, or Status to search"
+                        },
+                        model: {
+                          value: _vm.filter,
+                          callback: function($$v) {
+                            _vm.filter = $$v
+                          },
+                          expression: "filter"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-col",
+                    { attrs: { sm: "2" } },
                     [
                       _c(
-                        "b-container",
-                        { attrs: { fluid: "" } },
+                        "b-button",
+                        {
+                          attrs: { block: "", variant: "primary" },
+                          on: {
+                            click: function($event) {
+                              _vm.filter = ""
+                            }
+                          }
+                        },
+                        [_vm._v("Clear")]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-row",
+                { staticClass: "my-1" },
+                [
+                  _c("b-col", { attrs: { sm: "1" } }, [
+                    _c("label", { attrs: { for: "input-small" } }, [
+                      _vm._v("Sort: ")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "b-col",
+                    { attrs: { sm: "5" } },
+                    [
+                      _c(
+                        "b-input-group",
+                        { attrs: { size: "sm" } },
                         [
                           _c(
-                            "b-row",
-                            { staticClass: "mb-3" },
-                            [
-                              _c(
-                                "b-col",
-                                { staticClass: "my-1", attrs: { lg: "5" } },
-                                [
-                                  _c(
-                                    "b-form-group",
-                                    {
-                                      staticClass: "mb-0",
-                                      attrs: {
-                                        label: "Filter",
-                                        "label-for": "filter-input",
-                                        "label-cols-sm": "2",
-                                        "label-align-sm": "right",
-                                        "label-size": "sm"
-                                      }
-                                    },
-                                    [
-                                      _c(
-                                        "b-input-group",
-                                        { attrs: { size: "sm" } },
-                                        [
-                                          _c("b-form-input", {
-                                            attrs: {
-                                              id: "filter-input",
-                                              type: "search",
-                                              placeholder: "Type to Search"
-                                            },
-                                            model: {
-                                              value: _vm.filter,
-                                              callback: function($$v) {
-                                                _vm.filter = $$v
-                                              },
-                                              expression: "filter"
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _c(
-                                            "button",
-                                            {
-                                              attrs: { disabled: !_vm.filter },
-                                              on: {
-                                                click: function($event) {
-                                                  _vm.filter = ""
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Clear")]
-                                          )
-                                        ],
-                                        1
-                                      )
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "b-col",
-                                { staticClass: "my-1", attrs: { lg: "5" } },
-                                [
-                                  _c("b-form-group", {
-                                    staticClass: "mb-0",
-                                    attrs: {
-                                      label: "Sort",
-                                      "label-for": "sort-by-select",
-                                      "label-cols-sm": "3",
-                                      "label-align-sm": "right",
-                                      "label-size": "sm"
-                                    },
-                                    scopedSlots: _vm._u([
-                                      {
-                                        key: "default",
-                                        fn: function(ref) {
-                                          var ariaDescribedby =
-                                            ref.ariaDescribedby
-                                          return [
-                                            _c(
-                                              "b-input-group",
-                                              { attrs: { size: "sm" } },
-                                              [
-                                                _c(
-                                                  "b-form-select",
-                                                  {
-                                                    staticClass: "w-25",
-                                                    attrs: {
-                                                      disabled: !_vm.sortBy,
-                                                      "aria-describedby": ariaDescribedby,
-                                                      size: "sm"
-                                                    },
-                                                    model: {
-                                                      value: _vm.sortDesc,
-                                                      callback: function($$v) {
-                                                        _vm.sortDesc = $$v
-                                                      },
-                                                      expression: "sortDesc"
-                                                    }
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "option",
-                                                      {
-                                                        domProps: {
-                                                          value: false
-                                                        }
-                                                      },
-                                                      [_vm._v("Asc")]
-                                                    ),
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "option",
-                                                      {
-                                                        domProps: {
-                                                          value: true
-                                                        }
-                                                      },
-                                                      [_vm._v("Desc")]
-                                                    )
-                                                  ]
-                                                )
-                                              ],
-                                              1
-                                            )
-                                          ]
-                                        }
-                                      }
-                                    ])
-                                  })
-                                ],
-                                1
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c("b-table", {
-                            attrs: {
-                              striped: "",
-                              hover: "",
-                              items: _vm.ticket,
-                              fields: _vm.fields_APPROVED,
-                              "current-page": _vm.currentPage,
-                              "per-page": _vm.perPage,
-                              filter: _vm.filter,
-                              "filter-included-fields": [
-                                "status",
-                                "externalName"
-                              ],
-                              "sort-by": _vm.sortBy,
-                              "sort-desc": _vm.sortDesc,
-                              "sort-direction": _vm.sortDirection,
-                              stacked: "md",
-                              "show-empty": ""
-                            },
-                            on: {
-                              "update:sortBy": function($event) {
-                                _vm.sortBy = $event
+                            "b-form-select",
+                            {
+                              staticClass: "w-25",
+                              attrs: {
+                                disabled: !_vm.sortBy,
+                                "aria-describedby": _vm.ariaDescribedby,
+                                size: "sm"
                               },
-                              "update:sort-by": function($event) {
-                                _vm.sortBy = $event
-                              },
-                              "update:sortDesc": function($event) {
-                                _vm.sortDesc = $event
-                              },
-                              "update:sort-desc": function($event) {
-                                _vm.sortDesc = $event
-                              }
-                            },
-                            scopedSlots: _vm._u([
-                              {
-                                key: "cell(supportType)",
-                                fn: function(row) {
-                                  return [
-                                    _c(
-                                      "b",
-                                      {
-                                        staticStyle: {
-                                          color: "rgb(35, 132, 179)"
-                                        }
-                                      },
-                                      [_vm._v(_vm._s(row.value))]
-                                    )
-                                  ]
-                                }
-                              },
-                              {
-                                key: "cell(reference_code)",
-                                fn: function(row) {
-                                  return [_c("b", [_vm._v(_vm._s(row.value))])]
-                                }
-                              },
-                              {
-                                key: "cell(externalName)",
-                                fn: function(row) {
-                                  return [
-                                    _vm._v(
-                                      "\n                                                " +
-                                        _vm._s(row.value.toUpperCase()) +
-                                        "\n                                            "
-                                    )
-                                  ]
-                                }
-                              },
-                              {
-                                key: "cell(status)",
-                                fn: function(row) {
-                                  return [
-                                    row.item.status === "Pending"
-                                      ? _c(
-                                          "div",
-                                          [
-                                            _c(
-                                              "b-badge",
-                                              {
-                                                staticClass: "mr-1 badge",
-                                                staticStyle: {
-                                                  "background-color": "#f0ad4e"
-                                                }
-                                              },
-                                              [_vm._v("PENDING")]
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    row.item.status === "In Progress"
-                                      ? _c(
-                                          "div",
-                                          [
-                                            _c(
-                                              "b-badge",
-                                              {
-                                                staticClass: "mr-1 badge",
-                                                staticStyle: {
-                                                  "background-color": "#5cb85c"
-                                                }
-                                              },
-                                              [_vm._v("IN PROGRESS")]
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    row.item.status === "Completed"
-                                      ? _c(
-                                          "div",
-                                          [
-                                            _c(
-                                              "b-badge",
-                                              {
-                                                staticClass: "mr-1 badge",
-                                                staticStyle: {
-                                                  "background-color": "#5bc0de"
-                                                }
-                                              },
-                                              [_vm._v("COMPLETED")]
-                                            )
-                                          ],
-                                          1
-                                        )
-                                      : _vm._e()
-                                  ]
-                                }
-                              },
-                              {
-                                key: "cell(actions)",
-                                fn: function(row) {
-                                  return [
-                                    row.item.status === "Pending"
-                                      ? _c("div", [
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-warning notika-btn-warning",
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.setStatus(
-                                                    row.item,
-                                                    row.index,
-                                                    $event.target
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Attend Ticket")]
-                                          )
-                                        ])
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    row.item.status === "In Progress"
-                                      ? _c("div", [
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-success notika-btn-success",
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.completeTicket(
-                                                    row.item,
-                                                    row.index,
-                                                    $event.target
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Mark Complete")]
-                                          ),
-                                          _vm._v(" "),
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-danger notika-btn-danger",
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.addRemarksModal(
-                                                    row.item,
-                                                    row.index,
-                                                    $event.target
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("Add Remarks")]
-                                          )
-                                        ])
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    row.item.status === "Completed"
-                                      ? _c("div", [
-                                          _c(
-                                            "button",
-                                            {
-                                              staticClass:
-                                                "btn btn-info notika-btn-info",
-                                              on: {
-                                                click: function($event) {
-                                                  return _vm.viewRating(
-                                                    row.item,
-                                                    row.index,
-                                                    $event.target
-                                                  )
-                                                }
-                                              }
-                                            },
-                                            [_vm._v("View Rating")]
-                                          )
-                                        ])
-                                      : _vm._e()
-                                  ]
-                                }
-                              },
-                              {
-                                key: "cell(details)",
-                                fn: function(row) {
-                                  return [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass:
-                                          "btn btn-primary notika-btn-primary",
-                                        on: {
-                                          click: function($event) {
-                                            return _vm.viewTicketDetails(
-                                              row.item,
-                                              row.index,
-                                              $event.target
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("View Details")]
-                                    )
-                                  ]
-                                }
-                              }
-                            ])
-                          }),
-                          _vm._v(" "),
-                          _c(
-                            "b-row",
-                            [
-                              _c("b-pagination", {
-                                attrs: {
-                                  "total-rows": _vm.totalRows,
-                                  "per-page": _vm.perPage,
-                                  align: "center"
+                              model: {
+                                value: _vm.sortDesc,
+                                callback: function($$v) {
+                                  _vm.sortDesc = $$v
                                 },
-                                model: {
-                                  value: _vm.currentPage,
-                                  callback: function($$v) {
-                                    _vm.currentPage = $$v
-                                  },
-                                  expression: "currentPage"
-                                }
-                              })
-                            ],
-                            1
+                                expression: "sortDesc"
+                              }
+                            },
+                            [
+                              _c("option", { domProps: { value: false } }, [
+                                _vm._v("Asc")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { domProps: { value: true } }, [
+                                _vm._v("Desc")
+                              ])
+                            ]
                           )
                         ],
                         1
                       )
                     ],
                     1
+                  ),
+                  _vm._v(" "),
+                  _c("b-col", { attrs: { sm: "1" } }, [
+                    _c("label", { attrs: { for: "input-small" } }, [
+                      _vm._v("Per page: ")
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "b-col",
+                    { attrs: { sm: "5" } },
+                    [
+                      _c("b-form-select", {
+                        attrs: {
+                          id: "per-page-select",
+                          options: _vm.pageOptions,
+                          size: "sm"
+                        },
+                        model: {
+                          value: _vm.perPage,
+                          callback: function($$v) {
+                            _vm.perPage = $$v
+                          },
+                          expression: "perPage"
+                        }
+                      })
+                    ],
+                    1
                   )
-                ])
-              ]
-            )
-          ])
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c(
+                "b-container",
+                { staticStyle: { "margin-top": "10px" }, attrs: { fluid: "" } },
+                [
+                  _c("b-table", {
+                    attrs: {
+                      striped: "",
+                      hover: "",
+                      items: _vm.ticket,
+                      fields: _vm.fields_APPROVED,
+                      "current-page": _vm.currentPage,
+                      "per-page": _vm.perPage,
+                      filter: _vm.filter,
+                      "filter-included-fields": [
+                        "status",
+                        "externalName",
+                        "reference_code"
+                      ],
+                      "sort-by": _vm.sortBy,
+                      "sort-desc": _vm.sortDesc,
+                      "sort-direction": _vm.sortDirection,
+                      stacked: "md",
+                      "show-empty": ""
+                    },
+                    on: {
+                      "update:sortBy": function($event) {
+                        _vm.sortBy = $event
+                      },
+                      "update:sort-by": function($event) {
+                        _vm.sortBy = $event
+                      },
+                      "update:sortDesc": function($event) {
+                        _vm.sortDesc = $event
+                      },
+                      "update:sort-desc": function($event) {
+                        _vm.sortDesc = $event
+                      }
+                    },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "cell(supportType)",
+                        fn: function(row) {
+                          return [
+                            _c(
+                              "b",
+                              { staticStyle: { color: "rgb(35, 132, 179)" } },
+                              [_vm._v(_vm._s(row.value))]
+                            )
+                          ]
+                        }
+                      },
+                      {
+                        key: "cell(reference_code)",
+                        fn: function(row) {
+                          return [_c("b", [_vm._v(_vm._s(row.value))])]
+                        }
+                      },
+                      {
+                        key: "cell(externalName)",
+                        fn: function(row) {
+                          return [
+                            _vm._v(
+                              "\n                                                " +
+                                _vm._s(row.value.toUpperCase()) +
+                                "\n                                            "
+                            )
+                          ]
+                        }
+                      },
+                      {
+                        key: "cell(status)",
+                        fn: function(row) {
+                          return [
+                            row.item.status === "Pending"
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "b-badge",
+                                      {
+                                        staticClass: "mr-1 badge",
+                                        staticStyle: {
+                                          "background-color": "#f0ad4e"
+                                        }
+                                      },
+                                      [_vm._v("PENDING")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            row.item.status === "In Progress"
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "b-badge",
+                                      {
+                                        staticClass: "mr-1 badge",
+                                        staticStyle: {
+                                          "background-color": "#5cb85c"
+                                        }
+                                      },
+                                      [_vm._v("IN PROGRESS")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e(),
+                            _vm._v(" "),
+                            row.item.status === "Completed"
+                              ? _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "b-badge",
+                                      {
+                                        staticClass: "mr-1 badge",
+                                        staticStyle: {
+                                          "background-color": "#5bc0de"
+                                        }
+                                      },
+                                      [_vm._v("COMPLETED")]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e()
+                          ]
+                        }
+                      },
+                      {
+                        key: "cell(actions)",
+                        fn: function(row) {
+                          return [
+                            row.item.status === "Pending"
+                              ? _c("div", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "btn btn-warning notika-btn-warning",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.setStatus(
+                                            row.item,
+                                            row.index,
+                                            $event.target
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Attend Ticket")]
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            row.item.status === "In Progress"
+                              ? _c("div", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "btn btn-success notika-btn-success",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.completeTicket(
+                                            row.item,
+                                            row.index,
+                                            $event.target
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Mark Complete")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "btn btn-danger notika-btn-danger",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.addRemarksModal(
+                                            row.item,
+                                            row.index,
+                                            $event.target
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("Add Remarks")]
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            row.item.status === "Completed"
+                              ? _c("div", [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "btn btn-info notika-btn-info",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.viewRating(
+                                            row.item,
+                                            row.index,
+                                            $event.target
+                                          )
+                                        }
+                                      }
+                                    },
+                                    [_vm._v("View Rating")]
+                                  )
+                                ])
+                              : _vm._e()
+                          ]
+                        }
+                      },
+                      {
+                        key: "cell(details)",
+                        fn: function(row) {
+                          return [
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "btn btn-primary notika-btn-primary",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.viewTicketDetails(
+                                      row.item,
+                                      row.index,
+                                      $event.target
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v("View Details")]
+                            )
+                          ]
+                        }
+                      }
+                    ])
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "b-row",
+                    [
+                      _c("b-pagination", {
+                        attrs: {
+                          "total-rows": _vm.totalRows,
+                          "per-page": _vm.perPage,
+                          align: "center"
+                        },
+                        model: {
+                          value: _vm.currentPage,
+                          callback: function($$v) {
+                            _vm.currentPage = $$v
+                          },
+                          expression: "currentPage"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
         ])
       ]
     ),
@@ -202386,26 +201689,6 @@ var render = function() {
                 [
                   _c(
                     "li",
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/sa/dashboard" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-home",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                Dashboard\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
                     {},
                     [
                       _c(
@@ -202413,11 +201696,11 @@ var render = function() {
                         { attrs: { to: "/ticket/sa/reports" } },
                         [
                           _c("i", {
-                            staticClass: "fa fa-area-chart",
+                            staticClass: "fa fa-pie-chart",
                             attrs: { "aria-hidden": "true" }
                           }),
                           _vm._v(
-                            "\n                                Reports\n                            "
+                            "\n                                Dashboard\n                            "
                           )
                         ]
                       )
@@ -203081,27 +202364,6 @@ var render = function() {
                 [
                   _c(
                     "li",
-                    {},
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/sa/dashboard" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-home",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                Dashboard\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
                     { staticClass: "active" },
                     [
                       _c(
@@ -203109,11 +202371,11 @@ var render = function() {
                         { attrs: { to: "/ticket/sa/reports" } },
                         [
                           _c("i", {
-                            staticClass: "fa fa-area-chart",
+                            staticClass: "fa fa-pie-chart",
                             attrs: { "aria-hidden": "true" }
                           }),
                           _vm._v(
-                            "\n                                Reports\n                            "
+                            "\n                                Dashboard\n                            "
                           )
                         ]
                       )
@@ -203178,8 +202440,6 @@ var render = function() {
         ])
       ])
     ]),
-    _vm._v(" "),
-    _vm._m(0),
     _vm._v(" "),
     _c("div", { staticClass: "container" }, [
       _c("div", { staticClass: "row" }, [
@@ -203345,32 +202605,121 @@ var render = function() {
         _c(
           "div",
           {
-            staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12",
-            staticStyle: { margin: "30px 0" }
+            staticClass: "col-lg-3 col-md-6 col-sm-6 col-xs-12",
+            staticStyle: { margin: "10px 0" }
           },
           [
-            _c("div", { staticClass: "breadcomb-list" }, [
-              _c("div", { staticClass: "row" }, [
-                _c(
-                  "div",
-                  { staticClass: "col-lg-6 col-md-6 col-sm-6 col-xs-12" },
-                  [
-                    _c("h5", [_vm._v("Employee Division Count")]),
+            _c("div", { staticClass: "breadcomb-list-noBG" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30"
+                },
+                [
+                  _c("div", { staticClass: "website-traffic-ctn" }, [
+                    _c("h2", [
+                      _c("span", { staticClass: "counter" }, [
+                        _vm._v(
+                          _vm._s(_vm.ticketStatusCounts.total_status_count)
+                        )
+                      ])
+                    ]),
                     _vm._v(" "),
-                    _c("canvas", { ref: "divisionChart" })
-                  ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "col-lg-6 col-md-6 col-sm-6 col-xs-12" },
-                  [
-                    _c("h5", [_vm._v("Hardware, Software, Both & Livestream")]),
+                    _c("p", [_vm._v("Total Requested Tickets")])
+                  ])
+                ]
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "col-lg-3 col-md-6 col-sm-6 col-xs-12",
+            staticStyle: { margin: "10px 0" }
+          },
+          [
+            _c("div", { staticClass: "breadcomb-list-noBG" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30"
+                },
+                [
+                  _c("div", { staticClass: "website-traffic-ctn" }, [
+                    _c("h2", [
+                      _c("span", { staticClass: "counter" }, [
+                        _vm._v(_vm._s(_vm.ticketStatusCounts.pending_count))
+                      ])
+                    ]),
                     _vm._v(" "),
-                    _c("canvas", { ref: "hardwareSoftwareChart" })
-                  ]
-                )
-              ])
+                    _c("p", [_vm._v("Total Pending Tickets")])
+                  ])
+                ]
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "col-lg-3 col-md-6 col-sm-6 col-xs-12",
+            staticStyle: { margin: "10px 0" }
+          },
+          [
+            _c("div", { staticClass: "breadcomb-list-noBG" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30"
+                },
+                [
+                  _c("div", { staticClass: "website-traffic-ctn" }, [
+                    _c("h2", [
+                      _c("span", { staticClass: "counter" }, [
+                        _vm._v(_vm._s(_vm.ticketStatusCounts.in_progress_count))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [_vm._v("Total In Progress Tickets")])
+                  ])
+                ]
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass: "col-lg-3 col-md-6 col-sm-6 col-xs-12",
+            staticStyle: { margin: "10px 0" }
+          },
+          [
+            _c("div", { staticClass: "breadcomb-list-noBG" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "wb-traffic-inner notika-shadow sm-res-mg-t-30 tb-res-mg-t-30"
+                },
+                [
+                  _c("div", { staticClass: "website-traffic-ctn" }, [
+                    _c("h2", [
+                      _c("span", { staticClass: "counter" }, [
+                        _vm._v(_vm._s(_vm.ticketStatusCounts.completed_count))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [_vm._v("Total Completed Tickets")])
+                  ])
+                ]
+              )
             ])
           ]
         )
@@ -203379,19 +202728,52 @@ var render = function() {
     _vm._v(" "),
     _c("div", { staticClass: "container" }, [
       _c("div", { staticClass: "row" }, [
-        _c(
-          "div",
-          {
-            staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12",
-            staticStyle: { margin: "30px 0" }
-          },
-          [
-            _c("div", { staticClass: "breadcomb-list" }, [
+        _c("div", { staticClass: "col-lg-5 col-md-6 col-sm-12 col-xs-12" }, [
+          _c(
+            "div",
+            {
+              staticClass: "breadcomb-list",
+              staticStyle: { margin: "20px 0" }
+            },
+            [
               _c("div", { staticClass: "row" }, [
                 _c(
                   "div",
                   { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
                   [
+                    _c("h5", [_vm._v("Internal / External Tickets")]),
+                    _vm._v(" "),
+                    _c("canvas", { ref: "internalExternalChart" })
+                  ]
+                )
+              ])
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-lg-7 col-md-6 col-sm-12 col-xs-12" }, [
+          _c(
+            "div",
+            {
+              staticClass: "breadcomb-list",
+              staticStyle: { margin: "20px 0" }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
+                  [
+                    _c("h5", { staticStyle: { "text-align": "center" } }, [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(this.selectedMonth) +
+                          " " +
+                          _vm._s(this.selectedYear) +
+                          " TICKET SUMMARY\n                            "
+                      )
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "b-container",
                       { attrs: { fluid: "" } },
@@ -203400,8 +202782,98 @@ var render = function() {
                           attrs: {
                             striped: "",
                             hover: "",
-                            items: _vm.ticketDetails_type,
-                            fields: _vm.fields_ticketDetails_type,
+                            items: _vm.ticketDetails_hardware,
+                            fields: _vm.fields_ticket_summary,
+                            "current-page": _vm.currentPage,
+                            "per-page": _vm.perPage_ticketSummary,
+                            filter: _vm.filter,
+                            "filter-included-fields": _vm.filterOn,
+                            "sort-by": _vm.sortBy,
+                            "sort-desc": _vm.sortDesc,
+                            "sort-direction": _vm.sortDirection,
+                            stacked: "md",
+                            "show-empty": ""
+                          },
+                          on: {
+                            "update:sortBy": function($event) {
+                              _vm.sortBy = $event
+                            },
+                            "update:sort-by": function($event) {
+                              _vm.sortBy = $event
+                            },
+                            "update:sortDesc": function($event) {
+                              _vm.sortDesc = $event
+                            },
+                            "update:sort-desc": function($event) {
+                              _vm.sortDesc = $event
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "b-row",
+                          [
+                            _c("b-pagination", {
+                              attrs: {
+                                "total-rows": _vm.totalRows,
+                                "per-page": _vm.perPage_ticketSummary,
+                                align: "center"
+                              },
+                              model: {
+                                value: _vm.currentPage,
+                                callback: function($$v) {
+                                  _vm.currentPage = $$v
+                                },
+                                expression: "currentPage"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-lg-7 col-md-6 col-sm-12 col-xs-12" }, [
+          _c(
+            "div",
+            {
+              staticClass: "breadcomb-list",
+              staticStyle: { margin: "20px 0" }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
+                  [
+                    _c("h5", { staticStyle: { "text-align": "center" } }, [
+                      _vm._v(
+                        "\n                                Internal Client Ticket\n                            "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-container",
+                      { attrs: { fluid: "" } },
+                      [
+                        _c("b-table", {
+                          attrs: {
+                            striped: "",
+                            hover: "",
+                            items: _vm.ticketDetails_hardware,
+                            fields: _vm.fields_ticketDetails_hardware,
                             "current-page": _vm.currentPage,
                             "per-page": _vm.perPage,
                             filter: _vm.filter,
@@ -203426,7 +202898,28 @@ var render = function() {
                               _vm.sortDesc = $event
                             }
                           }
-                        })
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "b-row",
+                          [
+                            _c("b-pagination", {
+                              attrs: {
+                                "total-rows": _vm.totalRows,
+                                "per-page": _vm.perPage,
+                                align: "center"
+                              },
+                              model: {
+                                value: _vm.currentPage,
+                                callback: function($$v) {
+                                  _vm.currentPage = $$v
+                                },
+                                expression: "currentPage"
+                              }
+                            })
+                          ],
+                          1
+                        )
                       ],
                       1
                     )
@@ -203434,9 +202927,183 @@ var render = function() {
                   1
                 )
               ])
-            ])
-          ]
-        )
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-lg-5 col-md-6 col-sm-12 col-xs-12" }, [
+          _c(
+            "div",
+            {
+              staticClass: "breadcomb-list",
+              staticStyle: { margin: "20px 0" }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
+                  [
+                    _c("h5", { staticStyle: { "text-align": "center" } }, [
+                      _vm._v(
+                        "\n                                Internal Client Ticket - Technical Support Type\n                            "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "b-container",
+                      { attrs: { fluid: "" } },
+                      [
+                        _c("b-table", {
+                          attrs: {
+                            striped: "",
+                            hover: "",
+                            items: _vm.ticketDetails_hardware,
+                            fields: _vm.fields_technicalSupport,
+                            "current-page": _vm.currentPage,
+                            "per-page": _vm.perPage,
+                            filter: _vm.filter,
+                            "filter-included-fields": _vm.filterOn,
+                            "sort-by": _vm.sortBy,
+                            "sort-desc": _vm.sortDesc,
+                            "sort-direction": _vm.sortDirection,
+                            stacked: "md",
+                            "show-empty": ""
+                          },
+                          on: {
+                            "update:sortBy": function($event) {
+                              _vm.sortBy = $event
+                            },
+                            "update:sort-by": function($event) {
+                              _vm.sortBy = $event
+                            },
+                            "update:sortDesc": function($event) {
+                              _vm.sortDesc = $event
+                            },
+                            "update:sort-desc": function($event) {
+                              _vm.sortDesc = $event
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "b-row",
+                          [
+                            _c("b-pagination", {
+                              attrs: {
+                                "total-rows": _vm.totalRows,
+                                "per-page": _vm.perPage,
+                                align: "center"
+                              },
+                              model: {
+                                value: _vm.currentPage,
+                                callback: function($$v) {
+                                  _vm.currentPage = $$v
+                                },
+                                expression: "currentPage"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "container" }, [
+      _c("div", { staticClass: "row" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-lg-7 col-md-6 col-sm-12 col-xs-12" }, [
+          _c(
+            "div",
+            {
+              staticClass: "breadcomb-list",
+              staticStyle: { margin: "20px 0" }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
+                  [
+                    _c(
+                      "b-container",
+                      { attrs: { fluid: "" } },
+                      [
+                        _c("b-table", {
+                          attrs: {
+                            striped: "",
+                            hover: "",
+                            items: _vm.ticketDetails_division,
+                            fields: _vm.fields_ticketDetails_division,
+                            "current-page": _vm.currentPage,
+                            "per-page": _vm.perPage,
+                            filter: _vm.filter,
+                            "filter-included-fields": _vm.filterOn,
+                            "sort-by": _vm.sortBy,
+                            "sort-desc": _vm.sortDesc,
+                            "sort-direction": _vm.sortDirection,
+                            stacked: "md",
+                            "show-empty": ""
+                          },
+                          on: {
+                            "update:sortBy": function($event) {
+                              _vm.sortBy = $event
+                            },
+                            "update:sort-by": function($event) {
+                              _vm.sortBy = $event
+                            },
+                            "update:sortDesc": function($event) {
+                              _vm.sortDesc = $event
+                            },
+                            "update:sort-desc": function($event) {
+                              _vm.sortDesc = $event
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "b-row",
+                          [
+                            _c("b-pagination", {
+                              attrs: {
+                                "total-rows": _vm.totalRows,
+                                "per-page": _vm.perPage,
+                                align: "center"
+                              },
+                              model: {
+                                value: _vm.currentPage,
+                                callback: function($$v) {
+                                  _vm.currentPage = $$v
+                                },
+                                expression: "currentPage"
+                              }
+                            })
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _vm._m(1)
+        ])
       ])
     ])
   ])
@@ -203446,47 +203113,56 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "breadcomb-area" }, [
-      _c("div", { staticClass: "container" }, [
+    return _c("div", { staticClass: "col-lg-5 col-md-6 col-sm-12 col-xs-12" }, [
+      _c(
+        "div",
+        { staticClass: "breadcomb-list", staticStyle: { margin: "20px 0" } },
+        [
+          _c("div", { staticClass: "row" }, [
+            _c(
+              "div",
+              { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
+              [_c("h5", [_vm._v("Agency / Division Tickets")])]
+            )
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "breadcomb-list", staticStyle: { margin: "20px 0" } },
+        [
+          _c("div", { staticClass: "row" }, [
+            _c(
+              "div",
+              {
+                staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12",
+                staticStyle: { width: "300px", height: "250px" }
+              },
+              [_c("h5", [_vm._v("Internal vs External Ticket Counts")])]
+            )
+          ])
+        ]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "breadcomb-list", staticStyle: { margin: "20px 0" } },
+      [
         _c("div", { staticClass: "row" }, [
           _c(
             "div",
             { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
-            [
-              _c("div", { staticClass: "breadcomb-list" }, [
-                _c("div", { staticClass: "row" }, [
-                  _c(
-                    "div",
-                    { staticClass: "col-lg-6 col-md-6 col-sm-6 col-xs-12" },
-                    [
-                      _c("div", { staticClass: "breadcomb-wp" }, [
-                        _c("div", { staticClass: "breadcomb-icon" }, [
-                          _c("i", {
-                            staticClass: "fa fa-area-chart",
-                            attrs: { "aria-hidden": "true" }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("div", { staticClass: "breadcomb-ctn" }, [
-                          _c("h2", [_vm._v("Reports")]),
-                          _vm._v(" "),
-                          _c("p", { staticStyle: { "font-size": "12px" } }, [
-                            _vm._v("Home > "),
-                            _c("span", { staticClass: "bread-ntd" }, [
-                              _vm._v("Reports")
-                            ])
-                          ])
-                        ])
-                      ])
-                    ]
-                  )
-                ])
-              ])
-            ]
+            [_c("h5", [_vm._v("Internal vs External Ticket Counts")])]
           )
         ])
-      ])
-    ])
+      ]
+    )
   }
 ]
 render._withStripped = true
@@ -220356,10 +220032,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_Admin_Ticket_Admin_My_Tickets_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./views/Admin/Ticket-Admin-My-Tickets.vue */ "./resources/js/views/Admin/Ticket-Admin-My-Tickets.vue");
 /* harmony import */ var _views_Admin_Ticket_Admin_Create_Ticket_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./views/Admin/Ticket-Admin-Create-Ticket.vue */ "./resources/js/views/Admin/Ticket-Admin-Create-Ticket.vue");
 /* harmony import */ var _views_Ticket_Home_SA_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./views/Ticket-Home-SA.vue */ "./resources/js/views/Ticket-Home-SA.vue");
-/* harmony import */ var _views_SuperAdmin_Ticket_SA_Dashboard_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./views/SuperAdmin/Ticket-SA-Dashboard.vue */ "./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue");
-/* harmony import */ var _views_SuperAdmin_Ticket_SA_Reports_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./views/SuperAdmin/Ticket-SA-Reports.vue */ "./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue");
-/* harmony import */ var _views_SuperAdmin_Ticket_SA_New_Tickets_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./views/SuperAdmin/Ticket-SA-New-Tickets.vue */ "./resources/js/views/SuperAdmin/Ticket-SA-New-Tickets.vue");
-/* harmony import */ var _views_SuperAdmin_Ticket_SA_My_Tickets_vue__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./views/SuperAdmin/Ticket-SA-My-Tickets.vue */ "./resources/js/views/SuperAdmin/Ticket-SA-My-Tickets.vue");
+/* harmony import */ var _views_SuperAdmin_Ticket_SA_Reports_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./views/SuperAdmin/Ticket-SA-Reports.vue */ "./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue");
+/* harmony import */ var _views_SuperAdmin_Ticket_SA_New_Tickets_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./views/SuperAdmin/Ticket-SA-New-Tickets.vue */ "./resources/js/views/SuperAdmin/Ticket-SA-New-Tickets.vue");
+/* harmony import */ var _views_SuperAdmin_Ticket_SA_My_Tickets_vue__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./views/SuperAdmin/Ticket-SA-My-Tickets.vue */ "./resources/js/views/SuperAdmin/Ticket-SA-My-Tickets.vue");
 
 
  //TICKETS
@@ -220437,19 +220112,19 @@ var routes = [{
   children: [{
     path: '/ticket/sa/dashboard',
     name: 'ticket-sa-dashboard',
-    component: _views_SuperAdmin_Ticket_SA_Dashboard_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
+    component: _views_SuperAdmin_Ticket_SA_Reports_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
   }, {
     path: '/ticket/sa/reports',
     name: 'ticket-sa-reports',
-    component: _views_SuperAdmin_Ticket_SA_Reports_vue__WEBPACK_IMPORTED_MODULE_16__["default"]
+    component: _views_SuperAdmin_Ticket_SA_Reports_vue__WEBPACK_IMPORTED_MODULE_15__["default"]
   }, {
     path: '/ticket/sa/newtickets',
     name: 'ticket-sa-newtickets',
-    component: _views_SuperAdmin_Ticket_SA_New_Tickets_vue__WEBPACK_IMPORTED_MODULE_17__["default"]
+    component: _views_SuperAdmin_Ticket_SA_New_Tickets_vue__WEBPACK_IMPORTED_MODULE_16__["default"]
   }, {
     path: '/ticket/sa/mytickets',
     name: 'ticket-sa-mytickets',
-    component: _views_SuperAdmin_Ticket_SA_My_Tickets_vue__WEBPACK_IMPORTED_MODULE_18__["default"]
+    component: _views_SuperAdmin_Ticket_SA_My_Tickets_vue__WEBPACK_IMPORTED_MODULE_17__["default"]
   }]
 }, //Login Routes
 {
@@ -220580,7 +220255,7 @@ function httpFile() {
 /*!*************************************************!*\
   !*** ./resources/js/services/ticket_service.js ***!
   \*************************************************/
-/*! exports provided: createTicket, createAccount, addTicket, addTicket_internal, addTicket_external, addTicketStatus_Pending, addTicketStatus_Pending_STARBOOKS, addActivityLog, addRemarksLog, loadActivityLog, loadRemarksLog, technical_addTicket_internal, technical_addTicketStatus_Pending, technical_addTicket_external, technical_addTicketStatus_Pending_external, technical_addTicket_starbooks, technical_addTicketStatus_starbooks, updateStatus, updatePending, updatePending_Ticket, updateApproved, updateApproved_, updateRemarks, updateApprovedStatus, updateFeedbackStatus, updateRating, loadEmployees, updateInProg_Ticket1, updateInProg_Ticket_1, updateInProg_TicketStatus_1, updateInProg_Ticket_2, updateInProg_TicketStatus_2, getEmployees, getUserData, getUserAssignedTicket, setRefCode, setName, setDisplayName, getTicketStatus, getAllTicketDetails, getAllTicketDetails_Assigned, getAllTicketDetails_Approved_Assigned, getAllTicketDetails_InProgress_Assigned, getAllTicketDetails_Completed_Assigned, getAllTicketDetails_Approved, getAllTicketDetails_InProgress, getAllTicketDetails_Completed, getAllTicketDetails_Rescheduled, loadTicketDetails_type, loadTicketDetails, loadTicketDetails_external, loadTicketDetails_New, countEntry, countAll, countNew_All, countAssigned_All, countInProgress_All, countCompleted_All, countAssigned_staff, countInProgress_staff, countCompleted_staff, countTickets_PerStatus, countTickets_Status_Staff, countStaffTickets_PerStatus, validateEmpID, getEmpDetails, validateGovType, validateRefCode, validateRefCodeDetails, getMonthlyReportData, fetchEmployeeDivisionCounts, fetchHardwareSoftwareCounts, fetchTicketTypeCounts */
+/*! exports provided: createTicket, createAccount, addTicket, addTicket_internal, addTicket_external, addTicketStatus_Pending, addTicketStatus_Pending_STARBOOKS, addActivityLog, addRemarksLog, loadActivityLog, loadRemarksLog, technical_addTicket_internal, technical_addTicketStatus_Pending, technical_addTicket_external, technical_addTicketStatus_Pending_external, technical_addTicket_starbooks, technical_addTicketStatus_starbooks, updateStatus, updatePending, updatePending_Ticket, updateApproved, updateApproved_, updateRemarks, updateApprovedStatus, updateFeedbackStatus, updateRating, loadEmployees, updateInProg_Ticket1, updateInProg_Ticket_1, updateInProg_TicketStatus_1, updateInProg_Ticket_2, updateInProg_TicketStatus_2, getEmployees, getUserData, getUserAssignedTicket, setRefCode, setName, setDisplayName, getTicketStatus, getAllTicketDetails, getAllTicketDetails_Assigned, getAllTicketDetails_Approved_Assigned, getAllTicketDetails_InProgress_Assigned, getAllTicketDetails_Completed_Assigned, getAllTicketDetails_Approved, getAllTicketDetails_InProgress, getAllTicketDetails_Completed, getAllTicketDetails_Rescheduled, loadTicketDetails_type, loadTicketDetails, loadTicketDetails_external, loadTicketDetails_New, countEntry, countAll, countNew_All, countAssigned_All, countInProgress_All, countCompleted_All, countAssigned_staff, countInProgress_staff, countCompleted_staff, countTickets_PerStatus, countTickets_Status_Staff, countStaffTickets_PerStatus, validateEmpID, getEmpDetails, validateGovType, validateRefCode, validateRefCodeDetails, getMonthlyReportData, fetchEmployeeDivisionCounts, fetchHardwareSoftwareCounts, fetchTicketTypeCounts, fetchTicketStatusCounts, fetchInternalExternalCounts */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -220658,6 +220333,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchEmployeeDivisionCounts", function() { return fetchEmployeeDivisionCounts; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchHardwareSoftwareCounts", function() { return fetchHardwareSoftwareCounts; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchTicketTypeCounts", function() { return fetchTicketTypeCounts; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchTicketStatusCounts", function() { return fetchTicketStatusCounts; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchInternalExternalCounts", function() { return fetchInternalExternalCounts; });
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./http_service */ "./resources/js/services/http_service.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
@@ -220911,6 +220588,26 @@ function fetchTicketTypeCounts() {
     }
   });
 }
+function fetchTicketStatusCounts() {
+  var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var year = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().get('/ticket-status-counts', {
+    params: {
+      month: month,
+      year: year
+    }
+  });
+}
+function fetchInternalExternalCounts() {
+  var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var year = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().get('/internal-external-counts', {
+    params: {
+      month: month,
+      year: year
+    }
+  });
+}
 
 /***/ }),
 
@@ -220928,23 +220625,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); // export default new Vuex.Store({
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  state: {
+    apiURL: 'http://127.0.0.1:8000/api',
+    serverPath: 'http://127.0.0.1:8000'
+  },
+  mutations: {},
+  actions: {}
+})); // export default new Vuex.Store({
 //     state: {
-//         apiURL: 'http://127.0.0.1:8000/api',
-//         serverPath: 'http://127.0.0.1:8000'
+//         apiURL: 'http://ticketing-admin.stii.local/api',
+//         serverPath: 'http://ticketing-admin.stii.local'
 //     },
 //     mutations: {},
 //     actions: {}
 // });
-
-/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
-  state: {
-    apiURL: 'http://ticketing-admin.stii.local/api',
-    serverPath: 'http://ticketing-admin.stii.local'
-  },
-  mutations: {},
-  actions: {}
-}));
 
 /***/ }),
 
@@ -221911,75 +221607,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_Staff_My_Tickets_vue_vue_type_template_id_5e445c36___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_Staff_My_Tickets_vue_vue_type_template_id_5e445c36___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue":
-/*!***************************************************************!*\
-  !*** ./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue ***!
-  \***************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Ticket_SA_Dashboard_vue_vue_type_template_id_db4337cc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Ticket-SA-Dashboard.vue?vue&type=template&id=db4337cc& */ "./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=template&id=db4337cc&");
-/* harmony import */ var _Ticket_SA_Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Ticket-SA-Dashboard.vue?vue&type=script&lang=js& */ "./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Ticket_SA_Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Ticket_SA_Dashboard_vue_vue_type_template_id_db4337cc___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Ticket_SA_Dashboard_vue_vue_type_template_id_db4337cc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  null,
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************!*\
-  !*** ./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Ticket-SA-Dashboard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=template&id=db4337cc&":
-/*!**********************************************************************************************!*\
-  !*** ./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=template&id=db4337cc& ***!
-  \**********************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Dashboard_vue_vue_type_template_id_db4337cc___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Ticket-SA-Dashboard.vue?vue&type=template&id=db4337cc& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Dashboard.vue?vue&type=template&id=db4337cc&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Dashboard_vue_vue_type_template_id_db4337cc___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Dashboard_vue_vue_type_template_id_db4337cc___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
