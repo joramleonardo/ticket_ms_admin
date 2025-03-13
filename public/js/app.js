@@ -21556,24 +21556,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -21591,7 +21573,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       totalRows: 0,
       currentPage: 1,
       perPage: 5,
-      perPage_ticketSummary: 2,
+      perPage_ticketSummary: 4,
       filterOn: [],
       filter: null,
       sortDirection: 'asc',
@@ -21726,7 +21708,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         key: 'total_internal_external',
         label: 'TOTAL'
       }],
-      fields_ticketDetails_hardware: [{
+      fields_internal_technicalSupport: [{
         key: 'month',
         label: 'Month'
       }, {
@@ -21742,14 +21724,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         key: 'total_infoSystem',
         label: 'IS'
       }, {
-        key: 'total_external',
-        label: 'External'
+        key: 'total_twg',
+        label: 'TWG'
       }, {
         key: 'total_internal',
-        label: 'Internal'
-      }, // { key: 'total_twg', label: 'TWG'},
-      {
-        key: 'total_supportType',
         label: 'TOTAL'
       }],
       ticketDetails_type: [],
@@ -21794,7 +21772,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         in_progress_count: 0,
         completed_count: 0
       },
-      chartInstances: {}
+      total_status_count: 0,
+      chartInstances: {},
+      total_external_ticket: 0,
+      total_internal_ticket: 0,
+      ratingSummary: {
+        rating_5: 0,
+        rating_4: 0,
+        rating_3: 0,
+        rating_2: 0,
+        rating_1: 0
+      },
+      fields_rating_summary: [{
+        key: 'excellent',
+        label: 'Excellent (5 ⭐)'
+      }, {
+        key: 'very_good',
+        label: 'Very Good (4 ⭐)'
+      }, {
+        key: 'good',
+        label: 'Good (3 ⭐)'
+      }, {
+        key: 'poor',
+        label: 'Poor (2 ⭐)'
+      }, {
+        key: 'very_poor',
+        label: 'Very Poor (1 ⭐)'
+      }, {
+        key: 'csm',
+        label: 'CSM'
+      }],
+      total_divTicket_CRPD: 0,
+      total_divTicket_IRAD: 0,
+      total_divTicket_FAD: 0,
+      total_divTicket_MISPS: 0
     };
   },
   computed: {
@@ -21853,6 +21864,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _this2.fetchTicketStatusCounts();
 
               case 12:
+                _context.next = 14;
+                return _this2.fetchRatingSummary();
+
+              case 14:
               case "end":
                 return _context.stop();
             }
@@ -21925,29 +21940,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 3:
                 response = _context3.sent;
                 _this4.ticketStatusCounts = response.data;
-                console.log("HELLO");
-                console.log(_this4.ticketStatusCounts);
-                _context3.next = 12;
+                _this4.total_status_count = Number(_this4.ticketStatusCounts.new_count1) + Number(_this4.ticketStatusCounts.pending_count1) + Number(_this4.ticketStatusCounts.in_progress_count1) + Number(_this4.ticketStatusCounts.completed_count1);
+                _context3.next = 11;
                 break;
 
-              case 9:
-                _context3.prev = 9;
+              case 8:
+                _context3.prev = 8;
                 _context3.t0 = _context3["catch"](0);
                 console.error("Error fetching ticket status counts:", _context3.t0);
 
-              case 12:
+              case 11:
               case "end":
                 return _context3.stop();
             }
           }
-        }, _callee3, null, [[0, 9]]);
+        }, _callee3, null, [[0, 8]]);
       }))();
     },
     loadInternalExternalChart: function loadInternalExternalChart() {
       var _this5 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
-        var response, internalData, externalData;
+        var response, internal, external;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
@@ -21972,16 +21986,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 8:
                 // Extract values (Set default to 0 if missing)
-                internalData = Number(response.data.internal_count) || 0;
-                externalData = Number(response.data.external_count) || 0;
-                console.log("AAAA");
-                console.log(internalData);
+                internal = Number(_this5.total_internal_ticket) || 0;
+                external = Number(_this5.total_external_ticket) || 0;
 
-                _this5.createChart("internalExternalChart", ["Internal", "Enternal"], [internalData, externalData], "Internal External", ["#eaf2f8", "#7fb3d5"], // Pie Chart Colors
-                "pie" // ✅ Change Chart Type to Pie
-                );
+                _this5.createChart("internalExternalChart", ["Internal", "Enternal"], [internal, external], "Internal External", ["#eaf2f8", "#7fb3d5"], "pie", {
+                  plugins: {
+                    legend: {
+                      display: true,
+                      position: 'right' // Moves the legend beside the chart
 
-              case 13:
+                    }
+                  }
+                });
+
+              case 11:
               case "end":
                 return _context4.stop();
             }
@@ -22020,10 +22038,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 return _context5.abrupt("return");
 
               case 11:
-                CRPD = Number(data.CRPD) || 0;
-                IRAD = Number(data.IRAD) || 0;
-                FAD = Number(data.FAD) || 0;
-                OD_MISPS = Number(data.OD_MISPS) || 0; // ✅ Compute total number of tickets
+                _this6.total_divTicket_CRPD = Number(data.CRPD);
+                _this6.total_divTicket_IRAD = Number(data.IRAD);
+                _this6.total_divTicket_FAD = Number(data.FAD);
+                _this6.total_divTicket_MISPS = Number(data.OD_MISPS);
+                console.log("CRPD: " + _this6.total_divTicket_CRPD);
+                CRPD = _this6.total_divTicket_CRPD || 0;
+                IRAD = _this6.total_divTicket_IRAD || 0;
+                FAD = _this6.total_divTicket_FAD || 0;
+                OD_MISPS = _this6.total_divTicket_MISPS || 0; // ✅ Compute total number of tickets
 
                 totalTickets = CRPD + IRAD + FAD + OD_MISPS;
 
@@ -22031,7 +22054,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 "pie" // ✅ Change Chart Type to Pie
                 );
 
-              case 17:
+              case 22:
               case "end":
                 return _context5.stop();
             }
@@ -22058,22 +22081,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 4:
                 response = _context6.sent;
                 _this7.ticketDetails_hardware = response.data;
+                _this7.total_internal_ticket = Number(_this7.ticketDetails_hardware[0].total_internal);
+                _this7.total_external_ticket = Number(_this7.ticketDetails_hardware[0].total_external);
                 data = response.data[0];
 
                 if (_this7.$refs.hardwareSoftwareChart) {
-                  _context6.next = 10;
+                  _context6.next = 12;
                   break;
                 }
 
                 console.error("hardwareSoftwareChart not found in the DOM.");
                 return _context6.abrupt("return");
 
-              case 10:
+              case 12:
                 _this7.createChart("hardwareSoftwareChart", ["Hardware", "Software", "Both", "Livestream"], [data.hardware_count, data.software_count, data.both_count, data.total_livestream], "Support Type Counts", ["#FF5733", "#33B5E5", "#FFC300", "#8E44AD"], // Pie Chart Colors
                 "pie" // ✅ Change Chart Type to Pie
                 );
 
-              case 11:
+              case 13:
               case "end":
                 return _context6.stop();
             }
@@ -22100,28 +22125,108 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 4:
                 response = _context7.sent;
                 _this8.ticketDetails_type = response.data;
-                console.log("aa");
-                console.log(response.data);
                 data = response.data[0];
 
                 if (_this8.$refs.ticketTypeChart) {
-                  _context7.next = 12;
+                  _context7.next = 10;
                   break;
                 }
 
                 console.error("ticketTypeChart not found in the DOM.");
                 return _context7.abrupt("return");
 
-              case 12:
+              case 10:
                 _this8.createChart("ticketTypeChart", ["PC Setup", "Network", "Printer", "Zoom", "Website", "STARBOOKS", "Installation", "Others"], [data.pc_setup_troubleshooting, data.network_related, data.printer_related, data.zoom_related, data.website_related, data.starbooks_related, data.installation_related, data.others_type], "Ticket Types", ["#3498db", "#2ecc71", "#f39c12", "#e74c3c", "#9b59b6", "#34495e", "#1abc9c", "#95a5a6"], // Pie Chart Colors
                 "doughnut");
 
-              case 13:
+              case 11:
               case "end":
                 return _context7.stop();
             }
           }
         }, _callee7);
+      }))();
+    },
+    // async fetchRatingSummary() {
+    //     try {
+    //         const response = await ticket_service.fetchRatingSummary(this.selectedMonth, this.selectedYear);
+    //         if (response.data) {
+    //             this.ratingSummary = {
+    //                 rating_5: response.data.rating_5 || 0,
+    //                 rating_4: response.data.rating_4 || 0,
+    //                 rating_3: response.data.rating_3 || 0,
+    //                 rating_2: response.data.rating_2 || 0,
+    //                 rating_1: response.data.rating_1 || 0
+    //             };
+    //         } else {
+    //             this.ratingSummary = { rating_5: 0, rating_4: 0, rating_3: 0, rating_2: 0, rating_1: 0 };
+    //         }
+    //         console.log("Rating Summary:", this.ratingSummary);
+    //     } catch (error) {
+    //         console.error("Error fetching rating summary:", error);
+    //     }
+    // },
+    fetchRatingSummary: function fetchRatingSummary() {
+      var _this9 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                _context8.prev = 0;
+                _context8.next = 3;
+                return _services_ticket_service__WEBPACK_IMPORTED_MODULE_1__["fetchRatingSummary"](_this9.selectedMonth, _this9.selectedYear);
+
+              case 3:
+                response = _context8.sent;
+
+                if (response.data) {
+                  _this9.ratingSummary = {
+                    rating_5: response.data.rating_5 || 0,
+                    rating_4: response.data.rating_4 || 0,
+                    rating_3: response.data.rating_3 || 0,
+                    rating_2: response.data.rating_2 || 0,
+                    rating_1: response.data.rating_1 || 0,
+                    csm: _this9.getCSMValue(_this9.selectedMonth, _this9.selectedYear) // ✅ Add CSM Value
+
+                  };
+                } else {
+                  _this9.ratingSummary = {
+                    rating_5: 0,
+                    rating_4: 0,
+                    rating_3: 0,
+                    rating_2: 0,
+                    rating_1: 0,
+                    csm: _this9.getCSMValue(_this9.selectedMonth, _this9.selectedYear) // ✅ Default CSM Value
+
+                  };
+                }
+
+                _context8.next = 11;
+                break;
+
+              case 7:
+                _context8.prev = 7;
+                _context8.t0 = _context8["catch"](0);
+                console.error("Error fetching rating summary:", _context8.t0);
+                _this9.ratingSummary = {
+                  rating_5: 0,
+                  rating_4: 0,
+                  rating_3: 0,
+                  rating_2: 0,
+                  rating_1: 0,
+                  csm: _this9.getCSMValue(_this9.selectedMonth, _this9.selectedYear) // ✅ Default CSM Value
+
+                };
+
+              case 11:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8, null, [[0, 7]]);
       }))();
     },
     // createChart(chartRef, labels, data, label, colors) {
@@ -22149,6 +22254,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }]
         }
       });
+    },
+    getCSMValue: function getCSMValue(month, year) {
+      var csmValues = {
+        "2024": {
+          "January": 2,
+          "February": 15,
+          "March": 19,
+          "April": 13,
+          "May": 5,
+          "June": 9,
+          "July": 19,
+          "August": 9,
+          "September": 14,
+          "October": 11,
+          "November": 10,
+          "December": 5
+        },
+        "2025": {
+          "January": 18,
+          "February": 21,
+          "March": 19,
+          "April": 0,
+          "May": 0,
+          "June": 0,
+          "July": 0,
+          "August": 0,
+          "September": 0,
+          "October": 0,
+          "November": 0,
+          "December": 0
+        }
+      }; // If "All Years" and "All Months" are selected
+
+      if ((year === "" || year === "All Years") && (month === "" || month === "All Months")) {
+        return Object.values(csmValues).reduce(function (total, months) {
+          return total + Object.values(months).reduce(function (sum, val) {
+            return sum + val;
+          }, 0);
+        }, 0);
+      } // If "All Months" is selected
+
+
+      if (month === "" || month === "All Months") {
+        return Object.values(csmValues[year] || {}).reduce(function (sum, val) {
+          return sum + val;
+        }, 0);
+      }
+
+      return csmValues[year] && csmValues[year][month] ? csmValues[year][month] : 0; // ✅ Default to 0 if not found
     }
   }
 });
@@ -99978,6 +100132,25 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 // module
 exports.push([module.i, "\n.divider-custom[data-v-331e54fc] {\n    margin: 1px 0 1px !important;\n}\n.btn-submit-rating[data-v-331e54fc]{\n    background-color: #FF7F50 !important; \n    border-color: #FF7F50 !important;\n    color: white !important;\n}\n.btn-submit-rating[data-v-331e54fc]:hover{\n    background-color: #FF6347 !important; \n    border-color: #FF6347 !important;\n}\n.btn-submit-rating[data-v-331e54fc]:hover{\n    background-color: #FF6347 !important; \n    border-color: #FF6347 !important;\n}\n.btn-copy-arta-link[data-v-331e54fc]{\n    background-color: #00BFFF !important; \n    border-color: #00BFFF !important;\n    color: white !important;\n}\n.btn-copy-arta-link[data-v-331e54fc]:hover{\n    background-color: #1E90FF !important; \n    border-color: #1E90FF !important;\n    color: white !important;\n}\n.page-section[data-v-331e54fc]{\n    padding: 8rem 0 0 !important;\n}\n.ticket_details-font[data-v-331e54fc]{\n    color: black;\n}\n.rate[data-v-331e54fc] {\n    /* float: left; */\n    /* height: 46px; */\n    padding: 0 10px;\n}\n.rate:not(:checked) > input[data-v-331e54fc] {\n    position:absolute;\n    top:-9999px;\n}\n._rate:not(:checked) > label[data-v-331e54fc] {\n    /* float:right; */\n    /* width:1em; */\n    /* overflow:hidden; */\n    white-space:nowrap;\n    /* cursor:pointer; */\n    font-size:17px;\n    color:#ffffff;\n    margin: 0 20px;\n}\n._divider-custom[data-v-331e54fc] {\n    margin: 1px 0 1px;\n    width: 100%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.rate:not(:checked) > label[data-v-331e54fc] {\n    float:right;\n    width:1em;\n    overflow:hidden;\n    white-space:nowrap;\n    cursor:pointer;\n    font-size:100px;\n    color:#ffffff;\n}\n.rate:not(:checked) > label[data-v-331e54fc]:before {\n    content: '\\2605   ';\n}\n.rate > input:checked ~ label[data-v-331e54fc] {\n    color: #ffe138;    \n    /* color: #c59b08; */\n}\n.rate:not(:checked) > label[data-v-331e54fc]:hover,\n.rate:not(:checked) > label:hover ~ label[data-v-331e54fc] {\n    color: #ffe138;  \n    /* color: #c59b08; */\n}\n.rate > input:checked + label[data-v-331e54fc]:hover,\n.rate > input:checked + label:hover ~ label[data-v-331e54fc],\n.rate > input:checked ~ label[data-v-331e54fc]:hover,\n.rate > input:checked ~ label:hover ~ label[data-v-331e54fc],\n.rate > label:hover ~ input:checked ~ label[data-v-331e54fc] {\n    color: #ffe138;\n    /* color: #c59b08; */\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.chart-container[data-v-5bf7a145] {\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n}\n.chart-info[data-v-5bf7a145] {\n    margin-left: 20px;\n    font-size: 14px;\n}\n\n\n", ""]);
 
 // exports
 
@@ -177930,6 +178103,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css&":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css& ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -179440,27 +179643,6 @@ var render = function() {
                           }),
                           _vm._v(
                             "\n                                Dashboard\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    {},
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/admin/reports" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-area-chart",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                Reports\n                            "
                           )
                         ]
                       )
@@ -182775,27 +182957,6 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "li",
-                    {},
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/admin/reports" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-area-chart",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                Reports\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
                     [
                       _c(
                         "router-link",
@@ -183363,27 +183524,6 @@ var render = function() {
                           }),
                           _vm._v(
                             "\n                                Dashboard\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    {},
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/admin/reports" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-area-chart",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                Reports\n                            "
                           )
                         ]
                       )
@@ -187029,27 +187169,6 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "li",
-                    {},
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/admin/reports" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-area-chart",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                Reports\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
                     { staticClass: "active" },
                     [
                       _c(
@@ -187873,27 +187992,6 @@ var render = function() {
                           }),
                           _vm._v(
                             "\n                                Dashboard\n                            "
-                          )
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { staticClass: "active" },
-                    [
-                      _c(
-                        "router-link",
-                        { attrs: { to: "/ticket/admin/reports" } },
-                        [
-                          _c("i", {
-                            staticClass: "fa fa-area-chart",
-                            attrs: { "aria-hidden": "true" }
-                          }),
-                          _vm._v(
-                            "\n                                Reports\n                            "
                           )
                         ]
                       )
@@ -202333,10 +202431,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&":
-/*!**************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145& ***!
-  \**************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&scoped=true&":
+/*!**************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&scoped=true& ***!
+  \**************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -202620,9 +202718,7 @@ var render = function() {
                   _c("div", { staticClass: "website-traffic-ctn" }, [
                     _c("h2", [
                       _c("span", { staticClass: "counter" }, [
-                        _vm._v(
-                          _vm._s(_vm.ticketStatusCounts.total_status_count)
-                        )
+                        _vm._v(_vm._s(_vm.total_status_count))
                       ])
                     ]),
                     _vm._v(" "),
@@ -202652,7 +202748,7 @@ var render = function() {
                   _c("div", { staticClass: "website-traffic-ctn" }, [
                     _c("h2", [
                       _c("span", { staticClass: "counter" }, [
-                        _vm._v(_vm._s(_vm.ticketStatusCounts.pending_count))
+                        _vm._v(_vm._s(_vm.ticketStatusCounts.pending_count1))
                       ])
                     ]),
                     _vm._v(" "),
@@ -202682,7 +202778,9 @@ var render = function() {
                   _c("div", { staticClass: "website-traffic-ctn" }, [
                     _c("h2", [
                       _c("span", { staticClass: "counter" }, [
-                        _vm._v(_vm._s(_vm.ticketStatusCounts.in_progress_count))
+                        _vm._v(
+                          _vm._s(_vm.ticketStatusCounts.in_progress_count1)
+                        )
                       ])
                     ]),
                     _vm._v(" "),
@@ -202712,7 +202810,7 @@ var render = function() {
                   _c("div", { staticClass: "website-traffic-ctn" }, [
                     _c("h2", [
                       _c("span", { staticClass: "counter" }, [
-                        _vm._v(_vm._s(_vm.ticketStatusCounts.completed_count))
+                        _vm._v(_vm._s(_vm.ticketStatusCounts.completed_count1))
                       ])
                     ]),
                     _vm._v(" "),
@@ -202741,17 +202839,39 @@ var render = function() {
                   "div",
                   { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
                   [
-                    _c("h5", [_vm._v("Internal / External Tickets")]),
+                    _c("h5", { staticStyle: { "text-align": "center" } }, [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(this.selectedMonth) +
+                          " " +
+                          _vm._s(this.selectedYear) +
+                          " Internal / External Ticket\n                            "
+                      )
+                    ]),
                     _vm._v(" "),
-                    _c("canvas", { ref: "internalExternalChart" })
+                    _c("canvas", { ref: "internalExternalChart" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "chart-info" }, [
+                      _c("p", [
+                        _c("strong", [_vm._v("Internal:")]),
+                        _vm._v(
+                          " " + _vm._s(this.total_internal_ticket) + " tickets"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _c("strong", [_vm._v("External:")]),
+                        _vm._v(
+                          " " + _vm._s(this.total_external_ticket) + " tickets"
+                        )
+                      ])
+                    ])
                   ]
                 )
               ])
             ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-lg-7 col-md-6 col-sm-12 col-xs-12" }, [
+          ),
+          _vm._v(" "),
           _c(
             "div",
             {
@@ -202770,183 +202890,7 @@ var render = function() {
                           _vm._s(this.selectedMonth) +
                           " " +
                           _vm._s(this.selectedYear) +
-                          " TICKET SUMMARY\n                            "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "b-container",
-                      { attrs: { fluid: "" } },
-                      [
-                        _c("b-table", {
-                          attrs: {
-                            striped: "",
-                            hover: "",
-                            items: _vm.ticketDetails_hardware,
-                            fields: _vm.fields_ticket_summary,
-                            "current-page": _vm.currentPage,
-                            "per-page": _vm.perPage_ticketSummary,
-                            filter: _vm.filter,
-                            "filter-included-fields": _vm.filterOn,
-                            "sort-by": _vm.sortBy,
-                            "sort-desc": _vm.sortDesc,
-                            "sort-direction": _vm.sortDirection,
-                            stacked: "md",
-                            "show-empty": ""
-                          },
-                          on: {
-                            "update:sortBy": function($event) {
-                              _vm.sortBy = $event
-                            },
-                            "update:sort-by": function($event) {
-                              _vm.sortBy = $event
-                            },
-                            "update:sortDesc": function($event) {
-                              _vm.sortDesc = $event
-                            },
-                            "update:sort-desc": function($event) {
-                              _vm.sortDesc = $event
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "b-row",
-                          [
-                            _c("b-pagination", {
-                              attrs: {
-                                "total-rows": _vm.totalRows,
-                                "per-page": _vm.perPage_ticketSummary,
-                                align: "center"
-                              },
-                              model: {
-                                value: _vm.currentPage,
-                                callback: function($$v) {
-                                  _vm.currentPage = $$v
-                                },
-                                expression: "currentPage"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ])
-            ]
-          )
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-lg-7 col-md-6 col-sm-12 col-xs-12" }, [
-          _c(
-            "div",
-            {
-              staticClass: "breadcomb-list",
-              staticStyle: { margin: "20px 0" }
-            },
-            [
-              _c("div", { staticClass: "row" }, [
-                _c(
-                  "div",
-                  { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
-                  [
-                    _c("h5", { staticStyle: { "text-align": "center" } }, [
-                      _vm._v(
-                        "\n                                Internal Client Ticket\n                            "
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "b-container",
-                      { attrs: { fluid: "" } },
-                      [
-                        _c("b-table", {
-                          attrs: {
-                            striped: "",
-                            hover: "",
-                            items: _vm.ticketDetails_hardware,
-                            fields: _vm.fields_ticketDetails_hardware,
-                            "current-page": _vm.currentPage,
-                            "per-page": _vm.perPage,
-                            filter: _vm.filter,
-                            "filter-included-fields": _vm.filterOn,
-                            "sort-by": _vm.sortBy,
-                            "sort-desc": _vm.sortDesc,
-                            "sort-direction": _vm.sortDirection,
-                            stacked: "md",
-                            "show-empty": ""
-                          },
-                          on: {
-                            "update:sortBy": function($event) {
-                              _vm.sortBy = $event
-                            },
-                            "update:sort-by": function($event) {
-                              _vm.sortBy = $event
-                            },
-                            "update:sortDesc": function($event) {
-                              _vm.sortDesc = $event
-                            },
-                            "update:sort-desc": function($event) {
-                              _vm.sortDesc = $event
-                            }
-                          }
-                        }),
-                        _vm._v(" "),
-                        _c(
-                          "b-row",
-                          [
-                            _c("b-pagination", {
-                              attrs: {
-                                "total-rows": _vm.totalRows,
-                                "per-page": _vm.perPage,
-                                align: "center"
-                              },
-                              model: {
-                                value: _vm.currentPage,
-                                callback: function($$v) {
-                                  _vm.currentPage = $$v
-                                },
-                                expression: "currentPage"
-                              }
-                            })
-                          ],
-                          1
-                        )
-                      ],
-                      1
-                    )
-                  ],
-                  1
-                )
-              ])
-            ]
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-lg-5 col-md-6 col-sm-12 col-xs-12" }, [
-          _c(
-            "div",
-            {
-              staticClass: "breadcomb-list",
-              staticStyle: { margin: "20px 0" }
-            },
-            [
-              _c("div", { staticClass: "row" }, [
-                _c(
-                  "div",
-                  { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
-                  [
-                    _c("h5", { staticStyle: { "text-align": "center" } }, [
-                      _vm._v(
-                        "\n                                Internal Client Ticket - Technical Support Type\n                            "
+                          "  Technical Support - Internal\n                            "
                       )
                     ]),
                     _vm._v(" "),
@@ -203014,14 +202958,67 @@ var render = function() {
                 )
               ])
             ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "breadcomb-list",
+              staticStyle: { margin: "20px 0" }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
+                  [
+                    _c("h5", { staticStyle: { "text-align": "center" } }, [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(this.selectedMonth) +
+                          " " +
+                          _vm._s(this.selectedYear) +
+                          "Agency / Division Tickets\n                            "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("canvas", { ref: "divisionChart" }),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "chart-info" }, [
+                      _c("p", [
+                        _c("strong", [_vm._v("CRPD:")]),
+                        _vm._v(
+                          " " + _vm._s(this.total_divTicket_CRPD) + " tickets"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _c("strong", [_vm._v("IRAD:")]),
+                        _vm._v(
+                          " " + _vm._s(this.total_divTicket_IRAD) + " tickets"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _c("strong", [_vm._v("FAD:")]),
+                        _vm._v(
+                          " " + _vm._s(this.total_divTicket_FAD) + " tickets"
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("p", [
+                        _c("strong", [_vm._v("OD-MISPS:")]),
+                        _vm._v(
+                          " " + _vm._s(this.total_divTicket_MISPS) + " tickets"
+                        )
+                      ])
+                    ])
+                  ]
+                )
+              ])
+            ]
           )
-        ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "row" }, [
-        _vm._m(0),
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "col-lg-7 col-md-6 col-sm-12 col-xs-12" }, [
           _c(
@@ -203036,6 +203033,16 @@ var render = function() {
                   "div",
                   { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
                   [
+                    _c("h5", { staticStyle: { "text-align": "center" } }, [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(this.selectedMonth) +
+                          " " +
+                          _vm._s(this.selectedYear) +
+                          " Ticket Summary - Internal\n                            "
+                      )
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "b-container",
                       { attrs: { fluid: "" } },
@@ -203044,10 +203051,10 @@ var render = function() {
                           attrs: {
                             striped: "",
                             hover: "",
-                            items: _vm.ticketDetails_division,
-                            fields: _vm.fields_ticketDetails_division,
+                            items: _vm.ticketDetails_hardware,
+                            fields: _vm.fields_internal_technicalSupport,
                             "current-page": _vm.currentPage,
-                            "per-page": _vm.perPage,
+                            "per-page": _vm.perPage_ticketSummary,
                             filter: _vm.filter,
                             "filter-included-fields": _vm.filterOn,
                             "sort-by": _vm.sortBy,
@@ -203078,7 +203085,7 @@ var render = function() {
                             _c("b-pagination", {
                               attrs: {
                                 "total-rows": _vm.totalRows,
-                                "per-page": _vm.perPage,
+                                "per-page": _vm.perPage_ticketSummary,
                                 align: "center"
                               },
                               model: {
@@ -203102,69 +203109,85 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._m(1)
+          _c(
+            "div",
+            {
+              staticClass: "breadcomb-list",
+              staticStyle: { margin: "20px 0" }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
+                  [
+                    _c("h5", { staticStyle: { "text-align": "center" } }, [
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(this.selectedMonth) +
+                          " " +
+                          _vm._s(this.selectedYear) +
+                          " Rating Summary\n                            "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("b-container", { attrs: { fluid: "" } }, [
+                      _c("table", { staticClass: "table table-bordered" }, [
+                        _c("thead", [
+                          _c("tr", [
+                            _c("th", [_vm._v("Excellent (5⭐)")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Very Good (4⭐)")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Good (3⭐)")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Poor (2⭐)")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("Very Poor (1⭐)")]),
+                            _vm._v(" "),
+                            _c("th", [_vm._v("CSM")])
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tbody", [
+                          _c("tr", [
+                            _c("td", [
+                              _vm._v(_vm._s(_vm.ratingSummary.rating_5))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(_vm.ratingSummary.rating_4))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(_vm.ratingSummary.rating_3))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(_vm.ratingSummary.rating_2))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(_vm.ratingSummary.rating_1))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(_vm.ratingSummary.csm))])
+                          ])
+                        ])
+                      ])
+                    ])
+                  ],
+                  1
+                )
+              ])
+            ]
+          )
         ])
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-lg-5 col-md-6 col-sm-12 col-xs-12" }, [
-      _c(
-        "div",
-        { staticClass: "breadcomb-list", staticStyle: { margin: "20px 0" } },
-        [
-          _c("div", { staticClass: "row" }, [
-            _c(
-              "div",
-              { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
-              [_c("h5", [_vm._v("Agency / Division Tickets")])]
-            )
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "breadcomb-list", staticStyle: { margin: "20px 0" } },
-        [
-          _c("div", { staticClass: "row" }, [
-            _c(
-              "div",
-              {
-                staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12",
-                staticStyle: { width: "300px", height: "250px" }
-              },
-              [_c("h5", [_vm._v("Internal vs External Ticket Counts")])]
-            )
-          ])
-        ]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "breadcomb-list", staticStyle: { margin: "20px 0" } },
-      [
-        _c("div", { staticClass: "row" }, [
-          _c(
-            "div",
-            { staticClass: "col-lg-12 col-md-12 col-sm-12 col-xs-12" },
-            [_c("h5", [_vm._v("Internal vs External Ticket Counts")])]
-          )
-        ])
-      ]
-    )
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -220255,7 +220278,7 @@ function httpFile() {
 /*!*************************************************!*\
   !*** ./resources/js/services/ticket_service.js ***!
   \*************************************************/
-/*! exports provided: createTicket, createAccount, addTicket, addTicket_internal, addTicket_external, addTicketStatus_Pending, addTicketStatus_Pending_STARBOOKS, addActivityLog, addRemarksLog, loadActivityLog, loadRemarksLog, technical_addTicket_internal, technical_addTicketStatus_Pending, technical_addTicket_external, technical_addTicketStatus_Pending_external, technical_addTicket_starbooks, technical_addTicketStatus_starbooks, updateStatus, updatePending, updatePending_Ticket, updateApproved, updateApproved_, updateRemarks, updateApprovedStatus, updateFeedbackStatus, updateRating, loadEmployees, updateInProg_Ticket1, updateInProg_Ticket_1, updateInProg_TicketStatus_1, updateInProg_Ticket_2, updateInProg_TicketStatus_2, getEmployees, getUserData, getUserAssignedTicket, setRefCode, setName, setDisplayName, getTicketStatus, getAllTicketDetails, getAllTicketDetails_Assigned, getAllTicketDetails_Approved_Assigned, getAllTicketDetails_InProgress_Assigned, getAllTicketDetails_Completed_Assigned, getAllTicketDetails_Approved, getAllTicketDetails_InProgress, getAllTicketDetails_Completed, getAllTicketDetails_Rescheduled, loadTicketDetails_type, loadTicketDetails, loadTicketDetails_external, loadTicketDetails_New, countEntry, countAll, countNew_All, countAssigned_All, countInProgress_All, countCompleted_All, countAssigned_staff, countInProgress_staff, countCompleted_staff, countTickets_PerStatus, countTickets_Status_Staff, countStaffTickets_PerStatus, validateEmpID, getEmpDetails, validateGovType, validateRefCode, validateRefCodeDetails, getMonthlyReportData, fetchEmployeeDivisionCounts, fetchHardwareSoftwareCounts, fetchTicketTypeCounts, fetchTicketStatusCounts, fetchInternalExternalCounts */
+/*! exports provided: createTicket, createAccount, addTicket, addTicket_internal, addTicket_external, addTicketStatus_Pending, addTicketStatus_Pending_STARBOOKS, addActivityLog, addRemarksLog, loadActivityLog, loadRemarksLog, technical_addTicket_internal, technical_addTicketStatus_Pending, technical_addTicket_external, technical_addTicketStatus_Pending_external, technical_addTicket_starbooks, technical_addTicketStatus_starbooks, updateStatus, updatePending, updatePending_Ticket, updateApproved, updateApproved_, updateRemarks, updateApprovedStatus, updateFeedbackStatus, updateRating, loadEmployees, updateInProg_Ticket1, updateInProg_Ticket_1, updateInProg_TicketStatus_1, updateInProg_Ticket_2, updateInProg_TicketStatus_2, getEmployees, getUserData, getUserAssignedTicket, setRefCode, setName, setDisplayName, getTicketStatus, getAllTicketDetails, getAllTicketDetails_Assigned, getAllTicketDetails_Approved_Assigned, getAllTicketDetails_InProgress_Assigned, getAllTicketDetails_Completed_Assigned, getAllTicketDetails_Approved, getAllTicketDetails_InProgress, getAllTicketDetails_Completed, getAllTicketDetails_Rescheduled, loadTicketDetails_type, loadTicketDetails, loadTicketDetails_external, loadTicketDetails_New, countEntry, countAll, countNew_All, countAssigned_All, countInProgress_All, countCompleted_All, countAssigned_staff, countInProgress_staff, countCompleted_staff, countTickets_PerStatus, countTickets_Status_Staff, countStaffTickets_PerStatus, validateEmpID, getEmpDetails, validateGovType, validateRefCode, validateRefCodeDetails, getMonthlyReportData, fetchEmployeeDivisionCounts, fetchHardwareSoftwareCounts, fetchTicketTypeCounts, fetchTicketStatusCounts, fetchInternalExternalCounts, fetchRatingSummary */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -220335,6 +220358,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchTicketTypeCounts", function() { return fetchTicketTypeCounts; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchTicketStatusCounts", function() { return fetchTicketStatusCounts; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchInternalExternalCounts", function() { return fetchInternalExternalCounts; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchRatingSummary", function() { return fetchRatingSummary; });
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./http_service */ "./resources/js/services/http_service.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
@@ -220608,6 +220632,16 @@ function fetchInternalExternalCounts() {
     }
   });
 }
+function fetchRatingSummary() {
+  var month = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var year = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["httpFile"])().get('/rating-summary', {
+    params: {
+      month: month,
+      year: year
+    }
+  });
+}
 
 /***/ }),
 
@@ -220625,22 +220659,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]);
-/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
-  state: {
-    apiURL: 'http://127.0.0.1:8000/api',
-    serverPath: 'http://127.0.0.1:8000'
-  },
-  mutations: {},
-  actions: {}
-})); // export default new Vuex.Store({
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__["default"]); // export default new Vuex.Store({
 //     state: {
-//         apiURL: 'http://ticketing-admin.stii.local/api',
-//         serverPath: 'http://ticketing-admin.stii.local'
+//         apiURL: 'http://127.0.0.1:8000/api',
+//         serverPath: 'http://127.0.0.1:8000'
 //     },
 //     mutations: {},
 //     actions: {}
 // });
+
+/* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
+  state: {
+    apiURL: 'http://ticketing-admin.stii.local/api',
+    serverPath: 'http://ticketing-admin.stii.local'
+  },
+  mutations: {},
+  actions: {}
+}));
 
 /***/ }),
 
@@ -221759,9 +221794,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145& */ "./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&");
+/* harmony import */ var _Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&scoped=true& */ "./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&scoped=true&");
 /* harmony import */ var _Ticket_SA_Reports_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Ticket-SA-Reports.vue?vue&type=script&lang=js& */ "./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _Ticket_SA_Reports_vue_vue_type_style_index_0_id_5bf7a145_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css& */ "./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -221769,13 +221806,13 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _Ticket_SA_Reports_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  null,
+  "5bf7a145",
   null
   
 )
@@ -221801,19 +221838,35 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&":
-/*!********************************************************************************************!*\
-  !*** ./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145& ***!
-  \********************************************************************************************/
+/***/ "./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css&":
+/*!**********************************************************************************************************************!*\
+  !*** ./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css& ***!
+  \**********************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Reports_vue_vue_type_style_index_0_id_5bf7a145_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=style&index=0&id=5bf7a145&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Reports_vue_vue_type_style_index_0_id_5bf7a145_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Reports_vue_vue_type_style_index_0_id_5bf7a145_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Reports_vue_vue_type_style_index_0_id_5bf7a145_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Reports_vue_vue_type_style_index_0_id_5bf7a145_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&scoped=true&":
+/*!********************************************************************************************************!*\
+  !*** ./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&scoped=true& ***!
+  \********************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/SuperAdmin/Ticket-SA-Reports.vue?vue&type=template&id=5bf7a145&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Ticket_SA_Reports_vue_vue_type_template_id_5bf7a145_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

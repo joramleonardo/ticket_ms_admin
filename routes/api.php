@@ -212,5 +212,8 @@ Route::group(['middleware' => 'throttle:3000,1'], function () {
     Route::get('/ticket-status-counts', 'TicketController@getTicketStatusCounts');
     Route::get('/internal-external-counts', 'TicketController@getInternalExternalCounts');
     Route::get('/getMonthlyReportData', 'TicketController@getMonthlyReportData');
+    Route::get('/rating-summary', 'TicketController@getRatingSummary');
+
+
 });
 

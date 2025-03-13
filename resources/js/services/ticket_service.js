@@ -317,3 +317,9 @@ export function fetchInternalExternalCounts(month = '', year = '') {
         params: { month: month, year: year }
     });
 }
+
+export function fetchRatingSummary(month = '', year = '') {
+    return httpFile().get('/rating-summary', {
+        params: { month: month, year: year }
+    });
+}

@@ -808,19 +808,160 @@ class TicketController extends Controller
             DATE_FORMAT(STR_TO_DATE(tickets.ticket_created, '%M %d %Y %h:%i %p'), '%M') AS month,
             DATE_FORMAT(STR_TO_DATE(tickets.ticket_created, '%M %d %Y %h:%i %p'), '%Y') AS year,
 
-            -- ✅ Count statuses only for 'internal' tickets
-            SUM(CASE WHEN ticket_statuses.status = 'New' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) AS new_count,
-            SUM(CASE WHEN ticket_statuses.status = 'Pending' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) AS pending_count,
-            SUM(CASE WHEN ticket_statuses.status = 'In Progress' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) AS in_progress_count,
-            SUM(CASE WHEN ticket_statuses.status = 'Completed' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) AS completed_count,
 
-            -- ✅ Total count of Pending, In Progress, and Completed statuses (Only Internal)
-            (
-                SUM(CASE WHEN ticket_statuses.status = 'New' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ticket_statuses.status = 'Pending' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ticket_statuses.status = 'In Progress' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ticket_statuses.status = 'Completed' AND tickets.internal_external = 'Internal' THEN 1 ELSE 0 END)
-            ) AS total_status_count
+                (
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'New'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND (ticket_statuses.software IS NULL OR ticket_statuses.software = '' OR ticket_statuses.software = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'New'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        AND (ticket_statuses.hardware IS NULL OR ticket_statuses.hardware = '' OR ticket_statuses.hardware = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'New'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'New'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Livestream' THEN 1 ELSE 0 END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'New'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'TWG' THEN 1 ELSE 0 END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'New'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'IS' THEN 1 ELSE 0 END)
+                ) AS  new_count1,
+                (
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Pending'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND (ticket_statuses.software IS NULL OR ticket_statuses.software = '' OR ticket_statuses.software = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Pending'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        AND (ticket_statuses.hardware IS NULL OR ticket_statuses.hardware = '' OR ticket_statuses.hardware = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Pending'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Pending'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Livestream' THEN 1 ELSE 0 END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Pending'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'TWG' THEN 1 ELSE 0 END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Pending'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'IS' THEN 1 ELSE 0 END)
+                ) AS  pending_count1,
+                (
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'In Progress'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND (ticket_statuses.software IS NULL OR ticket_statuses.software = '' OR ticket_statuses.software = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'In Progress'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        AND (ticket_statuses.hardware IS NULL OR ticket_statuses.hardware = '' OR ticket_statuses.hardware = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'In Progress'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'In Progress'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Livestream' THEN 1 ELSE 0 END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'In Progress'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'TWG' THEN 1 ELSE 0 END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'In Progress'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'IS' THEN 1 ELSE 0 END)
+                ) AS  in_progress_count1,
+                (
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Completed'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND (ticket_statuses.software IS NULL OR ticket_statuses.software = '' OR ticket_statuses.software = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Completed'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        AND (ticket_statuses.hardware IS NULL OR ticket_statuses.hardware = '' OR ticket_statuses.hardware = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Completed'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Completed'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Livestream' THEN 1 ELSE 0 END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Completed'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'TWG' THEN 1 ELSE 0 END) +
+                    SUM(CASE
+                        WHEN ticket_statuses.status = 'Completed'
+                        AND tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'IS' THEN 1 ELSE 0 END)
+                ) AS  completed_count1
+
 
             ");
 
@@ -910,19 +1051,78 @@ class TicketController extends Controller
                 (
                     SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'Livestream' THEN 1 ELSE 0 END) +
                     SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'IS' THEN 1 ELSE 0 END) +
-                    SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'Technical Support' THEN 1 ELSE 0 END)+
+                    SUM(CASE WHEN tickets.internal_external = 'Internal'
+                                AND ticket_statuses.supportType_ = 'Technical Support'
+                                AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                                AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                                THEN 1 ELSE 0 END) +
                     SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'TWG' THEN 1 ELSE 0 END)
                 ) AS total_supportType,
 
                 -- Total Support Types
                 (
-                    SUM(CASE WHEN tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) +
+                    (
+                    SUM(CASE
+                        WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND (ticket_statuses.software IS NULL OR ticket_statuses.software = '' OR ticket_statuses.software = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+
+                    SUM(CASE
+                        WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        AND (ticket_statuses.hardware IS NULL OR ticket_statuses.hardware = '' OR ticket_statuses.hardware = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+
+                    SUM(CASE
+                        WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'Livestream' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'TWG' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'IS' THEN 1 ELSE 0 END)
+                ) +
                     SUM(CASE WHEN tickets.internal_external = 'External' THEN 1 ELSE 0 END)
                 ) AS total_internal_external,
 
                  -- Count Internal & External Tickets
-                SUM(CASE WHEN tickets.internal_external = 'Internal' THEN 1 ELSE 0 END) AS total_internal,
-                SUM(CASE WHEN tickets.internal_external = 'External' THEN 1 ELSE 0 END) AS total_external
+                SUM(CASE WHEN tickets.internal_external = 'External' THEN 1 ELSE 0 END) AS total_external,
+
+                (
+                    SUM(CASE
+                        WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND (ticket_statuses.software IS NULL OR ticket_statuses.software = '' OR ticket_statuses.software = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+
+                    SUM(CASE
+                        WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        AND (ticket_statuses.hardware IS NULL OR ticket_statuses.hardware = '' OR ticket_statuses.hardware = 'undefined')
+                        THEN 1 ELSE 0
+                    END) +
+
+                    SUM(CASE
+                        WHEN tickets.internal_external = 'Internal'
+                        AND ticket_statuses.supportType_ = 'Technical Support'
+                        AND ticket_statuses.hardware IS NOT NULL AND ticket_statuses.hardware != '' AND ticket_statuses.hardware != 'undefined'
+                        AND ticket_statuses.software IS NOT NULL AND ticket_statuses.software != '' AND ticket_statuses.software != 'undefined'
+                        THEN 1 ELSE 0
+                    END) +
+                    SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'Livestream' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'TWG' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tickets.internal_external = 'Internal' AND ticket_statuses.supportType_ = 'IS' THEN 1 ELSE 0 END)
+                ) AS  total_internal
 
             ")
             ->groupBy('month', 'year')
@@ -938,37 +1138,7 @@ class TicketController extends Controller
         return response()->json($query->get(), 200);
     }
 
-    // ✅ Fetch Ticket Type Counts (PC Setup, Network, Printer, etc.)
-    public function getTicketTypeCounts(Request $request)
-    {
-        $month = $request->query('month');
-        $year = $request->query('year');
 
-        $query = TicketStatus::selectRaw("
-                DATE_FORMAT(STR_TO_DATE(ticket_completed, '%M %d %Y %h:%i %p'), '%M') AS month,
-                DATE_FORMAT(STR_TO_DATE(ticket_completed, '%M %d %Y %h:%i %p'), '%Y') AS year,
-                SUM(CASE WHEN type = 'PC Setup & Troubleshooting' THEN 1 ELSE 0 END) AS pc_setup_troubleshooting,
-                SUM(CASE WHEN type = 'Network related' THEN 1 ELSE 0 END) AS network_related,
-                SUM(CASE WHEN type = 'Printer related' THEN 1 ELSE 0 END) AS printer_related,
-                SUM(CASE WHEN type = 'Zoom related' THEN 1 ELSE 0 END) AS zoom_related,
-                SUM(CASE WHEN type = 'Website related' THEN 1 ELSE 0 END) AS website_related,
-                SUM(CASE WHEN type = 'STARBOOKS related' THEN 1 ELSE 0 END) AS starbooks_related,
-                SUM(CASE WHEN type = 'Installation related' THEN 1 ELSE 0 END) AS installation_related,
-                SUM(CASE WHEN type IS NULL OR type = '' THEN 1 ELSE 0 END) AS others_type
-            ")
-            ->where('status', 'completed')
-            ->groupBy('month', 'year')
-            ->orderByRaw("STR_TO_DATE(month, '%M')");
-
-        if (!empty($month)) {
-            $query->having('month', '=', $month);
-        }
-        if (!empty($year)) {
-            $query->having('year', '=', $year);
-        }
-
-        return response()->json($query->get(), 200);
-    }
 
 
     public function getInternalExternalCounts(Request $request)
@@ -1027,6 +1197,74 @@ class TicketController extends Controller
 
         return response()->json($query->get(), 200);
     }
+
+     // ✅ Fetch Ticket Type Counts (PC Setup, Network, Printer, etc.)
+     public function getTicketTypeCounts(Request $request)
+     {
+         $month = $request->query('month');
+         $year = $request->query('year');
+
+         $query = TicketStatus::selectRaw("
+                 DATE_FORMAT(STR_TO_DATE(ticket_completed, '%M %d %Y %h:%i %p'), '%M') AS month,
+                 DATE_FORMAT(STR_TO_DATE(ticket_completed, '%M %d %Y %h:%i %p'), '%Y') AS year,
+                 SUM(CASE WHEN type = 'PC Setup & Troubleshooting' THEN 1 ELSE 0 END) AS pc_setup_troubleshooting,
+                 SUM(CASE WHEN type = 'Network related' THEN 1 ELSE 0 END) AS network_related,
+                 SUM(CASE WHEN type = 'Printer related' THEN 1 ELSE 0 END) AS printer_related,
+                 SUM(CASE WHEN type = 'Zoom related' THEN 1 ELSE 0 END) AS zoom_related,
+                 SUM(CASE WHEN type = 'Website related' THEN 1 ELSE 0 END) AS website_related,
+                 SUM(CASE WHEN type = 'STARBOOKS related' THEN 1 ELSE 0 END) AS starbooks_related,
+                 SUM(CASE WHEN type = 'Installation related' THEN 1 ELSE 0 END) AS installation_related,
+                 SUM(CASE WHEN type IS NULL OR type = '' THEN 1 ELSE 0 END) AS others_type
+             ")
+             ->where('status', 'completed')
+             ->groupBy('month', 'year')
+             ->orderByRaw("STR_TO_DATE(month, '%M')");
+
+         if (!empty($month)) {
+             $query->having('month', '=', $month);
+         }
+         if (!empty($year)) {
+             $query->having('year', '=', $year);
+         }
+
+         return response()->json($query->get(), 200);
+     }
+
+     public function getRatingSummary(Request $request)
+     {
+         $month = $request->query('month');
+         $year = $request->query('year');
+
+         $query = DB::table('ticket_statuses')
+             ->selectRaw("
+                 COALESCE(SUM(CASE WHEN rating = 'Excellent' THEN 1 ELSE 0 END), 0) AS rating_5,
+                 COALESCE(SUM(CASE WHEN rating = 'Very Good' THEN 1 ELSE 0 END), 0) AS rating_4,
+                 COALESCE(SUM(CASE WHEN rating = 'Good' THEN 1 ELSE 0 END), 0) AS rating_3,
+                 COALESCE(SUM(CASE WHEN rating = 'Poor' THEN 1 ELSE 0 END), 0) AS rating_2,
+                 COALESCE(SUM(CASE WHEN rating = 'Very Poor' THEN 1 ELSE 0 END), 0) AS rating_1
+             ")
+             ->where('status', 'Completed'); // ✅ Only count completed tickets
+
+         // ✅ Apply filters if selected
+         if (!empty($month)) {
+             $query->whereMonth('created_at', date('m', strtotime($month)));
+         }
+         if (!empty($year)) {
+             $query->whereYear('created_at', $year);
+         }
+
+         $data = $query->first();
+
+         return response()->json([
+             'rating_5' => $data->rating_5 ?? 0,
+             'rating_4' => $data->rating_4 ?? 0,
+             'rating_3' => $data->rating_3 ?? 0,
+             'rating_2' => $data->rating_2 ?? 0,
+             'rating_1' => $data->rating_1 ?? 0
+         ], 200);
+     }
+
+
 
 
 }
